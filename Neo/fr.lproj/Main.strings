@@ -1,0 +1,78 @@
+
+/* Class = "UIButton"; normalTitle = "Suivant"; ObjectID = "11e-zG-jP6"; */
+"11e-zG-jP6.normalTitle" = "Suivant";
+
+/* Class = "UILabel"; text = "Quel est votre adresse email ?"; ObjectID = "1zg-hs-j1l"; */
+"1zg-hs-j1l.text" = "Quel est votre adresse email ?";
+
+/* Class = "UIButton"; normalTitle = "CONNEXION"; ObjectID = "7Tq-4v-ojc"; */
+"7Tq-4v-ojc.normalTitle" = "CONNEXION";
+
+/* Class = "UIButton"; normalTitle = "INSCRIPTION"; ObjectID = "7fY-4k-SwU"; */
+"7fY-4k-SwU.normalTitle" = "INSCRIPTION";
+
+/* Class = "UILabel"; text = "Se connecter"; ObjectID = "7n7-YY-bsp"; */
+"7n7-YY-bsp.text" = "Se connecter";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "EAj-9r-FHw"; */
+"EAj-9r-FHw.placeholder" = "Email";
+
+/* Class = "UIButton"; normalTitle = "Connexion"; ObjectID = "J89-mo-4f6"; */
+"J89-mo-4f6.normalTitle" = "Connexion";
+
+/* Class = "UITextField"; placeholder = "Date de naissance"; ObjectID = "PPU-FO-ozb"; */
+"PPU-FO-ozb.placeholder" = "Date de naissance";
+
+/* Class = "UILabel"; text = "NEO"; ObjectID = "RMz-DW-bsm"; */
+"RMz-DW-bsm.text" = "NEO";
+
+/* Class = "UILabel"; text = "S'inscrire"; ObjectID = "UBq-5b-RV7"; */
+"UBq-5b-RV7.text" = "S'inscrire";
+
+/* Class = "UITextField"; accessibilityLabel = "Email"; ObjectID = "aAH-6h-iW1"; */
+"aAH-6h-iW1.accessibilityLabel" = "Email";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "aAH-6h-iW1"; */
+"aAH-6h-iW1.placeholder" = "Email";
+
+/* Class = "UIButton"; normalTitle = "Suivant"; ObjectID = "b98-HO-dYj"; */
+"b98-HO-dYj.normalTitle" = "Suivant";
+
+/* Class = "UITabBarItem"; title = "Item 2"; ObjectID = "cyY-6s-Gxg"; */
+"cyY-6s-Gxg.title" = "Item 2";
+
+/* Class = "UILabel"; text = "Mot de passe oublié?"; ObjectID = "hic-I5-kdj"; */
+"hic-I5-kdj.text" = "Mot de passe oublié?";
+
+/* Class = "UILabel"; text = "NEO APP"; ObjectID = "j15-Q1-QZa"; */
+"j15-Q1-QZa.text" = "NEO APP";
+
+/* Class = "UILabel"; text = "Définir un mot de passe"; ObjectID = "kCH-Cc-eBB"; */
+"kCH-Cc-eBB.text" = "Définir un mot de passe";
+
+/* Class = "UITabBarItem"; title = "Item 1"; ObjectID = "l4e-Co-nLP"; */
+"l4e-Co-nLP.title" = "Item 1";
+
+/* Class = "UITextField"; placeholder = "Prénom"; ObjectID = "lLa-ge-r7I"; */
+"lLa-ge-r7I.placeholder" = "Prénom";
+
+/* Class = "UITextField"; placeholder = "Mot de passe"; ObjectID = "lRz-cz-cPP"; */
+"lRz-cz-cPP.placeholder" = "Mot de passe";
+
+/* Class = "UIButton"; normalTitle = "Suivant"; ObjectID = "m8h-9w-Q4N"; */
+"m8h-9w-Q4N.normalTitle" = "Suivant";
+
+/* Class = "UILabel"; text = "Quelle est votre date de naissance ?"; ObjectID = "mGV-eE-Roh"; */
+"mGV-eE-Roh.text" = "Quelle est votre date de naissance ?";
+
+/* Class = "UIButton"; normalTitle = "Terminé"; ObjectID = "mXi-Wj-gzz"; */
+"mXi-Wj-gzz.normalTitle" = "Terminé";
+
+/* Class = "UITextField"; placeholder = "Mot de passe"; ObjectID = "oYI-Ca-wQS"; */
+"oYI-Ca-wQS.placeholder" = "Mot de passe";
+
+/* Class = "UITextField"; placeholder = "Nom"; ObjectID = "vmd-QY-crc"; */
+"vmd-QY-crc.placeholder" = "Nom";
+
+/* Class = "UITextField"; placeholder = "Confirmation du mot de passe"; ObjectID = "xxu-J7-cYw"; */
+"xxu-J7-cYw.placeholder" = "Confirmation du mot de passe";

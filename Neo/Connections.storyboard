@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Controller Login-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="ConnectionStoryboard" id="BYZ-38-t0r" customClass="ControllerLogin" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo-png" translatesAutoresizingMaskIntoConstraints="NO" id="myb-UO-S4N">
+                                <rect key="frame" x="139.5" y="27" width="96" height="99"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="myb-UO-S4N" secondAttribute="height" multiplier="32:33" id="2dR-ac-Wb5"/>
+                                    <constraint firstAttribute="width" constant="96" id="TbC-2s-krT"/>
+                                    <constraint firstAttribute="height" constant="99" id="sg4-OV-PqW"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdo-Io-OYa" customClass="BackButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="14" y="20" width="30" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="backButton"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <connections>
+                                    <segue destination="cOg-lu-S88" kind="unwind" unwindAction="unwindToMenuWithSegue:" id="euO-Wd-i7D"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Se connecter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7n7-YY-bsp">
+                                <rect key="frame" x="0.0" y="166" width="375" height="27"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mot de passe oublié?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hic-I5-kdj">
+                                <rect key="frame" x="122" y="331" width="130" height="19"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.36282655596733093" green="0.68111878633499146" blue="0.79426378011703491" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mot de passe" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QDZ-jE-X8m" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="269" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Email"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="passwordEditingChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="CHO-ak-FAP"/>
+                                    <action selector="usernameEditingChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="rqq-YG-dhG"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="awh-cR-bRM" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="201" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" label="Email"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" smartDashesType="no" textContentType="email"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="passwordEditingChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="keQ-2I-rDJ"/>
+                                    <action selector="usernameEditingChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="lRH-EB-lOv"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="myb-UO-S4N" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JgA-pp-UeX"/>
+                            <constraint firstItem="myb-UO-S4N" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="7" id="lh1-11-F8K"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="WQJ-yU-Ffz"/>
+                    <connections>
+                        <outlet property="_password" destination="QDZ-jE-X8m" id="udm-6v-yE1"/>
+                        <outlet property="_username" destination="awh-cR-bRM" id="gCB-CU-Xvt"/>
+                        <segue destination="J1E-k3-Fqv" kind="show" identifier="segueLogin" id="Rik-ar-kiO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <exit id="cOg-lu-S88" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-2660" y="556"/>
+        </scene>
+        <!--Controller Registration-->
+        <scene sceneID="Kjp-H7-4Zp">
+            <objects>
+                <viewController storyboardIdentifier="RegistrationStoryboard" id="Wip-D7-Na0" customClass="ControllerRegistration" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0zq-zs-bpO"/>
+                        <viewControllerLayoutGuide type="bottom" id="HjW-1x-ztM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LQq-J4-VUO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo-png" translatesAutoresizingMaskIntoConstraints="NO" id="GCZ-6s-iVg" userLabel="Logo">
+                                <rect key="frame" x="139.5" y="33" width="96" height="99"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="GCZ-6s-iVg" secondAttribute="height" multiplier="32:33" id="2Gb-u7-bT9"/>
+                                    <constraint firstAttribute="width" constant="96" id="v1f-RQ-yCw"/>
+                                    <constraint firstAttribute="height" constant="99" id="vKk-GB-7Gr"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycx-CW-Xjz" customClass="BackButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="44" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <connections>
+                                    <segue destination="Tbk-F7-9RD" kind="unwind" unwindAction="unwindToMenuWithSegue:" id="6G0-2l-DKr"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Prénom" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lLa-ge-r7I" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="219" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" textContentType="name"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="usernameEditingChanged:" destination="Wip-D7-Na0" eventType="editingChanged" id="UEz-6U-DhU"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nom" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmd-QY-crc" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="279" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" textContentType="family-name"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="familyEditingChanged:" destination="Wip-D7-Na0" eventType="editingChanged" id="A4b-MA-8NA"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11e-zG-jP6" customClass="NextButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="64" y="375" width="247" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Suivant">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="RGQ-bh-FX8" kind="show" identifier="showEmail" id="RcV-8F-zn0"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="S'inscrire" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBq-5b-RV7">
+                                <rect key="frame" x="0.0" y="179" width="375" height="26"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="S'inscrire"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="GCZ-6s-iVg" firstAttribute="centerX" secondItem="LQq-J4-VUO" secondAttribute="centerX" id="Jhz-0P-rWF"/>
+                            <constraint firstItem="GCZ-6s-iVg" firstAttribute="top" secondItem="LQq-J4-VUO" secondAttribute="topMargin" constant="13" id="bVC-ZD-Cd0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="_familyname" destination="vmd-QY-crc" id="7uC-Rb-RPH"/>
+                        <outlet property="_nextButton" destination="11e-zG-jP6" id="Tdj-Ls-6R2"/>
+                        <outlet property="_username" destination="lLa-ge-r7I" id="O6B-Pf-hCB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nw2-tK-Tjt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Tbk-F7-9RD" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-2660" y="1280.5097451274364"/>
+        </scene>
+        <!--Controller Birthday-->
+        <scene sceneID="5KV-eh-TaX">
+            <objects>
+                <viewController id="9BZ-2z-XRR" customClass="ControllerBirthday" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hRr-Sr-7q4"/>
+                        <viewControllerLayoutGuide type="bottom" id="vMo-mZ-7Bm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gap-VR-hdq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo-png" translatesAutoresizingMaskIntoConstraints="NO" id="x8s-K8-LQs">
+                                <rect key="frame" x="139.5" y="27" width="96" height="99"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="x8s-K8-LQs" secondAttribute="height" multiplier="32:33" id="Nl4-4Z-JlD"/>
+                                    <constraint firstAttribute="height" constant="99" id="VVc-by-RyY"/>
+                                    <constraint firstAttribute="width" constant="96" id="aXx-BA-TXM"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zzU-Q5-y0G" customClass="BackButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="44" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <connections>
+                                    <action selector="backButtonTrigger:" destination="9BZ-2z-XRR" eventType="touchUpInside" id="e9M-t3-l0Q"/>
+                                    <segue destination="LZM-FJ-b74" kind="unwind" unwindAction="unwindToEmailWithSegue:" id="2M8-w2-OAe"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quelle est votre date de naissance ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGV-eE-Roh">
+                                <rect key="frame" x="0.0" y="178" width="375" height="36"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="OtR-rh-7b6">
+                                <rect key="frame" x="-1" y="418" width="375" height="241"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <date key="date" timeIntervalSinceReferenceDate="526984119.31915599">
+                                    <!--2017-09-13 8:28:39 AM +0000-->
+                                </date>
+                                <connections>
+                                    <action selector="birthdayValueChanged:" destination="9BZ-2z-XRR" eventType="valueChanged" id="Xtv-4W-sM0"/>
+                                </connections>
+                            </datePicker>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m8h-9w-Q4N" customClass="NextButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="63" y="340" width="247" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Suivant"/>
+                                <connections>
+                                    <segue destination="byd-Kj-fep" kind="show" identifier="showPassword" id="bOA-il-iY2"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date de naissance" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PPU-FO-ozb" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="258" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="x8s-K8-LQs" firstAttribute="centerX" secondItem="gap-VR-hdq" secondAttribute="centerX" id="UZH-f8-8hK"/>
+                            <constraint firstItem="x8s-K8-LQs" firstAttribute="top" secondItem="gap-VR-hdq" secondAttribute="topMargin" constant="7" id="dTx-Fm-BLx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="_birthdayValue" destination="OtR-rh-7b6" id="lBP-dP-sOg"/>
+                        <outlet property="_displayBirthday" destination="PPU-FO-ozb" id="cLl-F7-lRg"/>
+                        <outlet property="_nextButton" destination="m8h-9w-Q4N" id="n54-WW-S2a"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xOl-Hg-zQr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="LZM-FJ-b74" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-794.39999999999998" y="1280.5097451274364"/>
+        </scene>
+        <!--Controller Email-->
+        <scene sceneID="9Lu-AL-bAm">
+            <objects>
+                <viewController id="RGQ-bh-FX8" customClass="ControllerEmail" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="enc-cG-ah9"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ds1-20-vOM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sCk-u5-yQr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo-png" translatesAutoresizingMaskIntoConstraints="NO" id="aR4-gR-LXG">
+                                <rect key="frame" x="139.5" y="27" width="96" height="99"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="96" id="L4J-AK-ItS"/>
+                                    <constraint firstAttribute="width" secondItem="aR4-gR-LXG" secondAttribute="height" multiplier="32:33" id="OFP-0G-iSW"/>
+                                    <constraint firstAttribute="height" constant="99" id="mbH-S2-sFc"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXB-Fb-vZ0" customClass="BackButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="44" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <connections>
+                                    <segue destination="k2Z-bo-uwd" kind="unwind" unwindAction="unwindToRegistrationWithSegue:" id="slA-lt-LzZ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quel est votre adresse email ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1zg-hs-j1l">
+                                <rect key="frame" x="0.0" y="175" width="375" height="36"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b98-HO-dYj" customClass="NextButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="64" y="375" width="247" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Suivant">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="9BZ-2z-XRR" kind="show" identifier="showBirthday" id="dTP-JK-b4d"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EAj-9r-FHw" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="258" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" textContentType="email"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="emailEditingChanged:" destination="RGQ-bh-FX8" eventType="editingChanged" id="d5C-LO-vht"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aR4-gR-LXG" firstAttribute="top" secondItem="sCk-u5-yQr" secondAttribute="topMargin" constant="7" id="L6o-5t-IS6"/>
+                            <constraint firstItem="aR4-gR-LXG" firstAttribute="centerX" secondItem="sCk-u5-yQr" secondAttribute="centerX" id="gEv-IB-Nwb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="_nextButton" destination="b98-HO-dYj" id="KgA-48-43T"/>
+                        <outlet property="_useremail" destination="EAj-9r-FHw" id="NJ5-Oh-I6r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UPg-io-8GK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="k2Z-bo-uwd" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-1665" y="1281"/>
+        </scene>
+        <!--Controller Password-->
+        <scene sceneID="kDa-ga-fbt">
+            <objects>
+                <viewController id="byd-Kj-fep" customClass="ControllerPassword" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pWG-Fy-xXB"/>
+                        <viewControllerLayoutGuide type="bottom" id="Faf-LH-ETp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xba-vG-EOm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo-png" translatesAutoresizingMaskIntoConstraints="NO" id="2ff-al-kIQ">
+                                <rect key="frame" x="139.5" y="27" width="96" height="99"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="99" id="GCy-hd-o42"/>
+                                    <constraint firstAttribute="width" secondItem="2ff-al-kIQ" secondAttribute="height" multiplier="32:33" id="k9e-Nb-UCq"/>
+                                    <constraint firstAttribute="width" constant="96" id="zZc-E4-6Tn"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vlS-Wd-jUo" customClass="BackButton" customModule="Neo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="44" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <connections>
+                                    <segue destination="8gx-MF-bJr" kind="unwind" unwindAction="unwindToBirthdayWithSegue:" id="y4c-mT-Dio"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mot de passe" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oYI-Ca-wQS" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="221" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="passwordEditingChanged:" destination="byd-Kj-fep" eventType="editingChanged" id="QWW-K9-rdH"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirmation du mot de passe" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xxu-J7-cYw" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                <rect key="frame" x="51" y="285" width="273" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderInactiveColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="passwordConfirmationEditingChanged:" destination="byd-Kj-fep" eventType="editingChanged" id="VJ7-3W-oFS"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Définir un mot de passe" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kCH-Cc-eBB">
+                                <rect key="frame" x="0.0" y="181" width="375" height="36"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2ff-al-kIQ" firstAttribute="top" secondItem="xba-vG-EOm" secondAttribute="topMargin" constant="7" id="8Bt-Gd-ai7"/>
+                            <constraint firstItem="2ff-al-kIQ" firstAttribute="centerX" secondItem="xba-vG-EOm" secondAttribute="centerX" id="tsz-ZA-nfp"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="_password" destination="oYI-Ca-wQS" id="irY-LD-M3j"/>
+                        <outlet property="_passwordConfirmation" destination="xxu-J7-cYw" id="jJs-0c-79C"/>
+                        <segue destination="J1E-k3-Fqv" kind="show" identifier="segueRegistration" id="3Wz-4p-Ryh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jqK-ka-Ffe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="8gx-MF-bJr" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="196" y="1281"/>
+        </scene>
+        <!--UITabBarController-9aj-dW-bGs-->
+        <scene sceneID="ldk-dC-IF3">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UITabBarController-9aj-dW-bGs" id="J1E-k3-Fqv" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nSe-kx-rxv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="954" y="491"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Logo-png" width="1800" height="1800"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Rik-ar-kiO"/>
+    </inferredMetricsTieBreakers>
+</document>

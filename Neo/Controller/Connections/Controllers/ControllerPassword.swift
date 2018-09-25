@@ -124,9 +124,10 @@ class ControllerPassword: UIViewController {
                 if (_currentState) {
                     self.performRegistration()
                     _currentState = true
+                } else {
+                    button.stopAnimation(animationStyle: .shake, completion: { })
                 }
-                
-                button.stopAnimation(animationStyle: .shake, completion: { })
+                button.stopAnimation()
             })
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {

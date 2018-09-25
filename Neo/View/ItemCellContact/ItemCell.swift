@@ -15,12 +15,7 @@ class ItemCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        //self.layer.borderWidth = 1.0
         self.layer.cornerRadius = 2
-        //self.layer.borderColor
-
-        //self.layer.borderColor = UIColor.gray.cgColor
-        // Initialization code
     }
     
     func setData(circleName: String, circleDate: String) {

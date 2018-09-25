@@ -61,11 +61,7 @@ class ControllerEmail: UIViewController {
            _ = ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CHECKEMAIL, param: User.sharedInstance.getEmailParameter()).done {
                 result in
             
-            let jsonEmail = JSON(result)
-            
-            print("JSON = \(jsonEmail) BOOL = \(jsonEmail["success"].boolValue)")
-            
-            if !jsonEmail["success"].boolValue {
+            if !(JSON(result))["success"].boolValue {
                     HandleErrors.displayError(message: "The email you entered is already used by someone else", controller: self)
                 } else {
                     self.performSegue(withIdentifier: "showBirthday", sender: self)

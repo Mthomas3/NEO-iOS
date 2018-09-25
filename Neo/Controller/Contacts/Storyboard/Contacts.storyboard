@@ -238,10 +238,10 @@
             </objects>
             <point key="canvasLocation" x="-3796" y="1077"/>
         </scene>
-        <!--Child View Controller Second-->
+        <!--Child View Controller Invitations Circle-->
         <scene sceneID="10H-yk-CaC">
             <objects>
-                <viewController storyboardIdentifier="ChildViewControllerSecond" id="Jaq-mk-Ynz" customClass="ChildViewControllerSecond" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChildViewControllerInvitationsCircle" id="Jaq-mk-Ynz" customClass="ChildViewControllerInvitationsCircle" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GlD-ja-0h0"/>
                         <viewControllerLayoutGuide type="bottom" id="pPn-j1-nIA"/>

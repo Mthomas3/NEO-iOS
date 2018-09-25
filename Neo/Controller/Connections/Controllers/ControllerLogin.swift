@@ -16,7 +16,7 @@ import TransitionButton
 
 class ControllerLogin: UIViewController {
     
-    let __DEVELOPPEMENT__ = false
+    let __DEVELOPPEMENT__ = true
     
     @IBOutlet private weak var _username: HoshiTextField!
     @IBOutlet private weak var _password: HoshiTextField!
@@ -117,13 +117,10 @@ class ControllerLogin: UIViewController {
                 
                 }.catch {test in
                     print(test)
-                    self._loginButton.stopAnimation()
                     HandleErrors.displayError(message: "Either the password or email is invalid 1", controller: self)
             }
             }.catch {
                 _ in
-                
-                self._loginButton.stopAnimation()
                 
                 HandleErrors.displayError(message: "Either the password or email is invalid 2", controller: self)
                 
@@ -147,9 +144,10 @@ class ControllerLogin: UIViewController {
                 if (_currentState) {
                     self.performLogin()
                     _currentState = true
+                }else {
+                    button.stopAnimation(animationStyle: .shake, completion: { })
                 }
-                
-                button.stopAnimation(animationStyle: .shake, completion: { })
+                button.stopAnimation()
             })
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
@@ -158,7 +156,6 @@ class ControllerLogin: UIViewController {
                 }
             }
         })
-        
     }
     
 }

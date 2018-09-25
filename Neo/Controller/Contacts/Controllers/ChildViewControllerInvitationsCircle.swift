@@ -10,44 +10,54 @@ import UIKit
 import XLPagerTabStrip
 import SwiftyJSON
 
+class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvider, UICollectionViewDataSource {
 
-class ChildViewControllerSecond: UIViewController, IndicatorInfoProvider, UICollectionViewDataSource {
-
-    var childNumber: String = ""
-    
-    private var dataArray = [[String(), String(), Int()]]
-    private var estimateWidth = 140.0
-    private var cellMarginSize = 3.0
+    public var childNumber: String = ""
+    private var dataArray = [ItemCellData]()
+    private let estimateWidth = 140.0
+    private let cellMarginSize = 3.0
 
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        
-        // Register cells
         self.collectionView.register(UINib(nibName: "ItemCell", bundle: nil), forCellWithReuseIdentifier: "ItemCell")
-        
-        // SetupGrid view
         self.setupGridView()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         tap.numberOfTapsRequired = 2
         view.addGestureRecognizer(tap)
+        checkInvitationsOnSocket()
     }
     
     private func refreshCollectionView() {
         self.loadCirclesInvitations()
     }
     
+    private func checkInvitationsOnSocket () {
+        
+        SocketManager.sharedInstance.getManager().defaultSocket.on("circle_invite") { invitation, _  in
+                let invites = JSON(invitation)
+                var circle_inv_id = 0
+            
+                for item in invites.arrayValue {
+                    circle_inv_id = item["circle_invite_id"].intValue
+                }
+            ServicesCircle.shareInstance.getCirclesInvitesOnSocket(id: circle_inv_id, token:            User.sharedInstance.getTokenParameter(), completion: { (inv) in
+                    self.dataArray.append(ItemCellData(Name: inv["circle"]["name"].stringValue, Date: "coucou", Id: inv["circle"]["id"].intValue))
+                    self.collectionView.reloadData()
+                })
+            }
+        }
+    
     private func performDeclineCircle() {
         
         let indexPath = collectionView.indexPathsForSelectedItems?.first
-        let id = self.dataArray[(indexPath?.row)!][2]
+        let id = self.dataArray[(indexPath?.row)!].Id
 
-       ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_FRIEND_NO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "invite_id": id]).done {
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_FRIEND_NO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "invite_id": id]).done {
             jsonData in
         
             self.performUIAlert(title: "Vous avez refusez l'invitation", message: nil, actionTitles: ["Terminer"], actions:
@@ -59,10 +69,9 @@ class ChildViewControllerSecond: UIViewController, IndicatorInfoProvider, UIColl
     }
     
     private func performJoiningCircle() {
-
         let indexPath = collectionView.indexPathsForSelectedItems?.first
-        let id = self.dataArray[(indexPath?.row)!][2]
-        
+        let id = self.dataArray[(indexPath?.row)!].Id
+
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_FRIEND_YES, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "invite_id": id]).done {
             jsonData in
    
@@ -80,46 +89,31 @@ class ChildViewControllerSecond: UIViewController, IndicatorInfoProvider, UIColl
     }
     
     private func loadCirclesInvitations() {
-        self.dataArray.removeAll()
+
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_ACCOUNT_INFO, param: User.sharedInstance.getTokenParameter()).done {
             response in
-            let JSONdata = JSON( response)
-            let content = JSONdata["content"]
-            let invites = content["invites"]
+            let invites = JSON(response)["content"]["invites"]
             self.dataArray.removeAll()
             
             for index in 0...invites.count {
-                
-                let _id = invites[index]["id"]
-                let _date = invites[index]["created"]
-                
-                let _circleInvitation = invites[index]["circle"]
-                
-                let name = _circleInvitation["name"]
-                
-                self.dataArray.append([name.stringValue, _date.stringValue, _id.intValue])
-                
+                self.dataArray.append(ItemCellData(Name: invites[index]["circle"]["name"].stringValue,
+                                                   Date: invites[index]["created"].stringValue, Id: invites[index]["id"].intValue))
             }
-            print("the invites are \(invites)")
             self.collectionView.reloadData()
-            
             
             }.catch{
                 _ in
-                HandleErrors.displayError(message: "something went wrong", controller: self)
+                HandleErrors.displayError(message: "Impossible de charger les cercles", controller: self)
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.dataArray.removeAll()
         loadCirclesInvitations()
     }
     
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return IndicatorInfo(title: "\(childNumber)")
     }
-    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -142,10 +136,13 @@ class ChildViewControllerSecond: UIViewController, IndicatorInfoProvider, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // set the data here
+
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCell", for: indexPath) as! ItemCell
-        print("inside collection view -> \(self.dataArray)")
-        cell.setData(circleName: self.dataArray[indexPath.row][indexPath.section] as! String, circleDate: self.dataArray[indexPath.row][1] as! String)
+
+        print("INSIDE VIEW -> \(self.dataArray)")
+        
+        cell.setData(circleName: self.dataArray[indexPath.row].Name, circleDate: self.dataArray[indexPath.row].Date)
+
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 0.5
         return cell
@@ -165,7 +162,7 @@ class ChildViewControllerSecond: UIViewController, IndicatorInfoProvider, UIColl
 
 }
 
-extension ChildViewControllerSecond: UICollectionViewDelegateFlowLayout {
+extension ChildViewControllerInvitationsCircle: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = self.calculateWith()

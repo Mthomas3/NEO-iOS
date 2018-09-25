@@ -13,7 +13,7 @@ class ControllerAddSomeoneToCircle: UIViewController {
 
     @IBOutlet private weak var _email: HoshiTextField!
     @IBOutlet private weak var _confirmButton: NextButton!
-    private var _idCircle = Int()
+    private var idCircle = Int()
     
     private var _colorButton : ColorsButtonOnEditing
     
@@ -36,11 +36,11 @@ class ControllerAddSomeoneToCircle: UIViewController {
     }
     
     public func setIdCircle(id: Int) {
-        self._idCircle = id
+        self.idCircle = id
     }
     
     public func getIdCircle() -> Int{
-        return self._idCircle
+        return self.idCircle
     }
     
     private func handleColorButton(){

@@ -30,12 +30,12 @@ final class ApiManager {
                         seal.resolve(json, nil)
                     }
                     else {
-                        print(response.result.value)
+                        print(response.result.value as! String)
                         print("*** Route \(url) not working status code -> \(response.response!.statusCode) first if")
                         seal.reject(PMKError.invalidCallingConvention)
                     }
                 } else {
-                    print(response.result.value as? [String: Any])
+                    print(response.result.value as! [String: Any])
                         print("*** Route \(url) not working status code -> \(response.response!.statusCode) second if")
                         seal.reject(PMKError.invalidCallingConvention)
                 }

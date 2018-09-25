@@ -10,66 +10,52 @@ import UIKit
 import XLPagerTabStrip
 import SwiftyJSON
 
-
 class ChildViewController: UIViewController, IndicatorInfoProvider, UICollectionViewDataSource {
     
     var childNumber: String = ""
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var dataArray = [[String(), String(), Int()]]
-    
-    var estimateWidth = 140.0
-    var cellMarginSize = 3.0
-    
-    func reloadNecessaryContacts() {
-        
-    }
+    private var dataArray = [ItemCellData]()
+    private let estimateWidth = 140.0
+    private let cellMarginSize = 3.0
     
     func loadContact() {
+        self.dataArray.removeAll()
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CIRCLE_LIST, param: User.sharedInstance.getTokenParameter()).done { data in
-            let JSONdata = JSON(data)
-            self.dataArray.removeAll()
-            var contacts = JSONdata["content"]
-                
-                for index in 0...contacts.count {
-                    var _tmp = contacts[index]
+            
+            let contacts = JSON(data)["content"]
+            
+                for index in 0...contacts.count - 1{
                     
-                    self.dataArray.append([_tmp["name"].stringValue, _tmp["created"].stringValue, _tmp["id"].intValue])
-                    
+                    self.dataArray.append(ItemCellData(Name: contacts[index]["name"].stringValue,
+                                                       Date: contacts[index]["created"].stringValue, Id: contacts[index]["id"].intValue))
                 }
                 
                 self.collectionView.reloadData()
         
             }.catch {_ in
-                HandleErrors.displayError(message: "something went wrong", controller: self)
+                HandleErrors.displayError(message: "An error occurred while loading the circles", controller: self)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.dataArray.removeAll()
         loadContact()
     }
 
-    
     override func viewDidLoad() {
-        
-        
         super.viewDidLoad()
-
-        // Set Delegates
+        
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        
-        // Register cells
         self.collectionView.register(UINib(nibName: "ItemCell", bundle: nil), forCellWithReuseIdentifier: "ItemCell")
         
-        // SetupGrid view
         self.setupGridView()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         tap.numberOfTapsRequired = 2
         view.addGestureRecognizer(tap)
+    
     }
     
     
@@ -102,10 +88,8 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
             
             let loadCircleView = segue.destination as? ManagePeopleInCircles
             let indexPath = collectionView.indexPathsForSelectedItems?.first
-            print(self.dataArray[(indexPath?.row)!])
             
-            loadCircleView?.setCircleData(circleData: self.dataArray[(indexPath?.row)!][0] as! String)
-            loadCircleView?.setCircleId(id: self.dataArray[(indexPath?.row)!][2] as! Int)
+            loadCircleView?.setCircleData(circleItems: self.dataArray[(indexPath?.row)!])
         }
     }
     
@@ -117,7 +101,7 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCell", for: indexPath) as! ItemCell
 
-        cell.setData(circleName: self.dataArray[indexPath.row][indexPath.section] as! String, circleDate: self.dataArray[indexPath.row][1] as! String)
+        cell.setData(circleName: self.dataArray[indexPath.row].Name, circleDate: self.dataArray[indexPath.row].Date)
         
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 0.5
@@ -139,7 +123,7 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     
 }
 
-extension ChildViewController: UICollectionViewDelegateFlowLayout {
+extension ChildViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = self.calculateWith()

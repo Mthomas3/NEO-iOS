@@ -9,15 +9,19 @@
 import UIKit
 import XLPagerTabStrip
 
+struct ItemCellData {
+    var Name: String
+    var Date: String
+    var Id: Int
+}
+
 class ControllerContactTabMenu: ButtonBarPagerTabStripViewController {
     private var _uiBarButton : UIBarButtons!
     
     override func viewDidLoad() {
         _uiBarButton = UIBarButtons(navigationItem: navigationItem)
         SetUpNavigationMenu()
-        
         super.viewDidLoad()
-        
         setUpNavigationBar()
         tabBarController?.tabBar.barTintColor = UIColor.white
     }
@@ -58,7 +62,7 @@ class ControllerContactTabMenu: ButtonBarPagerTabStripViewController {
         let child1 = UIStoryboard.init(name: "Contacts", bundle: nil).instantiateViewController(withIdentifier: "ChildViewController") as! ChildViewController
         child1.childNumber = "Cercles"
         
-        let child2 = UIStoryboard.init(name: "Contacts", bundle: nil).instantiateViewController(withIdentifier: "ChildViewControllerSecond") as! ChildViewControllerSecond
+        let child2 = UIStoryboard.init(name: "Contacts", bundle: nil).instantiateViewController(withIdentifier: "ChildViewControllerInvitationsCircle") as! ChildViewControllerInvitationsCircle
         child2.childNumber = "Invitations"
     
         return [child1, child2]

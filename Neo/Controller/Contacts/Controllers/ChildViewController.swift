@@ -20,24 +20,8 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     private let estimateWidth = 140.0
     private let cellMarginSize = 3.0
     
-    private func loadContact() {
-        self.dataArray.removeAll()
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CIRCLE_LIST, param: User.sharedInstance.getTokenParameter()).done { data in
-            
-            let contacts = JSON(data)["content"]
-            for item in contacts.arrayValue {
-                    self.dataArray.append(ItemCellData(Name: item["name"].stringValue,
-                                                   Date: item["created"].stringValue, Id: item["id"].intValue))
-                }
-                self.collectionView.reloadData()
-        
-            }.catch {_ in
-                HandleErrors.displayError(message: "An error occurred while loading the circles", controller: self)
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
-        loadContact()
+        self.loadingCircleContact()
     }
 
     override func viewDidLoad() {
@@ -52,7 +36,6 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         tap.numberOfTapsRequired = 2
         view.addGestureRecognizer(tap)
-    
     }
     
     
@@ -133,5 +116,12 @@ extension ChildViewController : UICollectionViewDelegateFlowLayout {
         let width = (self.view.frame.size.width - CGFloat(cellMarginSize) * (cellCount - 1) - margin) / cellCount
         
         return width
+    }
+    
+    func loadingCircleContact() {
+        ServicesCircle.shareInstance.getCirclesInformations(completion: { (data) in
+            self.dataArray = data
+            self.collectionView.reloadData()
+        })
     }
 }

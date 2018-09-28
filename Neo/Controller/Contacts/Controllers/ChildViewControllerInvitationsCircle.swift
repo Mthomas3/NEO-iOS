@@ -34,10 +34,6 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
         checkInvitationsOnSocket()
     }
     
-    private func refreshCollectionView() {
-        self.loadCirclesInvitations()
-    }
-    
     private func checkInvitationsOnSocket () {
         
         SocketManager.sharedInstance.getManager().defaultSocket.on("circle_invite") { invitation, _  in
@@ -55,23 +51,7 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
             }
         }
     
-    private func performDeclineCircle() {
-        
-        let indexPath = collectionView.indexPathsForSelectedItems?.first
-        let id = self.dataArray[(indexPath?.row)!].Id
-
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_FRIEND_NO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "invite_id": id]).done {
-            jsonData in
-        
-            self.performUIAlert(title: "Vous avez refusez l'invitation", message: nil, actionTitles: ["Terminer"], actions:
-                [{ _ in self.refreshCollectionView()}])
-        
-            
-            }.catch { _ in
-        }
-    }
-    
-    private func performJoiningCircle() {
+  /*  private func performJoiningCircle() {
         let indexPath = collectionView.indexPathsForSelectedItems?.first
         let id = self.dataArray[(indexPath?.row)!].Id
 
@@ -83,38 +63,19 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
             
             }.catch { _ in
         }
-    }
+    }*/
     
     @objc private func doubleTapped() {
         
         if !self.dataArray.isEmpty {
             self.performUIAlert(title: "Êtes-vous sûr de vouloir rejoindre ce cercle?", message: nil, actionTitles: ["Non", "Oui"], actions:
-                [{ _ in self.performDeclineCircle()}, {_ in self.performJoiningCircle()}])
+                [{ _ in self.declineCircleInvite()}, {_ in self.joinCircleInvite()}])
         }
     }
     
-    private func loadCirclesInvitations() {
-
-        self.dataArray.removeAll()
-
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_ACCOUNT_INFO, param: User.sharedInstance.getTokenParameter()).done {
-            response in
-            let invites = JSON(response)["content"]["invites"]
-            self.dataArray.removeAll()
-            
-            for item in invites.arrayValue {
-                self.dataArray.append(ItemCellData(Name: item["circle"]["name"].stringValue, Date: item["created"].stringValue, Id: item["id"].intValue))
-            }
-            self.collectionView.reloadData()
-            
-            }.catch{
-                _ in
-                HandleErrors.displayError(message: "Impossible de charger les cercles", controller: self)
-        }
-    }
     
     override func viewWillAppear(_ animated: Bool) {
-        loadCirclesInvitations()
+        self.loadingCircleInvitation()
     }
     
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
@@ -181,5 +142,32 @@ extension ChildViewControllerInvitationsCircle: UICollectionViewDelegateFlowLayo
         let width = (self.view.frame.size.width - CGFloat(cellMarginSize) * (cellCount - 1) - margin) / cellCount
         
         return width
+    }
+    
+    func joinCircleInvite() {
+        let indexPath = self.collectionView.indexPathsForSelectedItems?.first
+        let id = self.dataArray[(indexPath?.row)!].Id
+        
+        ServicesCircle.shareInstance.acceptCircleInvitationGroup(id: id) { (data) in
+            self.performUIAlert(title: "Vous avez rejoint un nouveau cercle!", message: nil, actionTitles: ["Terminer"], actions:
+                [{ _ in self.loadingCircleInvitation()}])
+        }
+    }
+    
+    func declineCircleInvite() {
+        let indexPath = self.collectionView.indexPathsForSelectedItems?.first
+        let id = self.dataArray[(indexPath?.row)!].Id
+        
+        ServicesCircle.shareInstance.declineCircleInvitationGroup(id: id) { (data) in
+            self.performUIAlert(title: "Vous avez refusez l'invitation", message: nil, actionTitles: ["Terminer"], actions:
+                [{ _ in self.loadingCircleInvitation()}])
+        }
+    }
+    
+    func loadingCircleInvitation() {
+        ServicesCircle.shareInstance.getCirclesInvites { (data) in
+            self.dataArray = data
+            self.collectionView.reloadData()
+        }
     }
 }

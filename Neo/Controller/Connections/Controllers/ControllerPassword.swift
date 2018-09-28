@@ -85,6 +85,8 @@ class ControllerPassword: UIViewController {
                 loginResponse in
                 User.sharedInstance.setUserInformations(token: loginResponse["token"] as? String)
                 
+                self._registrationButton.stopAnimation()
+                
                 self.performSegue(withIdentifier: "segueRegistration", sender: self)
                 
                 }.catch {_ in
@@ -127,7 +129,6 @@ class ControllerPassword: UIViewController {
                 } else {
                     button.stopAnimation(animationStyle: .shake, completion: { })
                 }
-                button.stopAnimation()
             })
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {

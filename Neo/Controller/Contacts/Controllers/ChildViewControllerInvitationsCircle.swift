@@ -29,6 +29,8 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         tap.numberOfTapsRequired = 2
         view.addGestureRecognizer(tap)
+        self.dataArray.removeAll()
+
         checkInvitationsOnSocket()
     }
     
@@ -46,7 +48,8 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
                     circle_inv_id = item["circle_invite_id"].intValue
                 }
             ServicesCircle.shareInstance.getCirclesInvitesOnSocket(id: circle_inv_id, token:            User.sharedInstance.getTokenParameter(), completion: { (inv) in
-                    self.dataArray.append(ItemCellData(Name: inv["circle"]["name"].stringValue, Date: "coucou", Id: inv["circle"]["id"].intValue))
+                    self.dataArray.append(ItemCellData(Name: inv["circle"]["name"].stringValue,
+                                                       Date: inv["circle"]["created"].stringValue, Id: inv["circle"]["id"].intValue))
                     self.collectionView.reloadData()
                 })
             }
@@ -84,20 +87,23 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
     
     @objc private func doubleTapped() {
         
-        self.performUIAlert(title: "Êtes-vous sûr de vouloir rejoindre ce cercle?", message: nil, actionTitles: ["Non", "Oui"], actions:
-            [{ _ in self.performDeclineCircle()}, {_ in self.performJoiningCircle()}])
+        if !self.dataArray.isEmpty {
+            self.performUIAlert(title: "Êtes-vous sûr de vouloir rejoindre ce cercle?", message: nil, actionTitles: ["Non", "Oui"], actions:
+                [{ _ in self.performDeclineCircle()}, {_ in self.performJoiningCircle()}])
+        }
     }
     
     private func loadCirclesInvitations() {
+
+        self.dataArray.removeAll()
 
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_ACCOUNT_INFO, param: User.sharedInstance.getTokenParameter()).done {
             response in
             let invites = JSON(response)["content"]["invites"]
             self.dataArray.removeAll()
             
-            for index in 0...invites.count {
-                self.dataArray.append(ItemCellData(Name: invites[index]["circle"]["name"].stringValue,
-                                                   Date: invites[index]["created"].stringValue, Id: invites[index]["id"].intValue))
+            for item in invites.arrayValue {
+                self.dataArray.append(ItemCellData(Name: item["circle"]["name"].stringValue, Date: item["created"].stringValue, Id: item["id"].intValue))
             }
             self.collectionView.reloadData()
             
@@ -132,14 +138,12 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return (self.dataArray.count - 1)
+        return (self.dataArray.count)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemCell", for: indexPath) as! ItemCell
-
-        print("INSIDE VIEW -> \(self.dataArray)")
         
         cell.setData(circleName: self.dataArray[indexPath.row].Name, circleDate: self.dataArray[indexPath.row].Date)
 

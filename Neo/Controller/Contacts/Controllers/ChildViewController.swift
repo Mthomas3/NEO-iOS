@@ -20,18 +20,15 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     private let estimateWidth = 140.0
     private let cellMarginSize = 3.0
     
-    func loadContact() {
+    private func loadContact() {
         self.dataArray.removeAll()
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CIRCLE_LIST, param: User.sharedInstance.getTokenParameter()).done { data in
             
             let contacts = JSON(data)["content"]
-            
-                for index in 0...contacts.count - 1{
-                    
-                    self.dataArray.append(ItemCellData(Name: contacts[index]["name"].stringValue,
-                                                       Date: contacts[index]["created"].stringValue, Id: contacts[index]["id"].intValue))
+            for item in contacts.arrayValue {
+                    self.dataArray.append(ItemCellData(Name: item["name"].stringValue,
+                                                   Date: item["created"].stringValue, Id: item["id"].intValue))
                 }
-                
                 self.collectionView.reloadData()
         
             }.catch {_ in
@@ -60,10 +57,10 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     
     
     @objc func doubleTapped() {
-        self.performSegue(withIdentifier: "addContactToCircle", sender: self)
+        if !self.dataArray.isEmpty{
+            self.performSegue(withIdentifier: "addContactToCircle", sender: self)
+        }
     }
-    
-    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -95,7 +92,7 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return (self.dataArray.count - 1)
+        return (self.dataArray.count)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -119,8 +116,6 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
         cell?.layer.borderColor = UIColor.gray.cgColor
         cell?.layer.borderWidth = 0.5
     }
-    
-    
 }
 
 extension ChildViewController : UICollectionViewDelegateFlowLayout {

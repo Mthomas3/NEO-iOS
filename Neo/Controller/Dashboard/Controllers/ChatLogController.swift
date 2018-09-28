@@ -2,7 +2,7 @@
 //  ChatLogController.swift
 //  Neo
 //
-//  Created by Nicolas Gascon on 11/04/2018.
+//  Created by Thomas Martins on 11/06/2018.
 //  Copyright © 2018 Neo. All rights reserved.
 //
 

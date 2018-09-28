@@ -99,7 +99,7 @@ class ControllerLogin: UIViewController {
     
     private func performLogin(){
         
-        print("\(User.sharedInstance.getLoginParameters())")
+        print("\(User.sharedInstance.getLoginParameters()) IS DEV == \(__DEVELOPPEMENT__)")
         
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_LOGIN, param: User.sharedInstance.getLoginParameters()).done {
             loginResponse in
@@ -114,7 +114,7 @@ class ControllerLogin: UIViewController {
                 let content = informationResponse["content"] as! [String: Any]
                 User.sharedInstance.setUserInformations(fname: content["first_name"] as? String, lname: content["last_name"] as? String, birthday: content["birthday"] as? String, id: content["id"] as? Int)
                 self.performSegue(withIdentifier: "segueLogin", sender: self)
-                
+                    self._loginButton.stopAnimation()
                 }.catch {test in
                     print(test)
                     HandleErrors.displayError(message: "Either the password or email is invalid 1", controller: self)
@@ -147,7 +147,6 @@ class ControllerLogin: UIViewController {
                 }else {
                     button.stopAnimation(animationStyle: .shake, completion: { })
                 }
-                button.stopAnimation()
             })
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {

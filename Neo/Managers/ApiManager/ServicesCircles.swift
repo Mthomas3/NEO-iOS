@@ -36,6 +36,8 @@ class ServicesCircle {
                     completion(invites[index])
                 }
             }
-        }.catch { _ in }
+        }.catch { _ in
+            print("impossible to get circles invites on socket in ServicesCircles")
+        }
     }
 }

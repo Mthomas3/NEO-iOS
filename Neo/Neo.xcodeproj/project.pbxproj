@@ -23,6 +23,7 @@
 		1E2C99862058B45C00F18601 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2C99852058B45C00F18601 /* UIViewController.swift */; };
 		1E2D2A541FB7B737004EA692 /* HandleErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2D2A531FB7B737004EA692 /* HandleErrors.swift */; };
 		1E3116641F8229850037BFEC /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3116631F8229850037BFEC /* Screen.swift */; };
+		1E34678F2166AEFC007A440D /* UiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E34678E2166AEFC007A440D /* UiButton.swift */; };
 		1E5071812053F6E5009C8131 /* ApiRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5071802053F6E5009C8131 /* ApiRoute.swift */; };
 		1E6296CD204DD0F7006C286A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6296CC204DD0F7006C286A /* ApiManager.swift */; };
 		1E687B861F653FAB000059FF /* ControllerLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E687B851F653FAB000059FF /* ControllerLogin.swift */; };
@@ -48,7 +49,6 @@
 		1ED68A561F924F33009C4F36 /* XCUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED68A551F924F33009C4F36 /* XCUIElement.swift */; };
 		1EE73FB91F70770D002206EE /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE73FB81F70770D002206EE /* BackButton.swift */; };
 		1EE73FBB1F707931002206EE /* CommonFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE73FBA1F707931002206EE /* CommonFunc.swift */; };
-		1EEC89CE2155665200DD077E /* UIButtonConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEC89CD2155665200DD077E /* UIButtonConnection.swift */; };
 		1EECB2D921515FAC00F8E51B /* DisplayMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EECB2D821515FAC00F8E51B /* DisplayMessage.swift */; };
 		1EF74F342037898E00FE544A /* ColorsButtonsOnEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF74F332037898E00FE544A /* ColorsButtonsOnEditing.swift */; };
 		4897C7CD1F0C176C00D9EA0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4897C7CC1F0C176C00D9EA0C /* AppDelegate.swift */; };
@@ -110,6 +110,7 @@
 		1E2C99852058B45C00F18601 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		1E2D2A531FB7B737004EA692 /* HandleErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleErrors.swift; sourceTree = "<group>"; };
 		1E3116631F8229850037BFEC /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		1E34678E2166AEFC007A440D /* UiButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiButton.swift; sourceTree = "<group>"; };
 		1E5071802053F6E5009C8131 /* ApiRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRoute.swift; sourceTree = "<group>"; };
 		1E6296CC204DD0F7006C286A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		1E687B851F653FAB000059FF /* ControllerLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerLogin.swift; sourceTree = "<group>"; };
@@ -135,7 +136,6 @@
 		1ED68A551F924F33009C4F36 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
 		1EE73FB81F70770D002206EE /* BackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		1EE73FBA1F707931002206EE /* CommonFunc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonFunc.swift; sourceTree = "<group>"; };
-		1EEC89CD2155665200DD077E /* UIButtonConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonConnection.swift; sourceTree = "<group>"; };
 		1EECB2D821515FAC00F8E51B /* DisplayMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMessage.swift; sourceTree = "<group>"; };
 		1EF74F332037898E00FE544A /* ColorsButtonsOnEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsButtonsOnEditing.swift; sourceTree = "<group>"; };
 		3FC8372165BB3F6FFDAA1915 /* Pods_NeoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NeoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,6 +203,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E0D09032166AEBD005E5C1C /* UiButton */ = {
+			isa = PBXGroup;
+			children = (
+				1E34678E2166AEFC007A440D /* UiButton.swift */,
+			);
+			path = UiButton;
+			sourceTree = "<group>";
+		};
 		1E24281C1F82A34000956049 /* Commun */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +222,7 @@
 		1E252A0E1F77320500B245F7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1E0D09032166AEBD005E5C1C /* UiButton */,
 				1E2A02F220326DE50037854A /* String */,
 				1E2C99812058B40100F18601 /* UIAlertController */,
 			);
@@ -445,7 +454,6 @@
 				1EF74F332037898E00FE544A /* ColorsButtonsOnEditing.swift */,
 				1EECB2D821515FAC00F8E51B /* DisplayMessage.swift */,
 				1EBB0724202E78F000DCE1C3 /* UIBarButtons.swift */,
-				1EEC89CD2155665200DD077E /* UIButtonConnection.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -951,6 +959,7 @@
 				9A51C64C20A8C971008CB9AA /* CircleConcersationController.swift in Sources */,
 				1EBB0722202E523100DCE1C3 /* ControllerPasswordTableView.swift in Sources */,
 				1E1BACB41F6964FB00C4C39B /* ControllerBirthday.swift in Sources */,
+				1E34678F2166AEFC007A440D /* UiButton.swift in Sources */,
 				1E2C99862058B45C00F18601 /* UIViewController.swift in Sources */,
 				1E687B861F653FAB000059FF /* ControllerLogin.swift in Sources */,
 				1EECB2D921515FAC00F8E51B /* DisplayMessage.swift in Sources */,
@@ -971,7 +980,6 @@
 				1ED17D772150460700608D72 /* ControllerAddSomeoneToCircle.swift in Sources */,
 				1ED3FA9320FE380D009570C9 /* ControllerSetNewPassword.swift in Sources */,
 				1E252A0D1F772C1900B245F7 /* ControllerPassword.swift in Sources */,
-				1EEC89CE2155665200DD077E /* UIButtonConnection.swift in Sources */,
 				1E98D4BB2026DAC5006249CE /* ControllerTableViewAccount.swift in Sources */,
 				9AB69AA920F41FD600E0FEAE /* MemberCreateConvCell.swift in Sources */,
 				1E687B8F1F686496000059FF /* NextButton.swift in Sources */,

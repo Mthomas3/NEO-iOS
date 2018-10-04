@@ -2,7 +2,7 @@
 //  ChatLogController.swift
 //  Neo
 //
-//  Created by Thomas Martins on 11/06/2018.
+//  Created by Nicolas Gascon on 11/04/2018.
 //  Copyright © 2018 Neo. All rights reserved.
 //
 
@@ -42,14 +42,14 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     var timer: Timer?
     
     /*var friend: Friend? {
-        didSet {
-            navigationItem.title = frien d?.name
-            
-            messages = friend?.messages?.allObjects as? [Message]
-            
-            messages = messages?.sort({$0.date!.compare($1.date!) == .OrderedAscending})
-        }
-    }*/
+     didSet {
+     navigationItem.title = frien d?.name
+     
+     messages = friend?.messages?.allObjects as? [Message]
+     
+     messages = messages?.sort({$0.date!.compare($1.date!) == .OrderedAscending})
+     }
+     }*/
     
     var messages = [Message]()
     
@@ -182,32 +182,32 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         SocketManager.sharedInstance.getManager().defaultSocket.emit("join_conversation", JoinConversation(conversation_id: convId))
         //Socket on message
         SocketManager.sharedInstance.getManager().defaultSocket.on("message") { data, ack in
-/*[{
- "conversation_id" = 3;
- "media_list" =     (
- );
- message =     {
- content = "ceci est un essai";
- id = 19;
- "link_id" = 4;
- medias = 0;
- read = "<null>";
- sent = "2018-09-11T22:28:32.137745";
- };
- sender =     {
- birthday = "1111-11-11T00:00:00";
- created = "2018-09-11T22:28:32.050500";
- email = "nico@gmail.com";
- "first_name" = Nicolas;
- id = 6;
- isOnline = 1;
- "last_name" = Gascon;
- type = DEFAULT;
- updated = "2018-09-11T22:28:32.050535";
- };
- status = done;
- time = "2018-09-11T22:28:32.137745";
- }]*/
+            /*[{
+             "conversation_id" = 3;
+             "media_list" =     (
+             );
+             message =     {
+             content = "ceci est un essai";
+             id = 19;
+             "link_id" = 4;
+             medias = 0;
+             read = "<null>";
+             sent = "2018-09-11T22:28:32.137745";
+             };
+             sender =     {
+             birthday = "1111-11-11T00:00:00";
+             created = "2018-09-11T22:28:32.050500";
+             email = "nico@gmail.com";
+             "first_name" = Nicolas;
+             id = 6;
+             isOnline = 1;
+             "last_name" = Gascon;
+             type = DEFAULT;
+             updated = "2018-09-11T22:28:32.050535";
+             };
+             status = done;
+             time = "2018-09-11T22:28:32.137745";
+             }]*/
             for json in data {
                 let msg = Message()
                 msg.text = (((json as! [String: Any])["message"] as! [String: Any])["content"] as! String)
@@ -248,110 +248,110 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     @objc func loadConv() {
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
             jsonData in
-                let content = jsonData["content"] as? [String: Any]
-                let messages = content!["messages"] as? [[String: Any]]
+            let content = jsonData["content"] as? [String: Any]
+            let messages = content!["messages"] as? [[String: Any]]
             
-                if content == nil {
-                    return
+            if content == nil {
+                return
+            }
+            
+            let button =  UIButton(type: .custom)
+            button.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
+            button.backgroundColor = UIColor(white: 1, alpha: 0.0)
+            button.setTitle((content!["circle"] as? [String: Any])!["name"] as? String, for: .normal)
+            button.setTitleColor(UIColor.black, for: .normal)
+            button.addTarget(self, action: #selector(self.clickOnTitle), for: .touchUpInside)
+            self.navigationItem.titleView = button
+            
+            self.messages.removeAll()
+            for idx in 0...(messages?.count)! - 1 {
+                let message = messages![idx]
+                let msg = Message()
+                
+                if message["content"] as? String == nil {
+                    continue
                 }
-            
-                let button =  UIButton(type: .custom)
-                button.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
-                button.backgroundColor = UIColor(white: 1, alpha: 0.0)
-                button.setTitle((content!["circle"] as? [String: Any])!["name"] as? String, for: .normal)
-                button.setTitleColor(UIColor.black, for: .normal)
-                button.addTarget(self, action: #selector(self.clickOnTitle), for: .touchUpInside)
-                self.navigationItem.titleView = button
-            
-                self.messages.removeAll()
-                for idx in 0...(messages?.count)! - 1 {
-                    let message = messages![idx]
-                    let msg = Message()
+                
+                msg.text = message["content"] as! String
+                //msg.date = Date()//message["sent"] as! Date
+                
+                msg.date = self.returnDateFromString(text: message["sent"] as! String)
+                //print(message["sent"])
+                //print(msg.date)
+                
+                if let linkId = message["link_id"] as? Int {
+                    let links = content!["links"] as! [[String:Any]]
                     
-                    if message["content"] as? String == nil {
-                        continue
-                    }
-                    
-                    msg.text = message["content"] as! String
-                    //msg.date = Date()//message["sent"] as! Date
-
-                    msg.date = self.returnDateFromString(text: message["sent"] as! String)
-                    //print(message["sent"])
-                    //print(msg.date)
-                    
-                    if let linkId = message["link_id"] as? Int {
-                        let links = content!["links"] as! [[String:Any]]
-                        
-                        if (self.findLinkId(links: links, linkId: linkId)!["user_id"] as! [String: Any])["email"] as! String == User.sharedInstance.getEmail() {
-                            msg.isSender = true
-                        } else {
-                            msg.isSender = false
-                        }
+                    if (self.findLinkId(links: links, linkId: linkId)!["user_id"] as! [String: Any])["email"] as! String == User.sharedInstance.getEmail() {
+                        msg.isSender = true
                     } else {
                         msg.isSender = false
                     }
-                    
-                    //Check date diff
-                    if self.messages.count > 0 {
-                        let prevDate = self.messages[self.messages.count - 1].date
-                        let components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: prevDate!, to: msg.date!)
-                        let dateFormatter = DateFormatter()
-                        
-                        if components.year! >= 1 {
-                            let dateMessage = Message()
-                            dateFormatter.dateFormat = "yyyy"
-                            dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
-                            self.messages.append(dateMessage)
-                        } else if components.month! >= 1 {
-                            let dateMessage = Message()
-                            dateFormatter.dateFormat = "MMM"
-                            dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
-                            self.messages.append(dateMessage)
-                        } else if components.day! >= 1 {
-                            let dateMessage = Message()
-                            dateFormatter.dateFormat = "ddd"
-                            dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
-                            self.messages.append(dateMessage)
-                        } else if components.hour! >= 1 {
-                            let dateMessage = Message()
-                            dateFormatter.dateFormat = "HH:mm"
-                            dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
-                            self.messages.append(dateMessage)
-                        }
-                    } else {
-                        let prevDate = msg.date!
-                        let components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: prevDate, to: Date())
-                        let dateFormatter = DateFormatter()
-                        
-                        if components.year! >= 1 {
-                            let dateMessage = Message()
-                            dateFormatter.dateFormat = "yyyy"
-                            dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
-                            self.messages.append(dateMessage)
-                        } else if components.month! >= 1 {
-                            let dateMessage = Message()
-                            dateFormatter.dateFormat = "MMM"
-                            dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
-                            self.messages.append(dateMessage)
-                        } else if components.day! >= 1 {
-                            let dateMessage = Message()
-                            dateMessage.text = "/*/*" + self.loadDayName(weekDay: self.getDayOfWeek(msg.date!)) + "*/*/"
-                            self.messages.append(dateMessage)
-                        } else {
-                            let dateMessage = Message()
-                            dateFormatter.dateFormat = "HH:mm"
-                            dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
-                            self.messages.append(dateMessage)
-                        }
-                    }
-                    
-                    self.messages.append(msg)
+                } else {
+                    msg.isSender = false
                 }
-                self.collectionView?.reloadData()
-                let lastItemIndex = NSIndexPath(item: self.messages.count - 1, section: 0)
-                self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: .bottom, animated: false)
-                //To test
-                //Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.self.goAtBottom), userInfo: nil, repeats: false)
+                
+                //Check date diff
+                if self.messages.count > 0 {
+                    let prevDate = self.messages[self.messages.count - 1].date
+                    let components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: prevDate!, to: msg.date!)
+                    let dateFormatter = DateFormatter()
+                    
+                    if components.year! >= 1 {
+                        let dateMessage = Message()
+                        dateFormatter.dateFormat = "yyyy"
+                        dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
+                        self.messages.append(dateMessage)
+                    } else if components.month! >= 1 {
+                        let dateMessage = Message()
+                        dateFormatter.dateFormat = "MMM"
+                        dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
+                        self.messages.append(dateMessage)
+                    } else if components.day! >= 1 {
+                        let dateMessage = Message()
+                        dateFormatter.dateFormat = "ddd"
+                        dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
+                        self.messages.append(dateMessage)
+                    } else if components.hour! >= 1 {
+                        let dateMessage = Message()
+                        dateFormatter.dateFormat = "HH:mm"
+                        dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
+                        self.messages.append(dateMessage)
+                    }
+                } else {
+                    let prevDate = msg.date!
+                    let components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: prevDate, to: Date())
+                    let dateFormatter = DateFormatter()
+                    
+                    if components.year! >= 1 {
+                        let dateMessage = Message()
+                        dateFormatter.dateFormat = "yyyy"
+                        dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
+                        self.messages.append(dateMessage)
+                    } else if components.month! >= 1 {
+                        let dateMessage = Message()
+                        dateFormatter.dateFormat = "MMM"
+                        dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
+                        self.messages.append(dateMessage)
+                    } else if components.day! >= 1 {
+                        let dateMessage = Message()
+                        dateMessage.text = "/*/*" + self.loadDayName(weekDay: self.getDayOfWeek(msg.date!)) + "*/*/"
+                        self.messages.append(dateMessage)
+                    } else {
+                        let dateMessage = Message()
+                        dateFormatter.dateFormat = "HH:mm"
+                        dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
+                        self.messages.append(dateMessage)
+                    }
+                }
+                
+                self.messages.append(msg)
+            }
+            self.collectionView?.reloadData()
+            let lastItemIndex = NSIndexPath(item: self.messages.count - 1, section: 0)
+            self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: .bottom, animated: false)
+            //To test
+            //Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.self.goAtBottom), userInfo: nil, repeats: false)
             }.catch { _ in
                 print("Errrrr") //lzzaaaaaa
                 //HandleErrors.displayError(message: "The email is invalid", controller: self)
@@ -368,11 +368,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func goAtBottom() {
-            /*let item = messages.count - 1
-            let insertionIndexPath = IndexPath(item: item, section: 0)
-        
-            collectionView?.insertItems(at: [insertionIndexPath])
-            collectionView?.scrollToItem(at: insertionIndexPath, at: .bottom, animated: true)*/
+        /*let item = messages.count - 1
+         let insertionIndexPath = IndexPath(item: item, section: 0)
+         
+         collectionView?.insertItems(at: [insertionIndexPath])
+         collectionView?.scrollToItem(at: insertionIndexPath, at: .bottom, animated: true)*/
     }
     
     private func setupInputComponents() {
@@ -395,11 +395,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     @objc func handleSend() {
         SocketManager.sharedInstance.getManager().defaultSocket.emit("message", MessageData(text_message: inputTextField.text!, conversation_id: convId))
         /*ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "text_message": inputTextField.text]).done {
-            jsonData in
-            
-        }.catch { _ in
-                HandleErrors.displayError(message: "Votre message n'a pas pu être envoyé.", controller: self)
-        }*/
+         jsonData in
+         
+         }.catch { _ in
+         HandleErrors.displayError(message: "Votre message n'a pas pu être envoyé.", controller: self)
+         }*/
         
         inputTextField.text = nil
     }
@@ -526,7 +526,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                     }
                 }
             } catch {
-            
+                
             }
         }
         

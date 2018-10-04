@@ -21,8 +21,19 @@ class ControllerLogin: UIViewController {
     @IBOutlet private weak var _username: HoshiTextField!
     @IBOutlet private weak var _password: HoshiTextField!
     private var _colorButton : ColorsButtonOnEditing
-    
-    let _loginButton = TransitionButton(frame: CGRect(x: 64, y: 456, width: 247, height: 49))
+
+    private lazy var loginButton: TransitionButton = {
+        let button = TransitionButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = CommonFunc.hexStringToUIColor(hex: "#CBCBCB")
+        button.setTitle(NSLocalizedString("Connexion", comment: ""), for: .normal)
+        button.cornerRadius = 20
+        button.spinnerColor = .white
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        button.heightAnchor.constraint(equalToConstant: 49).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 247).isActive = true
+        return button
+    }()
     
     required init(coder: NSCoder) {
         _colorButton = ColorsButtonOnEditing()
@@ -30,7 +41,7 @@ class ControllerLogin: UIViewController {
     }
     
     private func handleColorButton(){
-        _colorButton.colorsButtonOnEditing(textfields: [_username, _password], button: _loginButton)
+        _colorButton.colorsButtonOnEditing(textfields: [_username, _password], button: loginButton)
     }
     
     @IBAction private func usernameEditingChanged(_ sender: Any) {
@@ -47,9 +58,9 @@ class ControllerLogin: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUIviewButtonConnection.setView(button: _loginButton, title: "Connexion", actionSelector:  #selector(buttonAction), controller: self)
-
+        view.addSubview(loginButton)
+        loginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        loginButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50).isActive = true
     }
     
     override var prefersStatusBarHidden: Bool{
@@ -61,6 +72,7 @@ class ControllerLogin: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        self.view.addSubview(loginButton)
         _username.becomeFirstResponder()
     }
     
@@ -70,7 +82,6 @@ class ControllerLogin: UIViewController {
             _password.textContentType = UITextContentType("")
         }
         _username.autocorrectionType = .no
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -114,7 +125,7 @@ class ControllerLogin: UIViewController {
                 let content = informationResponse["content"] as! [String: Any]
                 User.sharedInstance.setUserInformations(fname: content["first_name"] as? String, lname: content["last_name"] as? String, birthday: content["birthday"] as? String, id: content["id"] as? Int)
                 self.performSegue(withIdentifier: "segueLogin", sender: self)
-                    self._loginButton.stopAnimation()
+                    self.loginButton.stopAnimation()
                 }.catch {test in
                     print(test)
                     HandleErrors.displayError(message: "Either the password or email is invalid 1", controller: self)

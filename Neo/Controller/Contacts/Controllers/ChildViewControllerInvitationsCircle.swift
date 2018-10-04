@@ -12,12 +12,14 @@ import SwiftyJSON
 
 class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvider, UICollectionViewDataSource {
 
-    public var childNumber: String = ""
+    public var childNumber: String = "Invitations (0)"
     private var dataArray = [ItemCellData]()
     private let estimateWidth = 140.0
     private let cellMarginSize = 3.0
+    public var tabTitle: String? = nil
 
     @IBOutlet weak var collectionView: UICollectionView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +32,7 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
         tap.numberOfTapsRequired = 2
         view.addGestureRecognizer(tap)
         self.dataArray.removeAll()
-
+        
         checkInvitationsOnSocket()
     }
     
@@ -43,27 +45,26 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
                 for item in invites.arrayValue {
                     circle_inv_id = item["circle_invite_id"].intValue
                 }
+            
+            self.updatingTitle()
+            
             ServicesCircle.shareInstance.getCirclesInvitesOnSocket(id: circle_inv_id, token:            User.sharedInstance.getTokenParameter(), completion: { (inv) in
                     self.dataArray.append(ItemCellData(Name: inv["circle"]["name"].stringValue,
-                                                       Date: inv["circle"]["created"].stringValue, Id: inv["circle"]["id"].intValue))
+                                                       Date: inv["circle"]["created"].stringValue, Id: inv["id"].intValue))
+                
                     self.collectionView.reloadData()
                 })
             }
         }
     
-  /*  private func performJoiningCircle() {
-        let indexPath = collectionView.indexPathsForSelectedItems?.first
-        let id = self.dataArray[(indexPath?.row)!].Id
-
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_FRIEND_YES, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "invite_id": id]).done {
-            jsonData in
-   
-            self.performUIAlert(title: "Vous avez rejoint un nouveau cercle!", message: nil, actionTitles: ["Terminer"], actions:
-                [{ _ in self.refreshCollectionView()}])
-            
-            }.catch { _ in
+    public func updatingTitle() {
+        ServicesCircle.shareInstance.getNumberCircleInvitOnWait { (number) in
+            self.tabTitle = "Invitations (\(String(number)))"
+            if let page = self.parent as? ButtonBarPagerTabStripViewController {
+                page.buttonBarView.reloadData()
+            }
         }
-    }*/
+    }
     
     @objc private func doubleTapped() {
         
@@ -73,13 +74,13 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
+        self.updatingTitle()
         self.loadingCircleInvitation()
     }
     
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
-        return IndicatorInfo(title: "\(childNumber)")
+        return IndicatorInfo(title: self.tabTitle)
     }
     
     override func viewDidLayoutSubviews() {
@@ -110,6 +111,7 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
 
         cell.layer.borderColor = UIColor.lightGray.cgColor
         cell.layer.borderWidth = 0.5
+        
         return cell
     }
     
@@ -149,8 +151,12 @@ extension ChildViewControllerInvitationsCircle: UICollectionViewDelegateFlowLayo
         let id = self.dataArray[(indexPath?.row)!].Id
         
         ServicesCircle.shareInstance.acceptCircleInvitationGroup(id: id) { (data) in
+            self.updatingTitle()
             self.performUIAlert(title: "Vous avez rejoint un nouveau cercle!", message: nil, actionTitles: ["Terminer"], actions:
                 [{ _ in self.loadingCircleInvitation()}])
+            if let pagerTabStrip = self.parent as? ButtonBarPagerTabStripViewController {
+                pagerTabStrip.moveToViewController(at: 0)
+            }
         }
     }
     
@@ -159,6 +165,7 @@ extension ChildViewControllerInvitationsCircle: UICollectionViewDelegateFlowLayo
         let id = self.dataArray[(indexPath?.row)!].Id
         
         ServicesCircle.shareInstance.declineCircleInvitationGroup(id: id) { (data) in
+            self.updatingTitle()
             self.performUIAlert(title: "Vous avez refusez l'invitation", message: nil, actionTitles: ["Terminer"], actions:
                 [{ _ in self.loadingCircleInvitation()}])
         }

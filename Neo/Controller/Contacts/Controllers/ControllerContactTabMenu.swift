@@ -57,18 +57,17 @@ class ControllerContactTabMenu: ButtonBarPagerTabStripViewController {
         }
     }
     
+    
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
         
         let child1 = UIStoryboard.init(name: "Contacts", bundle: nil).instantiateViewController(withIdentifier: "ChildViewController") as! ChildViewController
         child1.childNumber = "Cercles"
         
         let child2 = UIStoryboard.init(name: "Contacts", bundle: nil).instantiateViewController(withIdentifier: "ChildViewControllerInvitationsCircle") as! ChildViewControllerInvitationsCircle
-        child2.childNumber = "Invitations"
+          child2.childNumber = "Invitations"
     
         return [child1, child2]
     }
     
     @IBAction func unwindToCircles(segue:UIStoryboardSegue) { }
-
-    
 }

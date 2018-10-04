@@ -31,6 +31,12 @@ class ServicesCircle {
             } .catch { _ in print("cannot get circle invites in ServicesCircles")}
     }
     
+    public func getNumberCircleInvitOnWait(completion: @escaping (Int) -> ()){
+        self.getCirclesInvites { (data) in
+            completion(data.count)
+        }
+    }
+    
     public func getCirclesInvitesOnSocket(id: Int, token : [String: Any], completion: @escaping (JSON)->()) {
         
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_ACCOUNT_INFO, param: token).done {
@@ -67,7 +73,8 @@ class ServicesCircle {
     
     public func declineCircleInvitationGroup(id: Int, completion: @escaping (JSON) -> ()) {
         
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_FRIEND_NO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "invite_id": id]).done { json in
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_FRIEND_NO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "invite_id": id]).done {
+            json in
                 completion(JSON(json))
             }.catch
             {_ in}

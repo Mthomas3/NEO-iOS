@@ -19,7 +19,19 @@ class ControllerPassword: UIViewController {
     @IBOutlet private weak var _passwordConfirmation: HoshiTextField!
     @IBOutlet private weak var _confirmationButton: NextButton!
     private var _colorButton : ColorsButtonOnEditing
-    let _registrationButton = TransitionButton(frame: CGRect(x: 64, y: 456, width: 247, height: 49))
+
+    private lazy var _registrationButton: TransitionButton = {
+        let button = TransitionButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = CommonFunc.hexStringToUIColor(hex: "#CBCBCB")
+        button.setTitle(NSLocalizedString("Connexion", comment: ""), for: .normal)
+        button.cornerRadius = 20
+        button.spinnerColor = .white
+        button.addTarget(self, action: #selector(registrationAction), for: .touchUpInside)
+        button.heightAnchor.constraint(equalToConstant: 49).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 247).isActive = true
+        return button
+    }()
     
     required init(coder: NSCoder) {
         _colorButton = ColorsButtonOnEditing()
@@ -42,8 +54,12 @@ class ControllerPassword: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(_registrationButton)
         _password.becomeFirstResponder()
-        setUIviewButtonConnection.setView(button: _registrationButton, title: "Connexion", actionSelector:  #selector(registrationAction), controller: self)
+        
+        _registrationButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        _registrationButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50).isActive = true
+        
     }
     
     @IBAction func performRegistration(_ sender: NextButton) {

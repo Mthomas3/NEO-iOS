@@ -38,7 +38,6 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
         view.addGestureRecognizer(tap)
     }
     
-    
     @objc func doubleTapped() {
         if !self.dataArray.isEmpty{
             self.performSegue(withIdentifier: "addContactToCircle", sender: self)
@@ -47,9 +46,9 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         self.setupGridView()
         DispatchQueue.main.async {
+            
             self.collectionView.reloadData()
         }
     }

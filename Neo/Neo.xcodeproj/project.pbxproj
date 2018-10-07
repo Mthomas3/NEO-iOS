@@ -24,6 +24,7 @@
 		1E2D2A541FB7B737004EA692 /* HandleErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2D2A531FB7B737004EA692 /* HandleErrors.swift */; };
 		1E3116641F8229850037BFEC /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3116631F8229850037BFEC /* Screen.swift */; };
 		1E34678F2166AEFC007A440D /* UiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E34678E2166AEFC007A440D /* UiButton.swift */; };
+		1E4E5B80216AB7DF00143348 /* CreateNameConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */; };
 		1E5071812053F6E5009C8131 /* ApiRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5071802053F6E5009C8131 /* ApiRoute.swift */; };
 		1E6296CD204DD0F7006C286A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6296CC204DD0F7006C286A /* ApiManager.swift */; };
 		1E687B861F653FAB000059FF /* ControllerLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E687B851F653FAB000059FF /* ControllerLogin.swift */; };
@@ -47,6 +48,8 @@
 		1ED3FA9120FD7F16009570C9 /* ControllerResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED3FA9020FD7F16009570C9 /* ControllerResetPassword.swift */; };
 		1ED3FA9320FE380D009570C9 /* ControllerSetNewPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED3FA9220FE380D009570C9 /* ControllerSetNewPassword.swift */; };
 		1ED68A561F924F33009C4F36 /* XCUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED68A551F924F33009C4F36 /* XCUIElement.swift */; };
+		1EDB6FED2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB6FEC2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift */; };
+		1EDB6FEF2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDB6FEE2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift */; };
 		1EE73FB91F70770D002206EE /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE73FB81F70770D002206EE /* BackButton.swift */; };
 		1EE73FBB1F707931002206EE /* CommonFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE73FBA1F707931002206EE /* CommonFunc.swift */; };
 		1EECB2D921515FAC00F8E51B /* DisplayMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EECB2D821515FAC00F8E51B /* DisplayMessage.swift */; };
@@ -111,6 +114,7 @@
 		1E2D2A531FB7B737004EA692 /* HandleErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleErrors.swift; sourceTree = "<group>"; };
 		1E3116631F8229850037BFEC /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		1E34678E2166AEFC007A440D /* UiButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiButton.swift; sourceTree = "<group>"; };
+		1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNameConversationController.swift; sourceTree = "<group>"; };
 		1E5071802053F6E5009C8131 /* ApiRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRoute.swift; sourceTree = "<group>"; };
 		1E6296CC204DD0F7006C286A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		1E687B851F653FAB000059FF /* ControllerLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerLogin.swift; sourceTree = "<group>"; };
@@ -134,6 +138,8 @@
 		1ED3FA9020FD7F16009570C9 /* ControllerResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerResetPassword.swift; sourceTree = "<group>"; };
 		1ED3FA9220FE380D009570C9 /* ControllerSetNewPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerSetNewPassword.swift; sourceTree = "<group>"; };
 		1ED68A551F924F33009C4F36 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
+		1EDB6FEC2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAvailableCircleController.swift; sourceTree = "<group>"; };
+		1EDB6FEE2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMemberInsideCircleController.swift; sourceTree = "<group>"; };
 		1EE73FB81F70770D002206EE /* BackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		1EE73FBA1F707931002206EE /* CommonFunc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonFunc.swift; sourceTree = "<group>"; };
 		1EECB2D821515FAC00F8E51B /* DisplayMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMessage.swift; sourceTree = "<group>"; };
@@ -304,6 +310,7 @@
 		1E2A02EB203267CB0037854A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1E3467902166C33C007A440D /* newChat */,
 				9A51C64920A8AD75008CB9AA /* AddMemberToConvController.swift */,
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 				9A51C64B20A8C971008CB9AA /* CircleConcersationController.swift */,
@@ -384,6 +391,16 @@
 				1E3116631F8229850037BFEC /* Screen.swift */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		1E3467902166C33C007A440D /* newChat */ = {
+			isa = PBXGroup;
+			children = (
+				1EDB6FEC2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift */,
+				1EDB6FEE2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift */,
+				1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */,
+			);
+			path = newChat;
 			sourceTree = "<group>";
 		};
 		1E6296CB204DD0B5006C286A /* Managers */ = {
@@ -939,6 +956,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E6296CD204DD0F7006C286A /* ApiManager.swift in Sources */,
+				1E4E5B80216AB7DF00143348 /* CreateNameConversationController.swift in Sources */,
 				1E1BACB01F6874FD00C4C39B /* UserData.swift in Sources */,
 				1E7B298B215A517400D10212 /* ServicesCircles.swift in Sources */,
 				1EE73FBB1F707931002206EE /* CommonFunc.swift in Sources */,
@@ -969,6 +987,7 @@
 				1E2D2A541FB7B737004EA692 /* HandleErrors.swift in Sources */,
 				9AB69AAB20F42C2900E0FEAE /* MembersCreateConvController.swift in Sources */,
 				1E252A0B1F77279B00B245F7 /* ControllerEmail.swift in Sources */,
+				1EDB6FEF2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift in Sources */,
 				1EE73FB91F70770D002206EE /* BackButton.swift in Sources */,
 				9A740B33207F353400F7D015 /* ChatLogController.swift in Sources */,
 				1EBCC45120FAE210007E4015 /* SocketManager.swift in Sources */,
@@ -986,6 +1005,7 @@
 				1EBB0725202E78F000DCE1C3 /* UIBarButtons.swift in Sources */,
 				9AB69AA720F3CE8100E0FEAE /* CreateConvCirclesController.swift in Sources */,
 				1ECEAB71214AB6EE00CEE1B7 /* ItemCell.swift in Sources */,
+				1EDB6FED2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift in Sources */,
 				9A51C64E20A9BB82008CB9AA /* ConvConfigurationSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

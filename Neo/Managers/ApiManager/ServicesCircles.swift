@@ -10,6 +10,19 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
+public struct ItemCellData {
+    var Name: String
+    var Date: String
+    var Id: Int
+}
+
+public struct MemberCellData {
+    var FName: String
+    var LName: String
+    var Email: String
+    
+}
+
 class ServicesCircle {
     
     static let shareInstance = ServicesCircle()
@@ -89,6 +102,18 @@ class ServicesCircle {
             {_ in
                 
         }
-        
     }
+    
+    public func getMembersInCircle(circle_id: Int, completion: @escaping ([MemberCellData]) -> ()) {
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CIRCLE_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "circle_id": circle_id]).done { members in
+            
+            var membersInCircle = [MemberCellData]()
+            JSON(members)["content"]["users"].forEach({ (idx, item) in
+                membersInCircle.append(MemberCellData(FName: item["user"]["first_name"].stringValue, LName: item["user"]["last_name"].stringValue, Email: item["user"]["email"].stringValue))
+                
+            })
+                completion(membersInCircle)
+            }.catch {error in print("cannot get members in circle error(\(error)")}
+    }
+
 }

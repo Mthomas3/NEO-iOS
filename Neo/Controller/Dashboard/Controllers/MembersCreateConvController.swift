@@ -60,7 +60,7 @@ class MembersCreateConvController: ViewController, UICollectionViewDelegate, UIC
     }
     
     func loadMembers() {
-        let count = self.navigationController?.viewControllers.count;
+        /*let count = self.navigationController?.viewControllers.count;
         let controller =  self.navigationController?.viewControllers[count! - 2] as! CreateConvCirclesController
         
         circleId = controller.selectedCircle?.id
@@ -79,7 +79,7 @@ class MembersCreateConvController: ViewController, UICollectionViewDelegate, UIC
                 }
             self.collectionView.reloadData()
             
-        }
+        }*/
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

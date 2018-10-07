@@ -9,12 +9,6 @@
 import UIKit
 import XLPagerTabStrip
 
-struct ItemCellData {
-    var Name: String
-    var Date: String
-    var Id: Int
-}
-
 class ControllerContactTabMenu: ButtonBarPagerTabStripViewController {
     private var _uiBarButton : UIBarButtons!
     

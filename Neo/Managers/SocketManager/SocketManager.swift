@@ -73,5 +73,4 @@ final class SocketManager {
         
         isConnected = true
     }
-    
 }

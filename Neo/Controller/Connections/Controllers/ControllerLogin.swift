@@ -60,7 +60,7 @@ class ControllerLogin: UIViewController {
         super.viewDidLoad()
         view.addSubview(loginButton)
         loginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        loginButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50).isActive = true
+        loginButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 70).isActive = true
     }
     
     override var prefersStatusBarHidden: Bool{

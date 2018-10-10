@@ -58,7 +58,7 @@ class ControllerPassword: UIViewController {
         _password.becomeFirstResponder()
         
         _registrationButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        _registrationButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50).isActive = true
+        _registrationButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 70).isActive = true
         
     }
     

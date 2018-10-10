@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E02DD19216E95E400649C0C /* ServicesChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02DD18216E95E400649C0C /* ServicesChat.swift */; };
 		1E1BACB01F6874FD00C4C39B /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1BACAF1F6874FD00C4C39B /* UserData.swift */; };
 		1E1BACB41F6964FB00C4C39B /* ControllerBirthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1BACB31F6964FB00C4C39B /* ControllerBirthday.swift */; };
 		1E22B915214DBDBA00E19A00 /* ControllerAddNewCercle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E22B914214DBDBA00E19A00 /* ControllerAddNewCercle.swift */; };
@@ -97,6 +98,7 @@
 
 /* Begin PBXFileReference section */
 		0DDAFDCA5C7146AED28CD7D9 /* Pods-NeoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NeoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-NeoTests/Pods-NeoTests.release.xcconfig"; sourceTree = "<group>"; };
+		1E02DD18216E95E400649C0C /* ServicesChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesChat.swift; sourceTree = "<group>"; };
 		1E1BACAF1F6874FD00C4C39B /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		1E1BACB31F6964FB00C4C39B /* ControllerBirthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerBirthday.swift; sourceTree = "<group>"; };
 		1E22B914214DBDBA00E19A00 /* ControllerAddNewCercle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerAddNewCercle.swift; sourceTree = "<group>"; };
@@ -209,6 +211,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E02DD17216E95CA00649C0C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1E7B298A215A517400D10212 /* ServicesCircles.swift */,
+				1E02DD18216E95E400649C0C /* ServicesChat.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		1E0D09032166AEBD005E5C1C /* UiButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,6 +417,7 @@
 		1E6296CB204DD0B5006C286A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				1E02DD17216E95CA00649C0C /* Services */,
 				1EB0CD7E205626A900101CF3 /* ApiManager */,
 				1EB0CD7F205626B800101CF3 /* DataBaseManager */,
 				1ED3FA8F20FD5CB6009570C9 /* SocketManager */,
@@ -452,7 +464,6 @@
 			children = (
 				1E6296CC204DD0F7006C286A /* ApiManager.swift */,
 				1E5071802053F6E5009C8131 /* ApiRoute.swift */,
-				1E7B298A215A517400D10212 /* ServicesCircles.swift */,
 			);
 			path = ApiManager;
 			sourceTree = "<group>";
@@ -826,6 +837,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Neo/Pods-Neo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -837,6 +849,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -969,6 +982,7 @@
 				9A51C64A20A8AD75008CB9AA /* AddMemberToConvController.swift in Sources */,
 				4897C7CD1F0C176C00D9EA0C /* AppDelegate.swift in Sources */,
 				9AB69AAD20F4577600E0FEAE /* NameConvController.swift in Sources */,
+				1E02DD19216E95E400649C0C /* ServicesChat.swift in Sources */,
 				1E98D4B92026D83D006249CE /* SettingViewController.swift in Sources */,
 				9A740B2F207EFB2400F7D015 /* FriendsControllerCollectionViewController.swift in Sources */,
 				1E2A02EF2032683A0037854A /* ControllerDashboard.swift in Sources */,

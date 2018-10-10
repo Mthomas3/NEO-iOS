@@ -13,6 +13,8 @@ target 'Neo' do
   pod 'Socket.IO-Client-Swift', '~> 13.2.0'
   pod 'XLPagerTabStrip', '~> 8.0'
   pod 'TransitionButton'
+  pod 'RAMAnimatedTabBarController'
+
 
 
 

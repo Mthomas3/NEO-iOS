@@ -87,6 +87,8 @@ class FriendsControllerCollectionViewController: UICollectionViewController, UIC
             //HandleErrors.displayError(message: "The email is invalid", controller: self)
         }
     }
+    
+    @IBAction func unwindToChatConversation(segue:UIStoryboardSegue) { }
 
     override func viewDidLoad() {
         super.viewDidLoad()

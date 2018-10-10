@@ -10,12 +10,19 @@ import UIKit
 
 class DisplayMemberInsideCircleController: UIViewController,  UICollectionViewDelegate, UICollectionViewDataSource{
 
-    
     @IBOutlet weak var collectionView: UICollectionView!
+   
     
     internal var CircleData: ItemCellData? = nil
     private var cellMembers: [MemberCellData] = []
     private var cells: [MemberCreateConvCell] = []
+    private var _colorButton : ColorsButtonOnEditing
+    @IBOutlet private weak var _nextButton: NextButton!    
+    
+    required init(coder: NSCoder) {
+        _colorButton = ColorsButtonOnEditing()
+        super.init(coder: coder)!
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +33,18 @@ class DisplayMemberInsideCircleController: UIViewController,  UICollectionViewDe
         
         getMembersInCircle()
     }
+    
+    @IBAction func labelPressed(_ sender: Any) {
+        var count = 0
+        self.cells.forEach { (members) in
+            print("MEMBERS \(members.isChecked)")
+            if members.isChecked {
+                count += 1
+            }
+        }
+        _nextButton.backgroundColor = UIColor(hue: 0.5417, saturation: 0.52, brightness: 0.78, alpha: 1.0)
+    }
+    
     
     private func setColorOnCollectionViewBorder() {
         collectionView.layer.borderColor = UIColor(hue: 0.5417, saturation: 0.52, brightness: 0.78, alpha: 1.0).cgColor
@@ -50,7 +69,6 @@ class DisplayMemberInsideCircleController: UIViewController,  UICollectionViewDe
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier.isEqualToString(find: "createNameConv") {
-            print("do something here?")
             var count = 0
             self.cells.forEach { (item) in
                 if item.isChecked {
@@ -70,6 +88,7 @@ class DisplayMemberInsideCircleController: UIViewController,  UICollectionViewDe
         if (segue.identifier?.isEqualToString(find: "createNameConv"))! {
             let vc = segue.destination as? CreateNameConversationController
             vc?.cells = self.cells
+            vc?.circleData = CircleData
         }
     }
     

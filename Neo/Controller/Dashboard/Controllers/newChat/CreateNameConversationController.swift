@@ -70,30 +70,22 @@ class CreateNameConversationController: UIViewController {
             HandleErrors.displayError(message: "Le nom n'est pas correct", controller: self)
             return
         }
+    
+        var CheckedEmails = getEmailChecked()
         
-        var checkedCells: [MemberCreateConvCell] = []
-        for idx in 0..<cells.count {
-            if cells[idx].isChecked == true {
-                checkedCells.append(cells[idx])
-            }
+       ServicesChat.shareInstance.createConversation(circle_id: circleData.Id, email: CheckedEmails[CheckedEmails.count - 1]) { (data) in
+            CheckedEmails.popLast()
+            let convId = data["conversation_id"].intValue
+            ServicesChat.shareInstance.getConversationId(conv_id: convId, conv_name: "we test lol", completion: { (data) in
+                print("second get \(data)")
+                CheckedEmails.forEach({ (email) in
+                    ServicesChat.shareInstance.addIntoConversation(convId: convId, email: email, completion: { (data) in
+                    })
+                })
+                
+            })
+        
         }
-        
-        print("the circle id is \(circleData.Id) && the emails selected \(cells)")
-        
-        let emails = getEmailChecked()
-        
-        
-        print("emails \(emails) && \(checkedCells[checkedCells.count - 1].email!)")
-        /*ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_CREATE, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "circle_id": circleData.Id, "email": getEmailChecked(), "text_message": ""]).done {
-                response in
-            
-                print("the response is \(JSON(response))")
-            
-            }.catch {error in
-            print("the error we get -> \(error)")
-        }*/
-        
-        
         self.performSegue(withIdentifier: "unwindToChatConversation", sender: self)
     }
     

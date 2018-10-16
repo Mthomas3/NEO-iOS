@@ -36,6 +36,10 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         tap.numberOfTapsRequired = 2
         view.addGestureRecognizer(tap)
+        
+        
+        
+        
     }
     
     @objc func doubleTapped() {

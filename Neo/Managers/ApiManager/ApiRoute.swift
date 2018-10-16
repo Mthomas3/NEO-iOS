@@ -82,4 +82,8 @@ public enum ApiRoute  {
     static let ROUTE_FRIEND_YES = "circle/join"
     static let ROUTE_FRIEND_NO = "circle/reject"
     static let ROUTE_CIRCLE_QUIT = "circle/quit"
+    
+    static let ROUTE_MEDIA_UPLOAD = "media/upload"
+    static let ROUTE_DOWNLOAD_MEDIA = "media/retrieve"
+    
 }

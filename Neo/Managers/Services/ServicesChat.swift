@@ -8,6 +8,32 @@
 
 import Foundation
 import SwiftyJSON
+import SocketIO
+
+struct TokenData : SocketData {
+    let token: String
+    
+    func socketRepresentation() -> SocketData {
+        return ["token": token]
+    }
+}
+
+struct MessageData : SocketData {
+    let text_message: String
+    let conversation_id: Int
+    
+    func socketRepresentation() -> SocketData {
+        return ["text_message": text_message, "conversation_id": conversation_id]
+    }
+}
+
+struct JoinConversation : SocketData {
+    let conversation_id: Int
+    
+    func socketRepresentation() -> SocketData {
+        return ["conversation_id": conversation_id]
+    }
+}
 
 class ServicesChat {
     
@@ -34,7 +60,6 @@ class ServicesChat {
     }
     
     public func addIntoConversation(convId: Int, email: String, completion: @escaping (JSON) -> ()) {
-       /* ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INVITE, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "email": checkedCells[idx].email!]).done { json in*/
         
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INVITE, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "email": email]).done {
             response in

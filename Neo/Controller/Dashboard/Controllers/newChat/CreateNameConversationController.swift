@@ -76,7 +76,7 @@ class CreateNameConversationController: UIViewController {
        ServicesChat.shareInstance.createConversation(circle_id: circleData.Id, email: CheckedEmails[CheckedEmails.count - 1]) { (data) in
             CheckedEmails.popLast()
             let convId = data["conversation_id"].intValue
-            ServicesChat.shareInstance.getConversationId(conv_id: convId, conv_name: "we test lol", completion: { (data) in
+            ServicesChat.shareInstance.getConversationId(conv_id: convId, conv_name: self._nameConv.text!, completion: { (data) in
                 print("second get \(data)")
                 CheckedEmails.forEach({ (email) in
                     ServicesChat.shareInstance.addIntoConversation(convId: convId, email: email, completion: { (data) in
@@ -84,7 +84,6 @@ class CreateNameConversationController: UIViewController {
                 })
                 
             })
-        
         }
         self.performSegue(withIdentifier: "unwindToChatConversation", sender: self)
     }

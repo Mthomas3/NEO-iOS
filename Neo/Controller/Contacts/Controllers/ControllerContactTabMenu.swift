@@ -23,6 +23,7 @@ class ControllerContactTabMenu: ButtonBarPagerTabStripViewController {
     private func setUpNavigationBar() {
         title = "Cercles"
         let rightFriendRequestBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.createNewCircleView))
+        
         rightFriendRequestBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 17)!], for: .normal)
         self.navigationItem.setRightBarButtonItems([rightFriendRequestBarButtonItem], animated: true)
     }

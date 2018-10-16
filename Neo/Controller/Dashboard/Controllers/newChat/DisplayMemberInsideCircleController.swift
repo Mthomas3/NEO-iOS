@@ -32,6 +32,7 @@ class DisplayMemberInsideCircleController: UIViewController,  UICollectionViewDe
         setColorOnCollectionViewBorder()
         
         getMembersInCircle()
+        
     }
     
     @IBAction func labelPressed(_ sender: Any) {

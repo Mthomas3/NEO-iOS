@@ -8,53 +8,20 @@
 
 import UIKit
 import SocketIO
+import SwiftyJSON
 
-struct TokenData : SocketData {
-    let token: String
-    
-    func socketRepresentation() -> SocketData {
-        return ["token": token]
-    }
-}
 
-struct MessageData : SocketData {
-    let text_message: String
-    let conversation_id: Int
-    
-    func socketRepresentation() -> SocketData {
-        return ["text_message": text_message, "conversation_id": conversation_id]
-    }
-}
-
-struct JoinConversation : SocketData {
-    let conversation_id: Int
-    
-    func socketRepresentation() -> SocketData {
-        return ["conversation_id": conversation_id]
-    }
-}
-
-class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout,
+    UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     private let cellId = "cellId"
     private let dateId = "dateId"
     
     var timer: Timer?
-    
-    /*var friend: Friend? {
-     didSet {
-     navigationItem.title = frien d?.name
-     
-     messages = friend?.messages?.allObjects as? [Message]
-     
-     messages = messages?.sort({$0.date!.compare($1.date!) == .OrderedAscending})
-     }
-     }*/
-    
     var messages = [Message]()
-    
     var convId: Int = 0
     var circleId: Int = 0
+    let messageDay:[Int: String] = [1:"Sun", 2:"Mon", 3:"Tue", 4:"Wed", 5:"Thu", 6:"Fri", 7:"Sat"]
     
     var bottomConstraint: NSLayoutConstraint?
     
@@ -80,9 +47,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return button
     }()
     
-    func hideKeyboardWhenTappedAround() {
+    private func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        //tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     
@@ -90,44 +56,91 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         view.endEditing(true)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @objc func addMediaConversation() {
+        
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.allowsEditing = true
+        imagePickerController.delegate = self
+        
+        present(imagePickerController, animated: true, completion: nil)
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        
+        var selectedImageFromPicker: UIImage?
+        
+        if let image = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            selectedImageFromPicker = image
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            uploadImageToDataBase(image: selectedImage)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func uploadImageToDataBase(image: UIImage) {
+        
+        let imageName = NSUUID().uuidString
+        print("name = \(imageName)")
+    
+        let uploadImage = UIImageJPEGRepresentation(image, 0.2)
+        //print("the image \(uploadImage) && param = \(image)")
+        
+        print("upload to database!!!")
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func setUpNavigationBar() {
+        
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.addMediaConversation))
+        
+        rightAddBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 17)!], for: .normal)
+        
+        let rightAddBarButtonItemAdd:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.addMediaConversation))
+        
+        rightAddBarButtonItemAdd.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 17)!], for: .normal)
+        
+        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem, rightAddBarButtonItemAdd], animated: true)
+    }
+    
+    private func setUpUI() {
+        self.tabBarController?.tabBar.isHidden = true
         hideKeyboardWhenTappedAround()
-        
-        tabBarController?.tabBar.isHidden = true
-        
+
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 40, right: 0)
-        //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
-        
         collectionView?.backgroundColor = UIColor.white
-        
         collectionView?.register(ChatLogMessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(ChatLogDateCell.self, forCellWithReuseIdentifier: dateId)
-        
         view.addSubview(messageInputContainerView)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: messageInputContainerView)
         view.addConstraintsWithFormat(format: "V:[v0(68)]", views: messageInputContainerView)
-        
         bottomConstraint = NSLayoutConstraint(item: messageInputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
-        
         setupInputComponents()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotificationHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "Ajouter", style: UIBarButtonItemStyle.plain, target: self, action: #selector(addToConv))
-        
-        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
+        setUpNavigationBar()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setUpUI()
     }
     
     @objc func addToConv() {
         let newViewController = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "AddMemberStoryboard") as! AddMemberToConvController
         
         self.navigationController?.pushViewController(newViewController, animated: true)
-        //self.present(newViewController, animated: true, completion: nil)
         newViewController.convId = convId
         newViewController.viewController = self
         newViewController.loadCircles()
@@ -144,24 +157,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func loadDayName(weekDay: Int) -> String{
-        switch weekDay {
-        case 1:
-            return "Sun"
-        case 2:
-            return "Mon"
-        case 3:
-            return "Tue"
-        case 4:
-            return "Wed"
-        case 5:
-            return "Thu"
-        case 6:
-            return "Fri"
-        case 7:
-            return "Sat"
-        default:
-            return "Nada"
-        }
+        return messageDay[weekDay] ?? "None"
     }
     
     func getDayOfWeek(_ todayDate: Date) -> Int {
@@ -173,54 +169,65 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     deinit {
         SocketManager.sharedInstance.getManager().defaultSocket.emit("leave_conversation", JoinConversation(conversation_id: convId))
     }
+    func base64Convert(base64String: String?) -> UIImage{
+        if (base64String?.isEmpty)! {
+            return #imageLiteral(resourceName: "no_image_found")
+        }else {
+            // !!! Separation part is optional, depends on your Base64String !!!
+            let temp = base64String?.components(separatedBy: ",")
+            let dataDecoded : Data = Data(base64Encoded: temp![1], options: .ignoreUnknownCharacters)!
+            let decodedimage = UIImage(data: dataDecoded)
+            return decodedimage!
+        }
+    }
+    
+    private func handleMedia(media: JSON) {
+        print("media id : \(media["media"]["id"].intValue)")
+        
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_DOWNLOAD_MEDIA, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": media["media"]["id"].intValue]).done { (value) in
+
+            var str = JSON(value)["data"].stringValue
+            let image = self.base64Convert(base64String: str)
+            let imageview = UIImageView(image: image)
+            self.view.addSubview(imageview)
+            
+            }.catch {error in print("error -> \(error)")}
+    }
+    
+    private func handleMessage(message: JSON) {
+        let msg = Message()
+        let messageText = message["message"]["content"].stringValue
+        
+        if messageText.isEmpty {
+            return
+        }
+        
+        msg.text = message["message"]["content"].stringValue
+        if message["sender"].stringValue == User.sharedInstance.getEmail() {
+            msg.isSender = true
+        } else {
+            msg.isSender = false
+        }
+        self.messages.append(msg)
+    }
     
     func launchTimer() {
         loadConv()
-        //timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(loadConv), userInfo: nil, repeats: true)
-        
-        //Socket emit "join conversation"
         SocketManager.sharedInstance.getManager().defaultSocket.emit("join_conversation", JoinConversation(conversation_id: convId))
-        //Socket on message
         SocketManager.sharedInstance.getManager().defaultSocket.on("message") { data, ack in
-            /*[{
-             "conversation_id" = 3;
-             "media_list" =     (
-             );
-             message =     {
-             content = "ceci est un essai";
-             id = 19;
-             "link_id" = 4;
-             medias = 0;
-             read = "<null>";
-             sent = "2018-09-11T22:28:32.137745";
-             };
-             sender =     {
-             birthday = "1111-11-11T00:00:00";
-             created = "2018-09-11T22:28:32.050500";
-             email = "nico@gmail.com";
-             "first_name" = Nicolas;
-             id = 6;
-             isOnline = 1;
-             "last_name" = Gascon;
-             type = DEFAULT;
-             updated = "2018-09-11T22:28:32.050535";
-             };
-             status = done;
-             time = "2018-09-11T22:28:32.137745";
-             }]*/
-            for json in data {
-                let msg = Message()
-                msg.text = (((json as! [String: Any])["message"] as! [String: Any])["content"] as! String)
+            print("*** SOCKET ***")
+            
+            data.forEach({ (item) in
+                let data = JSON(item)
                 
-                msg.date = self.returnDateFromString(text: ((json as! [String: Any])["time"] as! String))
-                
-                if ((json as! [String: Any])["sender"] as! [String: Any])["email"] as! String == User.sharedInstance.getEmail() {
-                    msg.isSender = true
-                } else {
-                    msg.isSender = false
+                if !data["media"].exists()  {
+                    self.handleMessage(message: data)
+                    print("handle message .. -> \(data)")
                 }
-                self.messages.append(msg)
-            }
+                else {
+                    self.handleMedia(media: data)
+                }
+            })
             
             self.collectionView?.reloadData()
             let lastItemIndex = NSIndexPath(item: self.messages.count - 1, section: 0)
@@ -248,8 +255,10 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     @objc func loadConv() {
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
             jsonData in
+            
             let content = jsonData["content"] as? [String: Any]
             let messages = content!["messages"] as? [[String: Any]]
+
             
             if content == nil {
                 return
@@ -264,6 +273,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             self.navigationItem.titleView = button
             
             self.messages.removeAll()
+           // print("the messages are \(messages)")
             for idx in 0...(messages?.count)! - 1 {
                 let message = messages![idx]
                 let msg = Message()
@@ -273,12 +283,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 }
                 
                 msg.text = message["content"] as! String
-                //msg.date = Date()//message["sent"] as! Date
-                
                 msg.date = self.returnDateFromString(text: message["sent"] as! String)
-                //print(message["sent"])
-                //print(msg.date)
-                
                 if let linkId = message["link_id"] as? Int {
                     let links = content!["links"] as! [[String:Any]]
                     
@@ -292,12 +297,13 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 }
                 
                 //Check date diff
-                if self.messages.count > 0 {
+               /* if self.messages.count > 0 {
                     let prevDate = self.messages[self.messages.count - 1].date
                     let components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: prevDate!, to: msg.date!)
                     let dateFormatter = DateFormatter()
                     
                     if components.year! >= 1 {
+                        print("IF")
                         let dateMessage = Message()
                         dateFormatter.dateFormat = "yyyy"
                         dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
@@ -343,18 +349,15 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                         dateMessage.text = "/*/*" + dateFormatter.string(from: msg.date!) + "*/*/"
                         self.messages.append(dateMessage)
                     }
-                }
+                }*/
                 
                 self.messages.append(msg)
             }
             self.collectionView?.reloadData()
             let lastItemIndex = NSIndexPath(item: self.messages.count - 1, section: 0)
             self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: .bottom, animated: false)
-            //To test
-            //Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.self.goAtBottom), userInfo: nil, repeats: false)
             }.catch { _ in
-                print("Errrrr") //lzzaaaaaa
-                //HandleErrors.displayError(message: "The email is invalid", controller: self)
+                print("error load conv")
         }
     }
     
@@ -394,20 +397,12 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     @objc func handleSend() {
         SocketManager.sharedInstance.getManager().defaultSocket.emit("message", MessageData(text_message: inputTextField.text!, conversation_id: convId))
-        /*ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "text_message": inputTextField.text]).done {
-         jsonData in
-         
-         }.catch { _ in
-         HandleErrors.displayError(message: "Votre message n'a pas pu être envoyé.", controller: self)
-         }*/
         
         inputTextField.text = nil
     }
     
     @objc func handleKeyboardNotification(notification: NSNotification) {
         if let userInfo = notification.userInfo {
-            
-            print("Ouiii")
             
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
             let keyboardDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
@@ -433,11 +428,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     @objc func handleKeyboardNotificationHide(notification: NSNotification) {
         
-        print("Ahhhhh")
         
         if let userInfo = notification.userInfo {
             
-            print("Ohhhh")
             
             let keyboardDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
             
@@ -460,6 +453,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
+        
+       // print("inside collectionview \(messages[indexPath.item].text)")
         
         if messages[indexPath.item].text!.count > 8 && messages[indexPath.item].text![0] == "/" && messages[indexPath.item].text![1] == "*" && messages[indexPath.item].text![2] == "/" && messages[indexPath.item].text![3] == "*" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 1] == "/" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 2] == "*" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 3] == "/"  && messages[indexPath.item].text![messages[indexPath.item].text!.count - 4] == "*"   {
             
@@ -700,3 +695,4 @@ extension Substring {
         return self[startIndex ..< end]
     }
 }
+

@@ -187,15 +187,15 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             var str = JSON(value)["data"].stringValue
             let image = self.base64Convert(base64String: str)
             
-           // let imageview = UIImageView(image: image)
-            //self.view.addSubview(imageview)
+//           let imageview = UIImageView(image: image)
+//            self.view.addSubview(imageview)
+            
             let imageMessage = Message()
             imageMessage.image = image
+            imageMessage.text = "[DEV: PICTURE!]"
             self.messages.append(imageMessage)
             self.collectionView?.reloadData()
-            let lastItemIndex = NSIndexPath(item: self.messages.count - 1, section: 0)
-            self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: .bottom, animated: false)
-            print("** adding image to view **")
+        
             
             }.catch {error in print("error -> \(error)")}
     }
@@ -221,13 +221,10 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             
             data.forEach({ (item) in
                 let data = JSON(item)
-                print("DATA = \(data)")
                 
                 if data["message"]["medias"].boolValue == true {
                     if (data["status"].stringValue).isEqualToString(find: "done"){
-                        let msg = Message()
-                        msg.text = "[DEV: PICTURE]"
-                        self.messages.append(msg)
+                        self.handleMedia(media: data)
                     }
                     
                 } else {
@@ -236,6 +233,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             })
             self.slideOnLastMessage()
         }
+        
+    
+        /*
+         
+         */
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -294,12 +296,13 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             let messages = content["messages"]
             self.createButtonConversation(nameConversation: content["circle"]["name"].stringValue)
             self.messages.removeAll()
-            
+
             messages.forEach({ (item, data) in
                 let newMessage = Message()
                 
                 if data["medias"].boolValue == true {
                     newMessage.text = "[DEV: PICTURE]"
+                    
                 } else {
                     newMessage.text = data["content"].stringValue
                     newMessage.date = self.returnDateFromString(text: data["sent"].stringValue)
@@ -360,7 +363,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 
             }, completion: { (completed) in
                 
-                //Scroll down
                 self.collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 80, right: 0)
                 let lastItemIndex = NSIndexPath(item: self.messages.count - 1, section: 0)
                 self.collectionView?.scrollToItem(at: lastItemIndex as IndexPath, at: .bottom, animated: false)
@@ -397,18 +399,18 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
         
-//        if messages[indexPath.item].text == nil {
-//
-//            //cell.messageImageView = messages[indexPath.item].image!
-//            cell.messageImageView.image = messages[indexPath.item].image
-//            cell.profileImageView.image = messages[indexPath.item].image
-//            cell.messageImageView.isHidden = false
-//            cell.profileImageView.isHidden = false
-//            //self.view.addSubview(cell.messageImageView)
-//            print("handling picture here ...***")
-//
-//            return cell
-//        }
+        if messages[indexPath.item].text!.isEqualToString(find: "[DEV: PICTURE!]") {
+
+        
+            cell.messageImageView.image = messages[indexPath.item].image
+            cell.profileImageView.image = messages[indexPath.item].image
+            cell.messageImageView.isHidden = false
+            cell.profileImageView.isHidden = false
+            
+            print("handling picture here ...***")
+
+            return cell
+        }
 //    print("IS THERE ANYTHING HERE???")
         
         if messages[indexPath.item].text!.count > 8 && messages[indexPath.item].text![0] == "/" && messages[indexPath.item].text![1] == "*" && messages[indexPath.item].text![2] == "/" && messages[indexPath.item].text![3] == "*" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 1] == "/" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 2] == "*" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 3] == "/"  && messages[indexPath.item].text![messages[indexPath.item].text!.count - 4] == "*"   {

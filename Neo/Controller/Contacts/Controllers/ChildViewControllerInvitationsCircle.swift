@@ -16,7 +16,7 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
     private var dataArray = [ItemCellData]()
     private let estimateWidth = 140.0
     private let cellMarginSize = 3.0
-    public var tabTitle: String? = nil
+    public var tabTitle: String? = "Invitations (0)"
 
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -68,7 +68,8 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
     
     @objc private func doubleTapped() {
         
-        if !self.dataArray.isEmpty {
+        print("here ind = \(self.collectionView.indexPathsForSelectedItems?.first)")
+        if !self.dataArray.isEmpty && ((self.collectionView.indexPathsForSelectedItems?.first != nil)){
             self.performUIAlert(title: "Êtes-vous sûr de vouloir rejoindre ce cercle?", message: nil, actionTitles: ["Non", "Oui"], actions:
                 [{ _ in self.declineCircleInvite()}, {_ in self.joinCircleInvite()}])
         }

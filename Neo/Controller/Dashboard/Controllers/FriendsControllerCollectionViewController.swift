@@ -249,6 +249,7 @@ class MessageCell: BaseCell {
     }
     
     override func setupView() {
+        print("somewhere here")
         /*let addButton = UIBarButtonItem(title: "Add", style: UIBarButtonItemStyle.done, target: self, action: #selector(addCircle))
         
         navigationItem.rightBarButtonItem = addButton*/

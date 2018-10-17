@@ -8,12 +8,14 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 class Message {
     var text: String?
     var date: Date?
     var isSender: Bool = false
     //@NSManaged var friend: Friend?
+    var image: UIImage? = nil
 }
 
 class Circle {

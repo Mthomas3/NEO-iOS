@@ -338,9 +338,12 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     @objc func handleSend() {
-        SocketManager.sharedInstance.getManager().defaultSocket.emit("message", MessageData(text_message: inputTextField.text!, conversation_id: convId))
-        
-        inputTextField.text = nil
+    
+        if !((inputTextField.text?.isEmpty)!) {
+            SocketManager.sharedInstance.getManager().defaultSocket.emit("message", MessageData(text_message: inputTextField.text!, conversation_id: convId))
+            
+            inputTextField.text = nil
+        }
     }
     
     @objc func handleKeyboardNotification(notification: NSNotification) {

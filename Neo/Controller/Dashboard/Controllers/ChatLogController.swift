@@ -169,6 +169,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     deinit {
         SocketManager.sharedInstance.getManager().defaultSocket.emit("leave_conversation", JoinConversation(conversation_id: convId))
     }
+    
     func base64Convert(base64String: String?) -> UIImage{
         if (base64String?.isEmpty)! {
             return UIImage()
@@ -400,11 +401,12 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         if messages[indexPath.item].text!.isEqualToString(find: "[DEV: PICTURE!]") {
 
-        
-            cell.messageImageView.image = messages[indexPath.item].image
-            cell.profileImageView.image = messages[indexPath.item].image
-            cell.messageImageView.isHidden = false
-            cell.profileImageView.isHidden = false
+//
+//            cell.messageImageView.image = messages[indexPath.item].image
+//            cell.profileImageView.image = messages[indexPath.item].image
+//            cell.messageImageView.isHidden = false
+//            cell.profileImageView.isHidden = false
+            cell.messageTextView.text = "[DEV: PICTURE!]"
             
             print("handling picture here ...***")
 

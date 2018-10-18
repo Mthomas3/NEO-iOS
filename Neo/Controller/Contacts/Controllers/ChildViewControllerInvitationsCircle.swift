@@ -68,7 +68,6 @@ class ChildViewControllerInvitationsCircle: UIViewController, IndicatorInfoProvi
     
     @objc private func doubleTapped() {
         
-        print("here ind = \(self.collectionView.indexPathsForSelectedItems?.first)")
         if !self.dataArray.isEmpty && ((self.collectionView.indexPathsForSelectedItems?.first != nil)){
             self.performUIAlert(title: "Êtes-vous sûr de vouloir rejoindre ce cercle?", message: nil, actionTitles: ["Non", "Oui"], actions:
                 [{ _ in self.declineCircleInvite()}, {_ in self.joinCircleInvite()}])

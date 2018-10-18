@@ -43,7 +43,7 @@ class ChildViewController: UIViewController, IndicatorInfoProvider, UICollection
     }
     
     @objc func doubleTapped() {
-        if !self.dataArray.isEmpty{
+        if !self.dataArray.isEmpty && (self.collectionView.indexPathsForSelectedItems?.first != nil) {
             self.performSegue(withIdentifier: "addContactToCircle", sender: self)
         }
     }

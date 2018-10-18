@@ -233,11 +233,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             })
             self.slideOnLastMessage()
         }
-        
-    
-        /*
-         
-         */
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {

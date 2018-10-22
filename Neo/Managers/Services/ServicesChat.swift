@@ -68,6 +68,5 @@ class ServicesChat {
                 error in
                 print("addIntoconversation error )> \(error)")
         }
-            
     }
 }

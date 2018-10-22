@@ -85,5 +85,7 @@ public enum ApiRoute  {
     
     static let ROUTE_MEDIA_UPLOAD = "media/upload"
     static let ROUTE_DOWNLOAD_MEDIA = "media/retrieve"
+    static let ROUTE_CREATE_MEDIA = "media/create"
+    static let ROUTE_MEDIA_INFO = "message/media/list"
     
 }

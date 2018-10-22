@@ -35,7 +35,7 @@ final class ApiManager {
                         seal.reject(PMKError.invalidCallingConvention)
                     }
                 } else {
-                    print(response.result.value as! [String: Any])
+                        print(response.result.value as? [String: Any])
                         print("*** Route \(url) not working status code -> \(response.response!.statusCode) second if")
                         seal.reject(PMKError.invalidCallingConvention)
                 }

@@ -46,6 +46,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
         return button
     }()
+
     
     private func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -83,13 +84,62 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         dismiss(animated: true, completion: nil)
     }
     
+    
+    //TODO PICTURE
     private func uploadImageToDataBase(image: UIImage) {
         
-        let imageName = NSUUID().uuidString
-        print("name = \(imageName)")
+        let imageName = NSUUID().uuidString.split(separator: "-")
+        //print("name = \(imageName.count) && name=\(imageName)")
     
-        let uploadImage = UIImageJPEGRepresentation(image, 0.2)
+       // let uploadImage = UIImageJPEGRepresentation(image, 0.2)
         //print("the image \(uploadImage) && param = \(image)")
+      
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "files": ["Logo-png.png"]]).done { (value) in
+            var idMedia = [Int]()
+            for item in JSON(value) {
+                if item.0.isEqualToString(find: "media_list") {
+                    for i in item.1 {
+                        idMedia.append(i.1["id"].intValue)
+                    }
+                    
+                }
+            }
+            print("the value -> \(JSON(value))")
+
+            let image = UIImage(named: "Logo-png")
+            let message = Message()
+            message.image = image
+            message.text = "[DEV: PICTURE]"
+            self.messages.append(message)
+            
+            //TODO SEND BODY FILE
+//            idMedia.forEach({ (id) in
+//                print("the id -> \(id)")
+//                ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_UPLOAD, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": id, "file": "Logo-png.png"]).done({ (value) in
+//
+//
+//
+//                    let image = UIImage(named: "Logo-png")
+//                    let message = Message()
+//                    message.image = image
+//                    message.text = "[DEV: PICTURE]"
+//                    self.messages.append(message)
+//
+//
+//
+//
+//
+//                    print("[UPLOAD MEDIA (value)-> (\(value))]")
+//                }).catch({ (error) in
+//                    print("[UPLOAD MEDIA (error)-> (\(error))]")
+//                })
+//            })
+
+            
+            }.catch { (error) in
+                print("the error is \(error)")
+        }
+        
         
         print("upload to database!!!")
     }
@@ -170,6 +220,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         SocketManager.sharedInstance.getManager().defaultSocket.emit("leave_conversation", JoinConversation(conversation_id: convId))
     }
     
+    
+    
     func base64Convert(base64String: String?) -> UIImage{
         if (base64String?.isEmpty)! {
             return UIImage()
@@ -178,6 +230,15 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             let dataDecoded : Data = Data(base64Encoded: temp![1], options: .ignoreUnknownCharacters)!
             let decodedimage = UIImage(data: dataDecoded)
             return decodedimage!
+        }
+    }
+    
+    public func retrieveMedia(media: JSON, completion: @escaping(UIImage) -> ()) {
+        
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_DOWNLOAD_MEDIA, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": media["media"]["id"].intValue]).done { (value) in
+                completion(self.base64Convert(base64String: JSON(value)["data"].stringValue))
+            }.catch { (error) in
+                print("[ERROR RETRIEVE MEDIA (\(error))]")
         }
     }
     
@@ -194,6 +255,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             let imageMessage = Message()
             imageMessage.image = image
             imageMessage.text = "[DEV: PICTURE!]"
+            
             self.messages.append(imageMessage)
             self.collectionView?.reloadData()
         
@@ -216,7 +278,10 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     func launchTimer() {
-        loadConv()
+        
+        self.loadConv()
+        
+        
         SocketManager.sharedInstance.getManager().defaultSocket.emit("join_conversation", JoinConversation(conversation_id: convId))
         SocketManager.sharedInstance.getManager().defaultSocket.on("message") { data, ack in
             
@@ -225,14 +290,24 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 
                 if data["message"]["medias"].boolValue == true {
                     if (data["status"].stringValue).isEqualToString(find: "done"){
-                        self.handleMedia(media: data)
+//                        self.retrieveMedia(media: data, completion: { (image) in
+//                            let i = Message()
+//                            i.image = image
+//                            i.text = "[DEV: PICTURE!]"
+//                            //self.view.addSubview(UIImageView(image: image))
+//                            self.messages.append(i)
+//                        })
                     }
                     
                 } else {
                     self.handleMessage(message: data)
                 }
             })
-            self.slideOnLastMessage()
+            
+           DispatchQueue.main.async {
+                print("we reload the socket")
+                self.slideOnLastMessage()
+            }
         }
 
     }
@@ -285,6 +360,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return false
     }
     
+    
     private func loadConv() {
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
             jsonData in
@@ -293,12 +369,35 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             let messages = content["messages"]
             self.createButtonConversation(nameConversation: content["circle"]["name"].stringValue)
             self.messages.removeAll()
-
+            
             messages.forEach({ (item, data) in
                 let newMessage = Message()
                 
                 if data["medias"].boolValue == true {
-                    newMessage.text = "[DEV: PICTURE]"
+                    
+                    ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "message_id": data["id"].intValue]).done({ (value) in
+                        let json = JSON(value)
+                        
+                        json.forEach({ (name, data) in
+                            print("INSIDE FIRST")
+                            if name.isEqualToString(find: "content") {
+                                data.forEach({ (name, data) in
+                                    print("INSIDE SECOND")
+                                    self.retrieveMedia(media: data, completion: { (image) in
+                                        
+                                        
+                                        newMessage.image = image
+                                        self.collectionView?.reloadData()
+                                        
+                                    })
+                                })
+                            }
+                        })
+                    }).catch({ (error) in
+                        print("ERROR = \(error)")
+                    })
+                    
+                    print("data = \(data)")
                     
                 } else {
                     newMessage.text = data["content"].stringValue
@@ -327,6 +426,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         messageInputContainerView.addSubview(inputTextField)
         messageInputContainerView.addSubview(sendButton)
+        
         messageInputContainerView.addSubview(topBorderView)
         
         messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0][v1(120)]|", views: inputTextField, sendButton)
@@ -336,6 +436,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         messageInputContainerView.addConstraintsWithFormat(format: "H:|[v0]|", views: topBorderView)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0(0.5)]", views: topBorderView)
+        
     }
     
     @objc func handleSend() {
@@ -376,7 +477,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         if let userInfo = notification.userInfo {
             
-            
             let keyboardDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
             
             bottomConstraint?.constant = 0
@@ -399,21 +499,23 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
         
-        if messages[indexPath.item].text!.isEqualToString(find: "[DEV: PICTURE!]") {
-
-//
-//            cell.messageImageView.image = messages[indexPath.item].image
-//            cell.profileImageView.image = messages[indexPath.item].image
-//            cell.messageImageView.isHidden = false
-//            cell.profileImageView.isHidden = false
-            cell.messageTextView.text = "[DEV: PICTURE!]"
+        if let image = messages[indexPath.item].image {
             
-            print("handling picture here ...***")
+            let profileImageName = "Logo-png"
+            cell.profileImageView.image = UIImage(named: profileImageName)
+            let imageView = UIImageView(frame: CGRect(x: 50, y: 20, width: 75, height: 200))
+            cell.messageImageView.layer.cornerRadius = 20
+            imageView.image = messages[indexPath.item].image
+            cell.messageTextView.text = ""
+            
+            //cell.textBubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
+            cell.profileImageView.isHidden = false
+            cell.contentView.addSubview(imageView)
 
             return cell
         }
-//    print("IS THERE ANYTHING HERE???")
         
+        if (messages[indexPath.item].text != nil) {
         if messages[indexPath.item].text!.count > 8 && messages[indexPath.item].text![0] == "/" && messages[indexPath.item].text![1] == "*" && messages[indexPath.item].text![2] == "/" && messages[indexPath.item].text![3] == "*" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 1] == "/" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 2] == "*" && messages[indexPath.item].text![messages[indexPath.item].text!.count - 3] == "/"  && messages[indexPath.item].text![messages[indexPath.item].text!.count - 4] == "*"   {
             
             let txt = messages[indexPath.item].text![4..<messages[indexPath.item].text!.count - 4]
@@ -482,18 +584,21 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 
             }
         }
+        }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if let messageText = messages[indexPath.item].text {
+
+        
+       if let messageText = messages[indexPath.item].text {
             let size = CGSize(width: 250, height: 1000)
             let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
             let estimatedFrame = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)], context: nil)
             return CGSize(width: view.frame.width, height: estimatedFrame.height + 20)
         }
-        return CGSize(width: view.frame.width, height: 100)
+        return CGSize(width: view.frame.width, height: 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -507,7 +612,7 @@ class ChatLogMessageCell: BaseCell {
     let messageTextView: UITextView = {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 18)
-        textView.text = "Sample message"
+        textView.text = ""
         textView.backgroundColor = UIColor.clear
         textView.isEditable = false
         return textView
@@ -516,7 +621,7 @@ class ChatLogMessageCell: BaseCell {
     
     let messageImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.white
+        imageView.backgroundColor = UIColor.clear
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 15
         imageView.layer.masksToBounds = true
@@ -543,26 +648,22 @@ class ChatLogMessageCell: BaseCell {
     
     override func setupView() {
         super.setupView()
-        
         backgroundColor = UIColor.white
-        
         addSubview(textBubbleView)
         addSubview(messageTextView)
+        addSubview(profileImageView)
         
-        addSubview(messageImageView)
         
-        messageImageView.backgroundColor = UIColor.black
+        textBubbleView.addSubview(messageImageView)
         
-       /* messageImageView.leftAnchor.constraint(equalTo: textBubbleView.leftAnchor).isActive = true
+        messageImageView.leftAnchor.constraint(equalTo: textBubbleView.leftAnchor).isActive = true
         messageImageView.topAnchor.constraint(equalTo: textBubbleView.topAnchor).isActive = true
         messageImageView.widthAnchor.constraint(equalTo: textBubbleView.widthAnchor).isActive = true
-        messageImageView.heightAnchor.constraint(equalTo: textBubbleView.heightAnchor).isActive = true*/
+        messageImageView.heightAnchor.constraint(equalTo: textBubbleView.heightAnchor).isActive = true
         
-       // addSubview(messageImageView)
+        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: profileImageView, messageImageView)
+        addConstraintsWithFormat(format: "V:[v0(30)]|", views: profileImageView, messageImageView)
         
-        addSubview(profileImageView)
-        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: profileImageView)
-        addConstraintsWithFormat(format: "V:[v0(30)]|", views: profileImageView)
         profileImageView.backgroundColor = UIColor.white
     }
 }
@@ -579,7 +680,7 @@ class ChatLogDateCell: BaseCell {
     
     let messageImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.white
+        imageView.backgroundColor = UIColor.clear
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 15
         imageView.layer.masksToBounds = true
@@ -620,8 +721,14 @@ class ChatLogDateCell: BaseCell {
         
         addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: leftLine)
         addConstraintsWithFormat(format: "V:[v0(30)]|", views: leftLine)
+        
         addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: messageTextView)
         addConstraintsWithFormat(format: "V:[v0(30)]|", views: messageTextView)
+        
+        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: messageImageView)
+        addConstraintsWithFormat(format: "V:[v0(30)]|", views: messageImageView)
+        
+        
         addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: rightLine)
         addConstraintsWithFormat(format: "V:[v0(30)]|", views: rightLine)
     }
@@ -683,4 +790,3 @@ extension Substring {
         return self[startIndex ..< end]
     }
 }
-

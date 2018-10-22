@@ -290,13 +290,12 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 
                 if data["message"]["medias"].boolValue == true {
                     if (data["status"].stringValue).isEqualToString(find: "done"){
-//                        self.retrieveMedia(media: data, completion: { (image) in
-//                            let i = Message()
-//                            i.image = image
-//                            i.text = "[DEV: PICTURE!]"
-//                            //self.view.addSubview(UIImageView(image: image))
-//                            self.messages.append(i)
-//                        })
+                        self.retrieveMedia(media: data, completion: { (image) in
+                            let i = Message()
+                            i.image = image
+                            self.messages.append(i)
+                            self.collectionView?.reloadData()
+                        })
                     }
                     
                 } else {
@@ -379,16 +378,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                         let json = JSON(value)
                         
                         json.forEach({ (name, data) in
-                            print("INSIDE FIRST")
                             if name.isEqualToString(find: "content") {
                                 data.forEach({ (name, data) in
-                                    print("INSIDE SECOND")
                                     self.retrieveMedia(media: data, completion: { (image) in
-                                        
-                                        
                                         newMessage.image = image
                                         self.collectionView?.reloadData()
-                                        
                                     })
                                 })
                             }

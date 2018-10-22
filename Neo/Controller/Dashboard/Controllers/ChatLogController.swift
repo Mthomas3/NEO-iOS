@@ -220,8 +220,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         SocketManager.sharedInstance.getManager().defaultSocket.emit("leave_conversation", JoinConversation(conversation_id: convId))
     }
     
-    
-    
     func base64Convert(base64String: String?) -> UIImage{
         if (base64String?.isEmpty)! {
             return UIImage()
@@ -242,32 +240,12 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
-    private func handleMedia(media: JSON) {
-        
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_DOWNLOAD_MEDIA, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": media["media"]["id"].intValue]).done { (value) in
-
-            var str = JSON(value)["data"].stringValue
-            let image = self.base64Convert(base64String: str)
-            
-//           let imageview = UIImageView(image: image)
-//            self.view.addSubview(imageview)
-            
-            let imageMessage = Message()
-            imageMessage.image = image
-            imageMessage.text = "[DEV: PICTURE!]"
-            
-            self.messages.append(imageMessage)
-            self.collectionView?.reloadData()
-        
-            
-            }.catch {error in print("error -> \(error)")}
-    }
-    
     private func handleMessage(message: JSON) {
         let msg = Message()
         
         msg.text = message["message"]["content"].stringValue
         msg.date = self.returnDateFromString(text: message["time"].stringValue)
+        msg.image = nil
         
         if message["sender"]["email"].stringValue == User.sharedInstance.getEmail() {
             msg.isSender = true
@@ -302,11 +280,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                     self.handleMessage(message: data)
                 }
             })
-            
-           DispatchQueue.main.async {
-                print("we reload the socket")
-                self.slideOnLastMessage()
-            }
+            self.slideOnLastMessage()
         }
 
     }
@@ -390,9 +364,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                     }).catch({ (error) in
                         print("ERROR = \(error)")
                     })
-                    
-                    print("data = \(data)")
-                    
                 } else {
                     newMessage.text = data["content"].stringValue
                     newMessage.date = self.returnDateFromString(text: data["sent"].stringValue)
@@ -493,8 +464,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
         
-        if let image = messages[indexPath.item].image {
-            
+        if messages[indexPath.item].image != nil {
+            print("inside IMAGE")
             let profileImageName = "Logo-png"
             cell.profileImageView.image = UIImage(named: profileImageName)
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))

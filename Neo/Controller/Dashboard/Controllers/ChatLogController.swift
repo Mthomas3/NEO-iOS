@@ -503,19 +503,15 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             
             let profileImageName = "Logo-png"
             cell.profileImageView.image = UIImage(named: profileImageName)
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 150, height: 200))
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
             cell.messageImageView.layer.cornerRadius = 20
             imageView.image = messages[indexPath.item].image
             cell.messageTextView.isHidden = true
-            //cell.textBubbleView.isHidden = true
-            
-            //cell.messageTextView.text = "image"
             cell.textBubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
             cell.profileImageView.isHidden = false
             
-            cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 150, height:  200)
-            //cell.contentView.addSubview(imageView)
-
+            cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 200, height:  250)
+            
             cell.textBubbleView.addSubview(imageView)
             return cell
         }
@@ -597,7 +593,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         if messages[indexPath.item].image != nil{
-            return CGSize(width: view.frame.width, height: 200)
+            return CGSize(width: view.frame.width, height: 265)
         }
         
        if let messageText = messages[indexPath.item].text {

@@ -503,15 +503,20 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             
             let profileImageName = "Logo-png"
             cell.profileImageView.image = UIImage(named: profileImageName)
-            let imageView = UIImageView(frame: CGRect(x: 50, y: 20, width: 75, height: 200))
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 150, height: 200))
             cell.messageImageView.layer.cornerRadius = 20
             imageView.image = messages[indexPath.item].image
-            cell.messageTextView.text = ""
+            cell.messageTextView.isHidden = true
+            //cell.textBubbleView.isHidden = true
             
-            //cell.textBubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
+            //cell.messageTextView.text = "image"
+            cell.textBubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
             cell.profileImageView.isHidden = false
-            cell.contentView.addSubview(imageView)
+            
+            cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 150, height:  200)
+            //cell.contentView.addSubview(imageView)
 
+            cell.textBubbleView.addSubview(imageView)
             return cell
         }
         
@@ -591,6 +596,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
+        if messages[indexPath.item].image != nil{
+            return CGSize(width: view.frame.width, height: 200)
+        }
         
        if let messageText = messages[indexPath.item].text {
             let size = CGSize(width: 250, height: 1000)
@@ -612,7 +620,7 @@ class ChatLogMessageCell: BaseCell {
     let messageTextView: UITextView = {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 18)
-        textView.text = ""
+        textView.isHidden = false
         textView.backgroundColor = UIColor.clear
         textView.isEditable = false
         return textView

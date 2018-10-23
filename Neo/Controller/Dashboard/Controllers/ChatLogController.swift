@@ -39,19 +39,12 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return textField
     }()
     
-/*let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.addToConv))
- 
- rightAddBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 17)!], for: .normal)*/
-    
     lazy var imageButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
-        button.frame(forAlignmentRect: )
+        let button = UIButton(type: .system)
         var buttonString = ""
-        var buttonStringAttributed = NSMutableAttributedString(string: buttonString, attributes: [NSAttributedStringKey.font:UIFont(name: "Font Awesome 5 Pro", size: 24.00)!])
+        button.tintColor = UIColor.gray
+        var buttonStringAttributed = NSMutableAttributedString(string: buttonString, attributes: [NSAttributedStringKey.font:UIFont(name: "Font Awesome 5 Pro", size: 22)!])
         button.setAttributedTitle(buttonStringAttributed, for: .normal)
-        button.tintColor = UIColor.black
-        button.backgroundColor = UIColor.yellow
-        button.setTitleColor(UIColor.black, for: .normal)
         button.addTarget(self, action: #selector(handleSendImage), for: .touchUpInside)
         return button
     }()

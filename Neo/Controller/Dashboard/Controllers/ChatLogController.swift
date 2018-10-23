@@ -10,6 +10,8 @@ import UIKit
 import SocketIO
 import SwiftyJSON
 
+import Alamofire
+
 
 class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -35,6 +37,23 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         let textField = UITextField()
         textField.placeholder = "Entrer un message..."
         return textField
+    }()
+    
+/*let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.addToConv))
+ 
+ rightAddBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 17)!], for: .normal)*/
+    
+    lazy var imageButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        button.frame(forAlignmentRect: )
+        var buttonString = ""
+        var buttonStringAttributed = NSMutableAttributedString(string: buttonString, attributes: [NSAttributedStringKey.font:UIFont(name: "Font Awesome 5 Pro", size: 24.00)!])
+        button.setAttributedTitle(buttonStringAttributed, for: .normal)
+        button.tintColor = UIColor.black
+        button.backgroundColor = UIColor.yellow
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(handleSendImage), for: .touchUpInside)
+        return button
     }()
     
     lazy var sendButton: UIButton = {
@@ -84,6 +103,10 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         dismiss(animated: true, completion: nil)
     }
     
+    @objc private func handleSendImage() {
+        print("HANDLE SEND IMAGE HERE **")
+    }
+    
     
     //TODO PICTURE
     private func uploadImageToDataBase(image: UIImage) {
@@ -95,22 +118,41 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         //print("the image \(uploadImage) && param = \(image)")
       
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "files": ["Logo-png.png"]]).done { (value) in
-            var idMedia = [Int]()
-            for item in JSON(value) {
-                if item.0.isEqualToString(find: "media_list") {
-                    for i in item.1 {
-                        idMedia.append(i.1["id"].intValue)
-                    }
-                    
+            var idMedia = [Int: JSON]()
+            
+            JSON(value)["media_list"].forEach({ (name, data) in
+                idMedia[data["id"].intValue] = data
+            })
+            
+            idMedia.forEach({ (id, data) in
+               
+                
+                let headers: HTTPHeaders = [
+                    "Authorization": User.sharedInstance.getParameter(parameter: "token"),
+                    "content-type": "multipart/form-data"
+                ]
+                
+                var param: [String: Any] = ["media_id": id, "file": data]
+                
+                Alamofire.request(ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD), method:.post, parameters: param as? [String: Any],encoding: JSONEncoding.default, headers:headers).responseJSON { response in
+                    print("the response -> \(response)")
                 }
-            }
-            print("the value -> \(JSON(value))")
 
-            let image = UIImage(named: "Logo-png")
-            let message = Message()
-            message.image = image
-            message.text = "[DEV: PICTURE]"
-            self.messages.append(message)
+
+                
+                
+                
+                
+            })
+            
+//            idMedia.forEach({ (id) in
+//                ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_UPLOAD, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": id, "file": ])
+//            })
+            
+       
+
+          
+            
             
             //TODO SEND BODY FILE
 //            idMedia.forEach({ (id) in
@@ -356,6 +398,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                                 data.forEach({ (name, data) in
                                     self.retrieveMedia(media: data, completion: { (image) in
                                         newMessage.image = image
+                                        newMessage.text = nil
                                         self.collectionView?.reloadData()
                                     })
                                 })
@@ -392,12 +435,15 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         messageInputContainerView.addSubview(inputTextField)
         messageInputContainerView.addSubview(sendButton)
         
+        messageInputContainerView.addSubview(imageButton)
+        
         messageInputContainerView.addSubview(topBorderView)
         
-        messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0][v1(120)]|", views: inputTextField, sendButton)
+        messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0][v1(200)][v2(120)]|", views: imageButton, inputTextField, sendButton)
         
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: inputTextField)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: sendButton)
+        messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: imageButton)
         
         messageInputContainerView.addConstraintsWithFormat(format: "H:|[v0]|", views: topBorderView)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0(0.5)]", views: topBorderView)
@@ -465,7 +511,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
         
         if messages[indexPath.item].image != nil {
-            print("inside IMAGE")
             let profileImageName = "Logo-png"
             cell.profileImageView.image = UIImage(named: profileImageName)
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
@@ -686,7 +731,6 @@ class ChatLogDateCell: BaseCell {
         addSubview(messageTextView)
         addSubview(rightLine)
         addSubview(messageImageView)
-       // addSubview(messageImageView)
         
         addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: leftLine)
         addConstraintsWithFormat(format: "V:[v0(30)]|", views: leftLine)

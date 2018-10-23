@@ -35,7 +35,12 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     let inputTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Entrer un message..."
+        textField.layer.borderColor = UIColor.gray.cgColor
+        textField.layer.borderWidth = 0.5
+        textField.layer.cornerRadius = 20
+        textField.placeholder = " Entrer un message..."
+        textField.position(from: textField.beginningOfDocument, offset: 3)
+        textField.addTarget(self, action: #selector(handleTextField), for: .touchDown)
         return textField
     }()
     
@@ -59,6 +64,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return button
     }()
 
+    @objc private func handleTextField() {
+        print("HANDLE TEXT FIELD HERE")
+    }
     
     private func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -186,14 +194,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     private func setUpNavigationBar() {
         
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.addToConv))
-        
-        rightAddBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 17)!], for: .normal)
-        
-        let rightAddBarButtonItemAdd:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.addMediaConversation))
-        
-        rightAddBarButtonItemAdd.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 17)!], for: .normal)
-        
-        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem, rightAddBarButtonItemAdd], animated: true)
+        rightAddBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 19)!], for: .normal)
+        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     
     private func setUpUI() {
@@ -213,7 +215,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         setupInputComponents()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotificationHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
         setUpNavigationBar()
     }
     
@@ -432,9 +433,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         messageInputContainerView.addSubview(topBorderView)
         
-        messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0][v1(200)][v2(120)]|", views: imageButton, inputTextField, sendButton)
+        messageInputContainerView.addConstraintsWithFormat(format: "H:|-8-[v0]-10-[v1(230)][v2(80)]-8-|", views: imageButton, inputTextField, sendButton)
         
-        messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: inputTextField)
+        messageInputContainerView.addConstraintsWithFormat(format: "V:|-12-[v0]-12-|", views: inputTextField)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: sendButton)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0]|", views: imageButton)
         

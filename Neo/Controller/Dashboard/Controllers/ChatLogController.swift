@@ -30,6 +30,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     let messageInputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
+        
         return view
     }()
     
@@ -38,9 +39,10 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         textField.layer.borderColor = UIColor.gray.cgColor
         textField.layer.borderWidth = 0.5
         textField.layer.cornerRadius = 20
-        textField.placeholder = " Entrer un message..."
-        textField.position(from: textField.beginningOfDocument, offset: 3)
-        textField.addTarget(self, action: #selector(handleTextField), for: .touchDown)
+        textField.placeholder = "Entrer un message..."
+        let paddingView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 15, height: textField.frame.height)))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
         return textField
     }()
     
@@ -63,10 +65,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         button.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
         return button
     }()
-
-    @objc private func handleTextField() {
-        print("HANDLE TEXT FIELD HERE")
-    }
     
     private func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -77,19 +75,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         view.endEditing(true)
     }
     
-    @objc func addMediaConversation() {
-        
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.allowsEditing = true
-        imagePickerController.delegate = self
-        
-        present(imagePickerController, animated: true, completion: nil)
-        
-    }
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        
         var selectedImageFromPicker: UIImage?
         
         if let image = info["UIImagePickerControllerEditedImage"] as? UIImage {
@@ -105,7 +91,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     @objc private func handleSendImage() {
-        print("HANDLE SEND IMAGE HERE **")
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.allowsEditing = true
+        imagePickerController.delegate = self
+        
+        present(imagePickerController, animated: true, completion: nil)
     }
     
     
@@ -126,8 +116,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             })
             
             idMedia.forEach({ (id, data) in
-               
-                
                 let headers: HTTPHeaders = [
                     "Authorization": User.sharedInstance.getParameter(parameter: "token"),
                     "content-type": "multipart/form-data"
@@ -138,23 +126,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 Alamofire.request(ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD), method:.post, parameters: param as? [String: Any],encoding: JSONEncoding.default, headers:headers).responseJSON { response in
                     print("the response -> \(response)")
                 }
-
-
-                
-                
-                
-                
             })
-            
-//            idMedia.forEach({ (id) in
-//                ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_UPLOAD, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": id, "file": ])
-//            })
-            
-       
-
-          
-            
-            
             //TODO SEND BODY FILE
 //            idMedia.forEach({ (id) in
 //                print("the id -> \(id)")
@@ -211,6 +183,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: messageInputContainerView)
         view.addConstraintsWithFormat(format: "V:[v0(68)]", views: messageInputContainerView)
         bottomConstraint = NSLayoutConstraint(item: messageInputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+        
         view.addConstraint(bottomConstraint!)
         setupInputComponents()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -430,6 +403,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         messageInputContainerView.addSubview(sendButton)
         
         messageInputContainerView.addSubview(imageButton)
+        
+        topBorderView.layer.backgroundColor = UIColor.white.cgColor
         
         messageInputContainerView.addSubview(topBorderView)
         

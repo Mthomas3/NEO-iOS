@@ -65,7 +65,7 @@ class FriendsControllerCollectionViewController: UICollectionViewController, UIC
                 
                 self.circleids.append((circle["circle"] as! [String:Any])["id"] as! Int)
                 
-                ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_LIST, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "circle_id": String((circle["circle"] as! [String:Any])["id"] as! Int)]).done {
+                ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_LIST, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "circle_id": (circle["circle"] as! [String:Any])["id"] as! Int]).done {
                     jsonData in
                     if let content = jsonData["content"] as? [[String:Any]] {
                         for a in content {

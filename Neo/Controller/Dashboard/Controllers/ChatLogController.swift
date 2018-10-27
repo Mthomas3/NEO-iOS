@@ -24,17 +24,16 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     var convId: Int = 0
     var circleId: Int = 0
     let messageDay:[Int: String] = [1:"Sun", 2:"Mon", 3:"Tue", 4:"Wed", 5:"Thu", 6:"Fri", 7:"Sat"]
-    
     var bottomConstraint: NSLayoutConstraint?
+    var mediaCellCount = 0
     
     let messageInputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
-        
         return view
     }()
     
-    let inputTextField: UITextField = {
+    var inputTextField: UITextField = {
         let textField = UITextField()
         textField.layer.borderColor = UIColor.gray.cgColor
         textField.layer.borderWidth = 0.5
@@ -77,7 +76,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         var selectedImageFromPicker: UIImage?
-        
         if let image = info["UIImagePickerControllerEditedImage"] as? UIImage {
             selectedImageFromPicker = image
         } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
@@ -98,65 +96,61 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         present(imagePickerController, animated: true, completion: nil)
     }
     
+    private func tryRequest(id: Int, file: JSON, image: UIImage, completion: @escaping () -> ()) {
+        
+        print("WE ARE HERE ****")
+        
+        let baseURL = ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD.concat(string: "/\(id)"))
+        
+        let headers: HTTPHeaders = [ "Authorization": User.sharedInstance.getParameter(parameter: "token") ]
+        let imageTest = UIImage(named: "Logo-png.png")
+        let URL = try! URLRequest(url: baseURL, method: .post, headers: headers)
+        
+        
+        Alamofire.upload(multipartFormData: { multipartFormData in
+
+            multipartFormData.append(UIImagePNGRepresentation(image)!, withName: "file", fileName: "\(file["identifier"])", mimeType: "image/png")
+
+            multipartFormData.append("\(id)".data(using: String.Encoding.utf8)!, withName: "media_id")
+
+        }, with: URL, encodingCompletion: {
+            encodingResult in
+            switch encodingResult {
+            case .success(let upload, _, _):
+                upload.responseJSON() { response in
+                    debugPrint("SUCCESS RESPONSE: \(response)")
+
+                    completion()
+                    
+                }
+            case .failure(let encodingError):
+                // hide progressbas here
+                print("ERROR RESPONSE: \(encodingError)")
+            }
+        })
+        
+    }
     
     //TODO PICTURE
     private func uploadImageToDataBase(image: UIImage) {
         
-        let imageName = NSUUID().uuidString.split(separator: "-")
-        //print("name = \(imageName.count) && name=\(imageName)")
-    
-       // let uploadImage = UIImageJPEGRepresentation(image, 0.2)
-        //print("the image \(uploadImage) && param = \(image)")
-      
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "files": ["Logo-png.png"]]).done { (value) in
-            var idMedia = [Int: JSON]()
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "files": [NSUUID().uuidString.split(separator: "-")]]).done { (value) in
             
             JSON(value)["media_list"].forEach({ (name, data) in
-                idMedia[data["id"].intValue] = data
-            })
-            
-            idMedia.forEach({ (id, data) in
-                let headers: HTTPHeaders = [
-                    "Authorization": User.sharedInstance.getParameter(parameter: "token"),
-                    "content-type": "multipart/form-data"
-                ]
-                
-                var param: [String: Any] = ["media_id": id, "file": data]
-                
-                Alamofire.request(ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD), method:.post, parameters: param as? [String: Any],encoding: JSONEncoding.default, headers:headers).responseJSON { response in
-                    print("the response -> \(response)")
-                }
-            })
-            //TODO SEND BODY FILE
-//            idMedia.forEach({ (id) in
-//                print("the id -> \(id)")
-//                ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_UPLOAD, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": id, "file": "Logo-png.png"]).done({ (value) in
-//
-//
-//
-//                    let image = UIImage(named: "Logo-png")
-//                    let message = Message()
-//                    message.image = image
-//                    message.text = "[DEV: PICTURE]"
-//                    self.messages.append(message)
-//
-//
-//
-//
-//
-//                    print("[UPLOAD MEDIA (value)-> (\(value))]")
-//                }).catch({ (error) in
-//                    print("[UPLOAD MEDIA (error)-> (\(error))]")
-//                })
-//            })
+                //self.tryRequest(id: data["id"].intValue, file: data, image: image)
+                self.tryRequest(id: data["id"].intValue, file: data, image: image, completion: {
+                    let i = Message()
+                    i.image = image
+                    self.messages.append(i)
+                    self.collectionView?.reloadData()
 
+                })
+            })
             
             }.catch { (error) in
                 print("the error is \(error)")
         }
-        
-        
-        print("upload to database!!!")
+        print("***... uploading the picture ...***")
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -203,16 +197,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         newViewController.convId = convId
         newViewController.viewController = self
         newViewController.loadCircles()
-    }
-    
-    func findLinkId(links: [[String: Any]], linkId: Int) -> [String: Any]? {
-        for idx in 0...links.count - 1 {
-            if links[idx]["id"] as! Int == linkId {
-                return links[idx]
-            }
-        }
-        
-        return nil
     }
     
     func loadDayName(weekDay: Int) -> String{
@@ -266,8 +250,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     func launchTimer() {
         
-        self.loadConv()
-        
+        DispatchQueue.main.async {
+            self.loadConv()
+        }
         
         SocketManager.sharedInstance.getManager().defaultSocket.emit("join_conversation", JoinConversation(conversation_id: convId))
         SocketManager.sharedInstance.getManager().defaultSocket.on("message") { data, ack in
@@ -344,6 +329,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     
     private func loadConv() {
+        self.messages.removeAll()
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
             jsonData in
             
@@ -362,18 +348,26 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                         
                         json.forEach({ (name, data) in
                             if name.isEqualToString(find: "content") {
-                                data.forEach({ (name, data) in
-                                    self.retrieveMedia(media: data, completion: { (image) in
-                                        newMessage.image = image
-                                        newMessage.text = nil
-                                        self.collectionView?.reloadData()
-                                    })
+                                    data.forEach({ (name, data) in
+                                        if data["media"]["uploaded"].boolValue == true {
+                                            self.retrieveMedia(media: data, completion: { (image) in
+//                                            newMessage.image = image
+//                                            newMessage.text = nil
+//                                            self.collectionView?.reloadData()
+                                        })
+                                    }
                                 })
                             }
                         })
                     }).catch({ (error) in
                         print("ERROR = \(error)")
                     })
+                    newMessage.text = nil
+                    newMessage.image = nil
+                    newMessage.isMediaLoading = true
+                    newMessage.mediaCellCount = (self.mediaCellCount)
+                    self.mediaCellCount += 1
+                    self.collectionView?.reloadData()
                 } else {
                     newMessage.text = data["content"].stringValue
                     newMessage.date = self.returnDateFromString(text: data["sent"].stringValue)
@@ -416,7 +410,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         messageInputContainerView.addConstraintsWithFormat(format: "H:|[v0]|", views: topBorderView)
         messageInputContainerView.addConstraintsWithFormat(format: "V:|[v0(0.5)]", views: topBorderView)
-        
     }
     
     @objc func handleSend() {
@@ -478,6 +471,14 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
+        
+        if messages[indexPath.item].isMediaLoading != nil && messages[indexPath.item].isMediaLoading == true {
+            
+            
+            cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 200, height:  250)
+            cell.textBubbleView.backgroundColor = UIColor.gray
+            return cell
+        }
         
         if messages[indexPath.item].image != nil {
             let profileImageName = "Logo-png"

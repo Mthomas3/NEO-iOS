@@ -16,6 +16,8 @@ class Message {
     var isSender: Bool = false
     //@NSManaged var friend: Friend?
     var image: UIImage? = nil
+    var isMediaLoading: Bool? = false
+    var mediaCellCount: Int? = 0
 }
 
 class Circle {

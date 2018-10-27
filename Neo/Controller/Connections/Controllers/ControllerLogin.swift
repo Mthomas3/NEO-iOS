@@ -114,14 +114,13 @@ class ControllerLogin: UIViewController {
         
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_LOGIN, param: User.sharedInstance.getLoginParameters()).done {
             loginResponse in
-            
             _ = DataBaseManager.saveDataToBase(appDelegate: UIApplication.shared.delegate as! AppDelegate)
             
             User.sharedInstance.setUserInformations(token: loginResponse["token"] as? String)
             
             _ = ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_INFORMATION, param: User.sharedInstance.getTokenParameter()).done {
                 informationResponse in
-                
+
                 let content = informationResponse["content"] as! [String: Any]
                 User.sharedInstance.setUserInformations(fname: content["first_name"] as? String, lname: content["last_name"] as? String, birthday: content["birthday"] as? String, id: content["id"] as? Int)
                 self.performSegue(withIdentifier: "segueLogin", sender: self)

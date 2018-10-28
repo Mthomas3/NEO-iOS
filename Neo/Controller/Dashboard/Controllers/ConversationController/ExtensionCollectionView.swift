@@ -11,9 +11,6 @@ import UIKit
 
 extension ChatLogController:  UICollectionViewDelegateFlowLayout{
     
-//    private let cellId = "cellId"
-//    private let dateId = "dateId"
-//    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
@@ -138,7 +135,4 @@ extension ChatLogController:  UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(8, 0, 0, 0)
     }
-    
-    
-    
 }

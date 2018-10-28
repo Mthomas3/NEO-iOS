@@ -34,6 +34,7 @@
 		1E7B298B215A517400D10212 /* ServicesCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B298A215A517400D10212 /* ServicesCircles.swift */; };
 		1E81AE572185EA8900C26439 /* ItemCellMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E81AE562185EA8900C26439 /* ItemCellMessage.swift */; };
 		1E81AE592185ECA800C26439 /* ExtensionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */; };
+		1E81AE5B2185EEC700C26439 /* ExtensionLoadingConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */; };
 		1E93D4522147C82800D4B1C8 /* ControllerContactTabMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E93D4512147C82800D4B1C8 /* ControllerContactTabMenu.swift */; };
 		1E93D4542147C8B600D4B1C8 /* ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E93D4532147C8B600D4B1C8 /* ChildViewController.swift */; };
 		1E98D4B92026D83D006249CE /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98D4B82026D83D006249CE /* SettingViewController.swift */; };
@@ -127,6 +128,7 @@
 		1E7B298A215A517400D10212 /* ServicesCircles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCircles.swift; sourceTree = "<group>"; };
 		1E81AE562185EA8900C26439 /* ItemCellMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellMessage.swift; sourceTree = "<group>"; };
 		1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCollectionView.swift; sourceTree = "<group>"; };
+		1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionLoadingConversation.swift; sourceTree = "<group>"; };
 		1E93D4512147C82800D4B1C8 /* ControllerContactTabMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerContactTabMenu.swift; sourceTree = "<group>"; };
 		1E93D4532147C8B600D4B1C8 /* ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildViewController.swift; sourceTree = "<group>"; };
 		1E98D4B82026D83D006249CE /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 			children = (
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 				1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */,
+				1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */,
 			);
 			path = ConversationController;
 			sourceTree = "<group>";
@@ -997,6 +1000,7 @@
 				1EE73FBB1F707931002206EE /* CommonFunc.swift in Sources */,
 				1EB0CD7D2056267D00101CF3 /* DataBaseManager.swift in Sources */,
 				4897C7CF1F0C176C00D9EA0C /* ViewController.swift in Sources */,
+				1E81AE5B2185EEC700C26439 /* ExtensionLoadingConversation.swift in Sources */,
 				1ED3FA9120FD7F16009570C9 /* ControllerResetPassword.swift in Sources */,
 				1E22B915214DBDBA00E19A00 /* ControllerAddNewCercle.swift in Sources */,
 				9AA7DABE1F924740001EA270 /* PermanentModel.xcdatamodeld in Sources */,

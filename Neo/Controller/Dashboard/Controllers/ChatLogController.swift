@@ -2,7 +2,7 @@
 //  ChatLogController.swift
 //  Neo
 //
-//  Created by Nicolas Gascon on 11/04/2018.
+//  Created by Thomas Martins on 05/10/2018.
 //  Copyright © 2018 Neo. All rights reserved.
 //
 
@@ -106,7 +106,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         let headers: HTTPHeaders = [ "Authorization": User.sharedInstance.getParameter(parameter: "token") ]
         let imageTest = UIImage(named: "Logo-png.png")
         let URL = try! URLRequest(url: baseURL, method: .post, headers: headers)
-        
         
         Alamofire.upload(multipartFormData: { multipartFormData in
 

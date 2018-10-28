@@ -185,7 +185,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("VIEW IS LOADING")
         setUpUI()
     }
     
@@ -228,7 +227,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_DOWNLOAD_MEDIA, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": media["media"]["id"].intValue]).done { (value) in
                 completion(self.base64Convert(base64String: JSON(value)["data"].stringValue))
             }.catch { (error) in
-                print("[ERROR RETRIEVE MEDIA (\(error))]")
+                print("[ERROR RETRIEVE MEDIA (\(error)) ]")
         }
     }
     
@@ -330,7 +329,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         
         for idx in 0...(self.messages.count) - 1 {
             if self.messages[idx].isMediaLoading == true {
-                print("SHOW INDEX \(idx)")
                 self.messages[idx].image = image
                 self.messages[idx].text = nil
                 self.messages[idx].isMediaLoading = false

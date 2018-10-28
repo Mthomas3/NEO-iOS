@@ -336,31 +336,20 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 break
             }
         }
-        
-        
-        
     }
     
     private func loadingMediaIntoConv(data: JSON, index: Int) {
         
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "message_id": data["id"].intValue]).done({ (value) in
             let json = JSON(value)
-            print("** INSIDE REQUEST MEDIAINFO CONV ***")
 
             json.forEach({ (name, data) in
                 if name.isEqualToString(find: "content") {
                     data.forEach({ (name, data) in
                         if data["media"]["uploaded"].boolValue == true {
                             self.retrieveMedia(media: data, completion: { (image) in
-                                //                                            newMessage.image = image
-                                //                                            newMessage.text = nil
-                                //                                            self.collectionView?.reloadData()
-                                
-                                //self.collectionView?.insertItems(at: <#T##[IndexPath]#>)
-                                
                                 self.mediaDownloaded[index] = image
                                 self.displayMedia(image: image)
-                                print("THE IMAGE IS \(image)")
                             })
                         }
                     })

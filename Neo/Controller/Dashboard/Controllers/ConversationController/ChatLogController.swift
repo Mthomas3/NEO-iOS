@@ -96,56 +96,9 @@ class ChatLogController: UICollectionViewController,
         present(imagePickerController, animated: true, completion: nil)
     }
     
-    private func tryRequest(id: Int, file: JSON, image: UIImage, completion: @escaping () -> ()) {
-        
-        let baseURL = ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD.concat(string: "/\(id)"))
-        
-        let headers: HTTPHeaders = [ "Authorization": User.sharedInstance.getParameter(parameter: "token") ]
-        let imageTest = UIImage(named: "Logo-png.png")
-        let URL = try! URLRequest(url: baseURL, method: .post, headers: headers)
-        
-        Alamofire.upload(multipartFormData: { multipartFormData in
 
-            multipartFormData.append(UIImagePNGRepresentation(image)!, withName: "file", fileName: "\(file["identifier"])", mimeType: "image/png")
-
-            multipartFormData.append("\(id)".data(using: String.Encoding.utf8)!, withName: "media_id")
-
-        }, with: URL, encodingCompletion: {
-            encodingResult in
-            switch encodingResult {
-            case .success(let upload, _, _):
-                upload.responseJSON() { response in
-                    debugPrint("SUCCESS RESPONSE: \(response)")
-
-                    completion()
-                    
-                }
-            case .failure(let encodingError):
-                print("ERROR RESPONSE: \(encodingError)")
-            }
-        })
-        
-    }
     
-    private func uploadImageToDataBase(image: UIImage) {
-        
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "files": [NSUUID().uuidString.split(separator: "-")]]).done { (value) in
-            
-            JSON(value)["media_list"].forEach({ (name, data) in
-                self.tryRequest(id: data["id"].intValue, file: data, image: image, completion: {
-                    let i = Message()
-                    i.image = image
-                    self.messages.append(i)
-                    self.collectionView?.reloadData()
-
-                })
-            })
-            
-            }.catch { (error) in
-                print("[ERROR UPLOADING IMAGE DATA BASE  \(error) ]")
-        }
-        print("***... uploading the picture ...***")
-    }
+  
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
@@ -227,7 +180,7 @@ class ChatLogController: UICollectionViewController,
         }
     }
     
-    private func handleMessage(message: JSON) {
+    internal func handleMessage(message: JSON) {
         let msg = Message()
         
         msg.text = message["message"]["content"].stringValue
@@ -241,38 +194,7 @@ class ChatLogController: UICollectionViewController,
         }
         self.messages.append(msg)
     }
-    
-    func launchTimer() {
-        
-        DispatchQueue.main.async {
-            self.loadConv()
-        }
-        
-        SocketManager.sharedInstance.getManager().defaultSocket.emit("join_conversation", JoinConversation(conversation_id: convId))
-        SocketManager.sharedInstance.getManager().defaultSocket.on("message") { data, ack in
-            
-            data.forEach({ (item) in
-                let data = JSON(item)
-                
-                if data["message"]["medias"].boolValue == true {
-                    if (data["status"].stringValue).isEqualToString(find: "done"){
-                        self.retrieveMedia(media: data, completion: { (image) in
-                            let i = Message()
-                            i.image = image
-                            self.messages.append(i)
-                            self.collectionView?.reloadData()
-                        })
-                    }
-                    
-                } else {
-                    self.handleMessage(message: data)
-                }
-            })
-            self.slideOnLastMessage()
-        }
 
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         if timer != nil {
             timer?.invalidate()

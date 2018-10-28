@@ -150,7 +150,7 @@ class FriendsControllerCollectionViewController: UICollectionViewController, UIC
         
         if indexPath.item < self.messages.count {
             controller.convId = self.messages[indexPath.item].id!
-            controller.launchTimer()
+            controller.loadConversationOnSocket()
         }
     }
 }

@@ -63,79 +63,136 @@ extension ChatLogController {
         print("***... uploading the picture ...***")
     }
     
-    internal func loadConv() {
+    private func base64Convert(base64String: String?) -> UIImage{
+        if (base64String?.isEmpty)! {
+            return UIImage()
+        }else {
+            let temp = base64String?.components(separatedBy: ",")
+            let dataDecoded : Data = Data(base64Encoded: temp![1], options: .ignoreUnknownCharacters)!
+            let decodedimage = UIImage(data: dataDecoded)
+            return decodedimage!
+        }
+    }
+    
+    private func retrieveMedia(media: JSON, completion: @escaping(UIImage) -> ()) {
+        
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_DOWNLOAD_MEDIA, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": media["media"]["id"].intValue]).done { (value) in
+                completion(self.base64Convert(base64String: JSON(value)["data"].stringValue))
+            }.catch { (error) in
+                print("[ERROR RETRIEVE MEDIA (\(error)) ]")
+        }
+    }
+    
+    private func loadingMediaIntoConversation(data: JSON, index: Int) {
+        
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "message_id": data["id"].intValue]).done({ (value) in
+            
+            let json = JSON(value)
+            
+            json.forEach({ (name, data) in
+                if name.isEqualToString(find: "content") {
+                    data.forEach({ (name, data) in
+                        if data["media"]["uploaded"].boolValue == true {
+                            self.retrieveMedia(media: data, completion: { (image) in
+                                self.displayMediaInCollectionView(image: image)
+                            })
+                        }
+                    })
+                }
+            })
+        }).catch({ (error) in
+            print("[ERROR: on (func loadingMediaIntoConversation()) | \(error)]")
+        })
+    }
+    
+    private func handleMediaConversation(data: JSON, isSocket: Bool) -> Message{
+        let newMedia = Message()
+        
+        newMedia.text = nil
+        newMedia.image = nil
+        newMedia.isMediaLoading = true
+        newMedia.mediaCellCount = (self.mediaCellCount)
+        
+        DispatchQueue.main.async {
+            if isSocket {
+                self.retrieveMedia(media: data, completion: { (image) in
+                    self.displayMediaInCollectionView(image: image)
+                })
+            }else {
+                self.loadingMediaIntoConversation(data: data, index: self.mediaCellCount)
+            }
+        }
+        return newMedia
+    }
+    
+    private func handleMessageConversation(data: JSON, content: JSON?, isSocket: Bool) -> Message {
+        let newMessage = Message()
+        
+        if isSocket {
+            newMessage.text = data["message"]["content"].stringValue
+            if data["sender"]["email"].stringValue == User.sharedInstance.getEmail() {
+                newMessage.isSender = true
+            }else {
+                newMessage.isSender = false
+            }
+        }else {
+            newMessage.text = data["content"].stringValue
+            newMessage.isSender = self.detectSenderMessage(link_id: data["link_id"].intValue, links: content!)
+        }
+        newMessage.isMediaLoading = false
+        newMessage.image = nil
+        newMessage.date = self.returnDateFromString(text: data["sent"].stringValue)
+        
+        return newMessage
+    }
+    
+    public func loadAllConversation() {
         
         self.messages.removeAll()
         
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
             jsonData in
+            
             let content = JSON(jsonData)["content"]
             let messages = content["messages"]
             self.createButtonConversation(nameConversation: content["circle"]["name"].stringValue)
-            self.messages.removeAll()
             
             messages.forEach({ (item, data) in
-                let newMessage = Message()
                 if data["medias"].boolValue == true {
-                    
-                    newMessage.text = nil
-                    newMessage.image = nil
-                    newMessage.isMediaLoading = true
-                    newMessage.mediaCellCount = (self.mediaCellCount)
-                    
-                    DispatchQueue.main.async {
-                        
-                        self.loadingMediaIntoConv(data: data, index: self.mediaCellCount)
-                    }
-                    
+                    self.messages.append(self.handleMediaConversation(data: data, isSocket: false))
                 } else {
-                    newMessage.text = data["content"].stringValue
-                    newMessage.isMediaLoading = false
-                    newMessage.date = self.returnDateFromString(text: data["sent"].stringValue)
-                    newMessage.isSender = self.detectSenderMessage(link_id: data["link_id"].intValue, links: content["links"])
+                    self.messages.append(self.handleMessageConversation(data: data, content: content["links"], isSocket: false))
                 }
-                
-                self.messages.append(newMessage)
                 self.mediaCellCount += 1
-                
                 self.slideOnLastMessage()
             })
             }.catch { error in
-                print("[Error on loadConv: (\(error))]")
+                print("[ERROR: on (func LOADALLCONVERSATION()) | \(error)]")
         }
     }
     
-    
-    internal func launchTimer() {
+    public func loadConversationOnSocket() {
         
-        DispatchQueue.main.async {
-            self.loadConv()
-        }
+        self.loadAllConversation()
         
         SocketManager.sharedInstance.getManager().defaultSocket.emit("join_conversation", JoinConversation(conversation_id: convId))
+        
         SocketManager.sharedInstance.getManager().defaultSocket.on("message") { data, ack in
             
             data.forEach({ (item) in
+                
                 let data = JSON(item)
                 
                 if data["message"]["medias"].boolValue == true {
-                    if (data["status"].stringValue).isEqualToString(find: "done"){
-                        self.retrieveMedia(media: data, completion: { (image) in
-                            let i = Message()
-                            i.image = image
-                            self.messages.append(i)
-                            self.collectionView?.reloadData()
-                        })
+                    if (data["status"].stringValue).isEqualToString(find: "done") {
+                        self.messages.append(self.handleMediaConversation(data: data, isSocket: true))
                     }
-                    
                 } else {
-                    self.handleMessage(message: data)
+                    self.messages.append(self.handleMessageConversation(data: data, content: nil, isSocket: true))
                 }
             })
+            self.mediaCellCount += 1
             self.slideOnLastMessage()
         }
-        
     }
-    
-    
 }

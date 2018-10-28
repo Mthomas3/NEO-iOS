@@ -159,41 +159,6 @@ class ChatLogController: UICollectionViewController,
     deinit {
         SocketManager.sharedInstance.getManager().defaultSocket.emit("leave_conversation", JoinConversation(conversation_id: convId))
     }
-    
-    func base64Convert(base64String: String?) -> UIImage{
-        if (base64String?.isEmpty)! {
-            return UIImage()
-        }else {
-            let temp = base64String?.components(separatedBy: ",")
-            let dataDecoded : Data = Data(base64Encoded: temp![1], options: .ignoreUnknownCharacters)!
-            let decodedimage = UIImage(data: dataDecoded)
-            return decodedimage!
-        }
-    }
-    
-    public func retrieveMedia(media: JSON, completion: @escaping(UIImage) -> ()) {
-        
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_DOWNLOAD_MEDIA, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "media_id": media["media"]["id"].intValue]).done { (value) in
-                completion(self.base64Convert(base64String: JSON(value)["data"].stringValue))
-            }.catch { (error) in
-                print("[ERROR RETRIEVE MEDIA (\(error)) ]")
-        }
-    }
-    
-    internal func handleMessage(message: JSON) {
-        let msg = Message()
-        
-        msg.text = message["message"]["content"].stringValue
-        msg.date = self.returnDateFromString(text: message["time"].stringValue)
-        msg.image = nil
-        
-        if message["sender"]["email"].stringValue == User.sharedInstance.getEmail() {
-            msg.isSender = true
-        } else {
-            msg.isSender = false
-        }
-        self.messages.append(msg)
-    }
 
     override func viewWillDisappear(_ animated: Bool) {
         if timer != nil {
@@ -243,9 +208,10 @@ class ChatLogController: UICollectionViewController,
         return false
     }
     
-    private func displayMedia(image: UIImage) {
+    internal func displayMediaInCollectionView(image: UIImage) {
         
         for idx in 0...(self.messages.count) - 1 {
+            
             if self.messages[idx].isMediaLoading == true {
                 self.messages[idx].image = image
                 self.messages[idx].text = nil
@@ -254,29 +220,6 @@ class ChatLogController: UICollectionViewController,
                 break
             }
         }
-    }
-    
-    internal func loadingMediaIntoConv(data: JSON, index: Int) {
-        
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "message_id": data["id"].intValue]).done({ (value) in
-            let json = JSON(value)
-
-            json.forEach({ (name, data) in
-                if name.isEqualToString(find: "content") {
-                    data.forEach({ (name, data) in
-                        if data["media"]["uploaded"].boolValue == true {
-                            self.retrieveMedia(media: data, completion: { (image) in
-                                self.mediaDownloaded[index] = image
-                                self.displayMedia(image: image)
-                            })
-                        }
-                    })
-                }
-            })
-        }).catch({ (error) in
-            print("ERROR = \(error)")
-        })
-        
     }
     
     @objc func clickOnTitle() {

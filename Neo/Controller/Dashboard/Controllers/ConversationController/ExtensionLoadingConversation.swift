@@ -40,27 +40,6 @@ extension ChatLogController {
                 print("ERROR RESPONSE: \(encodingError)")
             }
         })
-        
-    }
-    
-    internal func uploadImageToDataBase(image: UIImage) {
-        
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "files": [NSUUID().uuidString.split(separator: "-")]]).done { (value) in
-            
-            JSON(value)["media_list"].forEach({ (name, data) in
-                self.tryRequest(id: data["id"].intValue, file: data, image: image, completion: {
-                    let i = Message()
-                    i.image = image
-                    self.messages.append(i)
-                    self.collectionView?.reloadData()
-                    
-                })
-            })
-            
-            }.catch { (error) in
-                print("[ERROR UPLOADING IMAGE DATA BASE  \(error) ]")
-        }
-        print("***... uploading the picture ...***")
     }
     
     private func base64Convert(base64String: String?) -> UIImage{
@@ -103,6 +82,21 @@ extension ChatLogController {
         }).catch({ (error) in
             print("[ERROR: on (func loadingMediaIntoConversation()) | \(error)]")
         })
+    }
+    
+    internal func uploadImageSelectedOnConversation(image: UIImage) {
+        
+        ServicesChat.shareInstance.preloadindgMediaServer(conv_id: convId) { (value) in
+            value["media_list"].forEach({ (name, data) in
+                self.tryRequest(id: data["id"].intValue, file: data, image: image, completion: {
+                    let i = Message()
+                    i.image = image
+                    self.messages.append(i)
+                    self.collectionView?.reloadData()
+                })
+            })
+        }
+        print("***... uploading the picture ...***")
     }
     
     private func handleMediaConversation(data: JSON, isSocket: Bool) -> Message{

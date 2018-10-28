@@ -66,7 +66,16 @@ class ServicesChat {
             completion(JSON(response))
             }.catch {
                 error in
-                print("addIntoconversation error )> \(error)")
+                print("addIntoconversation -> \(error)")
+        }
+    }
+    
+    public func preloadindgMediaServer(conv_id: Int, completion: @escaping (JSON) -> ()) {
+        
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": conv_id, "files": [NSUUID().uuidString.split(separator: "-")]]).done { (value) in
+                completion(JSON(value))
+            }.catch { (error) in
+                print("preloadindgMediaServer -> \(error)")
         }
     }
 }

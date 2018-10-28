@@ -85,7 +85,7 @@ class ChatLogController: UICollectionViewController,
         }
         
         if let selectedImage = selectedImageFromPicker {
-            uploadImageToDataBase(image: selectedImage)
+            uploadImageSelectedOnConversation(image: selectedImage)
         }
         dismiss(animated: true, completion: nil)
     }

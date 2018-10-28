@@ -124,7 +124,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                     
                 }
             case .failure(let encodingError):
-                // hide progressbas here
                 print("ERROR RESPONSE: \(encodingError)")
             }
         })
@@ -137,7 +136,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MESSAGE_SEND, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId, "files": [NSUUID().uuidString.split(separator: "-")]]).done { (value) in
             
             JSON(value)["media_list"].forEach({ (name, data) in
-                //self.tryRequest(id: data["id"].intValue, file: data, image: image)
                 self.tryRequest(id: data["id"].intValue, file: data, image: image, completion: {
                     let i = Message()
                     i.image = image
@@ -148,7 +146,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             })
             
             }.catch { (error) in
-                print("the error is \(error)")
+                print("[ERROR UPLOADING IMAGE DATA BASE  \(error) ]")
         }
         print("***... uploading the picture ...***")
     }

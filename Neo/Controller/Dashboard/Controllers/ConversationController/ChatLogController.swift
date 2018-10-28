@@ -15,17 +15,14 @@ import Alamofire
 class ChatLogController: UICollectionViewController,
     UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
-    public let cellId = "cellId"
-    public let dateId = "dateId"
-    
-    var timer: Timer?
-    var messages = [Message]()
-    var convId: Int = 0
-    var circleId: Int = 0
-    let messageDay:[Int: String] = [1:"Sun", 2:"Mon", 3:"Tue", 4:"Wed", 5:"Thu", 6:"Fri", 7:"Sat"]
-    var bottomConstraint: NSLayoutConstraint?
-    var mediaCellCount = 0
-    var mediaDownloaded = [Int: UIImage]()
+    internal let cellId = "cellId"
+    internal let dateId = "dateId"
+    internal var messages = [Message]()
+    internal var convId: Int = 0
+    internal var circleId: Int = 0
+    private let messageDay:[Int: String] = [1:"Sun", 2:"Mon", 3:"Tue", 4:"Wed", 5:"Thu", 6:"Fri", 7:"Sat"]
+    private var bottomConstraint: NSLayoutConstraint?
+    internal var mediaCellCount = 0
     
     let messageInputContainerView: UIView = {
         let view = UIView()
@@ -65,6 +62,11 @@ class ChatLogController: UICollectionViewController,
         return button
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setUpUI()
+    }
+    
     private func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -92,13 +94,8 @@ class ChatLogController: UICollectionViewController,
         let imagePickerController = UIImagePickerController()
         imagePickerController.allowsEditing = true
         imagePickerController.delegate = self
-        
         present(imagePickerController, animated: true, completion: nil)
     }
-    
-
-    
-  
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
@@ -124,17 +121,11 @@ class ChatLogController: UICollectionViewController,
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: messageInputContainerView)
         view.addConstraintsWithFormat(format: "V:[v0(68)]", views: messageInputContainerView)
         bottomConstraint = NSLayoutConstraint(item: messageInputContainerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
-        
         view.addConstraint(bottomConstraint!)
         setupInputComponents()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotificationHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         setUpNavigationBar()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setUpUI()
     }
     
     @objc func addToConv() {
@@ -158,12 +149,6 @@ class ChatLogController: UICollectionViewController,
     
     deinit {
         SocketManager.sharedInstance.getManager().defaultSocket.emit("leave_conversation", JoinConversation(conversation_id: convId))
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        if timer != nil {
-            timer?.invalidate()
-        }
     }
     
     func returnDateFromString( text: String) -> Date {

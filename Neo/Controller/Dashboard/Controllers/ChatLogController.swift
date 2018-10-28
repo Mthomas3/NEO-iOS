@@ -26,6 +26,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     let messageDay:[Int: String] = [1:"Sun", 2:"Mon", 3:"Tue", 4:"Wed", 5:"Thu", 6:"Fri", 7:"Sat"]
     var bottomConstraint: NSLayoutConstraint?
     var mediaCellCount = 0
+    var mediaDownloaded = [Int: UIImage]()
     
     let messageInputContainerView: UIView = {
         let view = UIView()
@@ -187,6 +188,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("VIEW IS LOADING")
         setUpUI()
     }
     
@@ -327,12 +329,58 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return false
     }
     
+    private func displayMedia(image: UIImage) {
+        
+        for idx in 0...(self.messages.count) - 1 {
+            if self.messages[idx].isMediaLoading == true {
+                print("SHOW INDEX \(idx)")
+                self.messages[idx].image = image
+                self.messages[idx].text = nil
+                self.messages[idx].isMediaLoading = false
+                self.collectionView?.reloadItems(at: [IndexPath(row: idx, section: 0)])
+                break
+            }
+        }
+        
+        
+        
+    }
+    
+    private func loadingMediaIntoConv(data: JSON, index: Int) {
+        
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "message_id": data["id"].intValue]).done({ (value) in
+            let json = JSON(value)
+            print("** INSIDE REQUEST MEDIAINFO CONV ***")
+
+            json.forEach({ (name, data) in
+                if name.isEqualToString(find: "content") {
+                    data.forEach({ (name, data) in
+                        if data["media"]["uploaded"].boolValue == true {
+                            self.retrieveMedia(media: data, completion: { (image) in
+                                //                                            newMessage.image = image
+                                //                                            newMessage.text = nil
+                                //                                            self.collectionView?.reloadData()
+                                
+                                //self.collectionView?.insertItems(at: <#T##[IndexPath]#>)
+                                
+                                self.mediaDownloaded[index] = image
+                                self.displayMedia(image: image)
+                                print("THE IMAGE IS \(image)")
+                            })
+                        }
+                    })
+                }
+            })
+        }).catch({ (error) in
+            print("ERROR = \(error)")
+        })
+        
+    }
     
     private func loadConv() {
         self.messages.removeAll()
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CONVERSATION_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
             jsonData in
-            
             let content = JSON(jsonData)["content"]
             let messages = content["messages"]
             self.createButtonConversation(nameConversation: content["circle"]["name"].stringValue)
@@ -340,41 +388,28 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             
             messages.forEach({ (item, data) in
                 let newMessage = Message()
-                
                 if data["medias"].boolValue == true {
                     
-                    ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "message_id": data["id"].intValue]).done({ (value) in
-                        let json = JSON(value)
-                        
-                        json.forEach({ (name, data) in
-                            if name.isEqualToString(find: "content") {
-                                    data.forEach({ (name, data) in
-                                        if data["media"]["uploaded"].boolValue == true {
-                                            self.retrieveMedia(media: data, completion: { (image) in
-//                                            newMessage.image = image
-//                                            newMessage.text = nil
-//                                            self.collectionView?.reloadData()
-                                        })
-                                    }
-                                })
-                            }
-                        })
-                    }).catch({ (error) in
-                        print("ERROR = \(error)")
-                    })
                     newMessage.text = nil
                     newMessage.image = nil
                     newMessage.isMediaLoading = true
                     newMessage.mediaCellCount = (self.mediaCellCount)
-                    self.mediaCellCount += 1
-                    self.collectionView?.reloadData()
+                    
+                    DispatchQueue.main.async {
+
+                        self.loadingMediaIntoConv(data: data, index: self.mediaCellCount)
+                    }
+                    
                 } else {
                     newMessage.text = data["content"].stringValue
+                    newMessage.isMediaLoading = false
                     newMessage.date = self.returnDateFromString(text: data["sent"].stringValue)
                     newMessage.isSender = self.detectSenderMessage(link_id: data["link_id"].intValue, links: content["links"])
                 }
                 
                 self.messages.append(newMessage)
+                self.mediaCellCount += 1
+                
                 self.slideOnLastMessage()
             })
             }.catch { error in
@@ -476,7 +511,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             
             
             cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 200, height:  250)
-            cell.textBubbleView.backgroundColor = UIColor.gray
+            cell.textBubbleView.backgroundColor = UIColor.lightGray
             return cell
         }
         
@@ -572,7 +607,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        if messages[indexPath.item].image != nil{
+        if messages[indexPath.item].image != nil || messages[indexPath.item].isMediaLoading == true{
             return CGSize(width: view.frame.width, height: 265)
         }
         
@@ -603,7 +638,7 @@ class ChatLogMessageCell: BaseCell {
     }()
     
     
-    let messageImageView: UIImageView = {
+    var messageImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor.clear
         imageView.contentMode = .scaleAspectFill

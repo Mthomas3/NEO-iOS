@@ -33,6 +33,7 @@
 		1E687B8F1F686496000059FF /* NextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E687B8E1F686496000059FF /* NextButton.swift */; };
 		1E7B298B215A517400D10212 /* ServicesCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B298A215A517400D10212 /* ServicesCircles.swift */; };
 		1E81AE572185EA8900C26439 /* ItemCellMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E81AE562185EA8900C26439 /* ItemCellMessage.swift */; };
+		1E81AE592185ECA800C26439 /* ExtensionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */; };
 		1E93D4522147C82800D4B1C8 /* ControllerContactTabMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E93D4512147C82800D4B1C8 /* ControllerContactTabMenu.swift */; };
 		1E93D4542147C8B600D4B1C8 /* ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E93D4532147C8B600D4B1C8 /* ChildViewController.swift */; };
 		1E98D4B92026D83D006249CE /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98D4B82026D83D006249CE /* SettingViewController.swift */; };
@@ -125,6 +126,7 @@
 		1E687B8E1F686496000059FF /* NextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextButton.swift; sourceTree = "<group>"; };
 		1E7B298A215A517400D10212 /* ServicesCircles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCircles.swift; sourceTree = "<group>"; };
 		1E81AE562185EA8900C26439 /* ItemCellMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellMessage.swift; sourceTree = "<group>"; };
+		1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCollectionView.swift; sourceTree = "<group>"; };
 		1E93D4512147C82800D4B1C8 /* ControllerContactTabMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerContactTabMenu.swift; sourceTree = "<group>"; };
 		1E93D4532147C8B600D4B1C8 /* ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildViewController.swift; sourceTree = "<group>"; };
 		1E98D4B82026D83D006249CE /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
+				1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */,
 			);
 			path = ConversationController;
 			sourceTree = "<group>";
@@ -1036,6 +1039,7 @@
 				1E98D4BB2026DAC5006249CE /* ControllerTableViewAccount.swift in Sources */,
 				9AB69AA920F41FD600E0FEAE /* MemberCreateConvCell.swift in Sources */,
 				1E687B8F1F686496000059FF /* NextButton.swift in Sources */,
+				1E81AE592185ECA800C26439 /* ExtensionCollectionView.swift in Sources */,
 				1EBB0725202E78F000DCE1C3 /* UIBarButtons.swift in Sources */,
 				9AB69AA720F3CE8100E0FEAE /* CreateConvCirclesController.swift in Sources */,
 				1ECEAB71214AB6EE00CEE1B7 /* ItemCell.swift in Sources */,

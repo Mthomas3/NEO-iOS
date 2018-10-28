@@ -32,6 +32,7 @@
 		1E687B881F65F8D6000059FF /* ControllerRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E687B871F65F8D6000059FF /* ControllerRegistration.swift */; };
 		1E687B8F1F686496000059FF /* NextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E687B8E1F686496000059FF /* NextButton.swift */; };
 		1E7B298B215A517400D10212 /* ServicesCircles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B298A215A517400D10212 /* ServicesCircles.swift */; };
+		1E81AE572185EA8900C26439 /* ItemCellMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E81AE562185EA8900C26439 /* ItemCellMessage.swift */; };
 		1E93D4522147C82800D4B1C8 /* ControllerContactTabMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E93D4512147C82800D4B1C8 /* ControllerContactTabMenu.swift */; };
 		1E93D4542147C8B600D4B1C8 /* ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E93D4532147C8B600D4B1C8 /* ChildViewController.swift */; };
 		1E98D4B92026D83D006249CE /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98D4B82026D83D006249CE /* SettingViewController.swift */; };
@@ -123,6 +124,7 @@
 		1E687B871F65F8D6000059FF /* ControllerRegistration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerRegistration.swift; sourceTree = "<group>"; };
 		1E687B8E1F686496000059FF /* NextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextButton.swift; sourceTree = "<group>"; };
 		1E7B298A215A517400D10212 /* ServicesCircles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCircles.swift; sourceTree = "<group>"; };
+		1E81AE562185EA8900C26439 /* ItemCellMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellMessage.swift; sourceTree = "<group>"; };
 		1E93D4512147C82800D4B1C8 /* ControllerContactTabMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerContactTabMenu.swift; sourceTree = "<group>"; };
 		1E93D4532147C8B600D4B1C8 /* ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildViewController.swift; sourceTree = "<group>"; };
 		1E98D4B82026D83D006249CE /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 		1E687B8A1F68622D000059FF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1E81AE542185EA5700C26439 /* ItemCellMessage */,
 				1ECEAB6C214AB67900CEE1B7 /* ItemCellContact */,
 				1E2A02F020326A710037854A /* UIButton */,
 				1E2A02F120326AD00037854A /* UICommons */,
@@ -465,6 +468,14 @@
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 			);
 			path = ConversationController;
+			sourceTree = "<group>";
+		};
+		1E81AE542185EA5700C26439 /* ItemCellMessage */ = {
+			isa = PBXGroup;
+			children = (
+				1E81AE562185EA8900C26439 /* ItemCellMessage.swift */,
+			);
+			path = ItemCellMessage;
 			sourceTree = "<group>";
 		};
 		1EB0CD7E205626A900101CF3 /* ApiManager */ = {
@@ -1002,6 +1013,7 @@
 				1E34678F2166AEFC007A440D /* UiButton.swift in Sources */,
 				1E2C99862058B45C00F18601 /* UIViewController.swift in Sources */,
 				1E687B861F653FAB000059FF /* ControllerLogin.swift in Sources */,
+				1E81AE572185EA8900C26439 /* ItemCellMessage.swift in Sources */,
 				1EECB2D921515FAC00F8E51B /* DisplayMessage.swift in Sources */,
 				1E252A101F77324000B245F7 /* String.swift in Sources */,
 				1EA58BE92148764500442272 /* ChildViewControllerInvitationsCircle.swift in Sources */,

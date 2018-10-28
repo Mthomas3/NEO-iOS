@@ -609,185 +609,185 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
 }
 
-class ChatLogMessageCell: BaseCell {
-    
-    let messageTextView: UITextView = {
-        let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 18)
-        textView.isHidden = false
-        textView.backgroundColor = UIColor.clear
-        textView.isEditable = false
-        return textView
-    }()
-    
-    
-    var messageImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.clear
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 15
-        imageView.layer.masksToBounds = true
-        return imageView
-    }()
-    
-    
-    let textBubbleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        view.layer.cornerRadius = 15
-        view.layer.masksToBounds = true
-        return view
-    }()
-    
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.white
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 15
-        imageView.layer.masksToBounds = true
-        return imageView
-    }()
-    
-    override func setupView() {
-        super.setupView()
-        backgroundColor = UIColor.white
-        addSubview(textBubbleView)
-        addSubview(messageTextView)
-        addSubview(profileImageView)
-        
-        
-        textBubbleView.addSubview(messageImageView)
-        
-        messageImageView.leftAnchor.constraint(equalTo: textBubbleView.leftAnchor).isActive = true
-        messageImageView.topAnchor.constraint(equalTo: textBubbleView.topAnchor).isActive = true
-        messageImageView.widthAnchor.constraint(equalTo: textBubbleView.widthAnchor).isActive = true
-        messageImageView.heightAnchor.constraint(equalTo: textBubbleView.heightAnchor).isActive = true
-        
-        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: profileImageView, messageImageView)
-        addConstraintsWithFormat(format: "V:[v0(30)]|", views: profileImageView, messageImageView)
-        
-        profileImageView.backgroundColor = UIColor.white
-    }
-}
+//class ChatLogMessageCell: BaseCell {
+//    
+//    let messageTextView: UITextView = {
+//        let textView = UITextView()
+//        textView.font = UIFont.systemFont(ofSize: 18)
+//        textView.isHidden = false
+//        textView.backgroundColor = UIColor.clear
+//        textView.isEditable = false
+//        return textView
+//    }()
+//    
+//    
+//    var messageImageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.backgroundColor = UIColor.clear
+//        imageView.contentMode = .scaleAspectFill
+//        imageView.layer.cornerRadius = 15
+//        imageView.layer.masksToBounds = true
+//        return imageView
+//    }()
+//    
+//    
+//    let textBubbleView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+//        view.layer.cornerRadius = 15
+//        view.layer.masksToBounds = true
+//        return view
+//    }()
+//    
+//    let profileImageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.backgroundColor = UIColor.white
+//        imageView.contentMode = .scaleAspectFill
+//        imageView.layer.cornerRadius = 15
+//        imageView.layer.masksToBounds = true
+//        return imageView
+//    }()
+//    
+//    override func setupView() {
+//        super.setupView()
+//        backgroundColor = UIColor.white
+//        addSubview(textBubbleView)
+//        addSubview(messageTextView)
+//        addSubview(profileImageView)
+//        
+//        
+//        textBubbleView.addSubview(messageImageView)
+//        
+//        messageImageView.leftAnchor.constraint(equalTo: textBubbleView.leftAnchor).isActive = true
+//        messageImageView.topAnchor.constraint(equalTo: textBubbleView.topAnchor).isActive = true
+//        messageImageView.widthAnchor.constraint(equalTo: textBubbleView.widthAnchor).isActive = true
+//        messageImageView.heightAnchor.constraint(equalTo: textBubbleView.heightAnchor).isActive = true
+//        
+//        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: profileImageView, messageImageView)
+//        addConstraintsWithFormat(format: "V:[v0(30)]|", views: profileImageView, messageImageView)
+//        
+//        profileImageView.backgroundColor = UIColor.white
+//    }
+//}
 
-class ChatLogDateCell: BaseCell {
-    
-    let messageTextView: UITextView = {
-        let textView = UITextView()
-        textView.font = UIFont.systemFont(ofSize: 18)
-        textView.text = "15:03"
-        textView.backgroundColor = UIColor.clear
-        return textView
-    }()
-    
-    let messageImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.clear
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 15
-        imageView.layer.masksToBounds = true
-        return imageView
-    }()
-    
-    let leftLine: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        view.layer.cornerRadius = 5
-        view.layer.masksToBounds = true
-        return view
-    }()
-    
-    //More than a year display year //
-    //More than a month display month //
-    //More than a day display day //
-    //Less than a day display hours //
-    
-    let rightLine: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        view.layer.cornerRadius = 5
-        view.layer.masksToBounds = true
-        return view
-    }()
-    
-    override func setupView() {
-        super.setupView()
-        
-        backgroundColor = UIColor.white
-        
-        addSubview(leftLine)
-        addSubview(messageTextView)
-        addSubview(rightLine)
-        addSubview(messageImageView)
-        
-        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: leftLine)
-        addConstraintsWithFormat(format: "V:[v0(30)]|", views: leftLine)
-        
-        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: messageTextView)
-        addConstraintsWithFormat(format: "V:[v0(30)]|", views: messageTextView)
-        
-        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: messageImageView)
-        addConstraintsWithFormat(format: "V:[v0(30)]|", views: messageImageView)
-        
-        
-        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: rightLine)
-        addConstraintsWithFormat(format: "V:[v0(30)]|", views: rightLine)
-    }
-}
+//class ChatLogDateCell: BaseCell {
+//    
+//    let messageTextView: UITextView = {
+//        let textView = UITextView()
+//        textView.font = UIFont.systemFont(ofSize: 18)
+//        textView.text = "15:03"
+//        textView.backgroundColor = UIColor.clear
+//        return textView
+//    }()
+//    
+//    let messageImageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.backgroundColor = UIColor.clear
+//        imageView.contentMode = .scaleAspectFill
+//        imageView.layer.cornerRadius = 15
+//        imageView.layer.masksToBounds = true
+//        return imageView
+//    }()
+//    
+//    let leftLine: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+//        view.layer.cornerRadius = 5
+//        view.layer.masksToBounds = true
+//        return view
+//    }()
+//    
+//    //More than a year display year //
+//    //More than a month display month //
+//    //More than a day display day //
+//    //Less than a day display hours //
+//    
+//    let rightLine: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+//        view.layer.cornerRadius = 5
+//        view.layer.masksToBounds = true
+//        return view
+//    }()
+//    
+//    override func setupView() {
+//        super.setupView()
+//        
+//        backgroundColor = UIColor.white
+//        
+//        addSubview(leftLine)
+//        addSubview(messageTextView)
+//        addSubview(rightLine)
+//        addSubview(messageImageView)
+//        
+//        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: leftLine)
+//        addConstraintsWithFormat(format: "V:[v0(30)]|", views: leftLine)
+//        
+//        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: messageTextView)
+//        addConstraintsWithFormat(format: "V:[v0(30)]|", views: messageTextView)
+//        
+//        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: messageImageView)
+//        addConstraintsWithFormat(format: "V:[v0(30)]|", views: messageImageView)
+//        
+//        
+//        addConstraintsWithFormat(format: "H:|-8-[v0(30)]", views: rightLine)
+//        addConstraintsWithFormat(format: "V:[v0(30)]|", views: rightLine)
+//    }
+//}
 
-extension String {
-    subscript (i: Int) -> Character {
-        return self[index(startIndex, offsetBy: i)]
-    }
-    subscript (bounds: CountableRange<Int>) -> Substring {
-        let start = index(startIndex, offsetBy: bounds.lowerBound)
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[start ..< end]
-    }
-    subscript (bounds: CountableClosedRange<Int>) -> Substring {
-        let start = index(startIndex, offsetBy: bounds.lowerBound)
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[start ... end]
-    }
-    subscript (bounds: CountablePartialRangeFrom<Int>) -> Substring {
-        let start = index(startIndex, offsetBy: bounds.lowerBound)
-        let end = index(endIndex, offsetBy: -1)
-        return self[start ... end]
-    }
-    subscript (bounds: PartialRangeThrough<Int>) -> Substring {
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[startIndex ... end]
-    }
-    subscript (bounds: PartialRangeUpTo<Int>) -> Substring {
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[startIndex ..< end]
-    }
-}
-extension Substring {
-    subscript (i: Int) -> Character {
-        return self[index(startIndex, offsetBy: i)]
-    }
-    subscript (bounds: CountableRange<Int>) -> Substring {
-        let start = index(startIndex, offsetBy: bounds.lowerBound)
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[start ..< end]
-    }
-    subscript (bounds: CountableClosedRange<Int>) -> Substring {
-        let start = index(startIndex, offsetBy: bounds.lowerBound)
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[start ... end]
-    }
-    subscript (bounds: CountablePartialRangeFrom<Int>) -> Substring {
-        let start = index(startIndex, offsetBy: bounds.lowerBound)
-        let end = index(endIndex, offsetBy: -1)
-        return self[start ... end]
-    }
-    subscript (bounds: PartialRangeThrough<Int>) -> Substring {
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[startIndex ... end]
-    }
-    subscript (bounds: PartialRangeUpTo<Int>) -> Substring {
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return self[startIndex ..< end]
-    }
-}
+//extension String {
+//    subscript (i: Int) -> Character {
+//        return self[index(startIndex, offsetBy: i)]
+//    }
+//    subscript (bounds: CountableRange<Int>) -> Substring {
+//        let start = index(startIndex, offsetBy: bounds.lowerBound)
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[start ..< end]
+//    }
+//    subscript (bounds: CountableClosedRange<Int>) -> Substring {
+//        let start = index(startIndex, offsetBy: bounds.lowerBound)
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[start ... end]
+//    }
+//    subscript (bounds: CountablePartialRangeFrom<Int>) -> Substring {
+//        let start = index(startIndex, offsetBy: bounds.lowerBound)
+//        let end = index(endIndex, offsetBy: -1)
+//        return self[start ... end]
+//    }
+//    subscript (bounds: PartialRangeThrough<Int>) -> Substring {
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[startIndex ... end]
+//    }
+//    subscript (bounds: PartialRangeUpTo<Int>) -> Substring {
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[startIndex ..< end]
+//    }
+//}
+//extension Substring {
+//    subscript (i: Int) -> Character {
+//        return self[index(startIndex, offsetBy: i)]
+//    }
+//    subscript (bounds: CountableRange<Int>) -> Substring {
+//        let start = index(startIndex, offsetBy: bounds.lowerBound)
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[start ..< end]
+//    }
+//    subscript (bounds: CountableClosedRange<Int>) -> Substring {
+//        let start = index(startIndex, offsetBy: bounds.lowerBound)
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[start ... end]
+//    }
+//    subscript (bounds: CountablePartialRangeFrom<Int>) -> Substring {
+//        let start = index(startIndex, offsetBy: bounds.lowerBound)
+//        let end = index(endIndex, offsetBy: -1)
+//        return self[start ... end]
+//    }
+//    subscript (bounds: PartialRangeThrough<Int>) -> Substring {
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[startIndex ... end]
+//    }
+//    subscript (bounds: PartialRangeUpTo<Int>) -> Substring {
+//        let end = index(startIndex, offsetBy: bounds.upperBound)
+//        return self[startIndex ..< end]
+//    }
+//}

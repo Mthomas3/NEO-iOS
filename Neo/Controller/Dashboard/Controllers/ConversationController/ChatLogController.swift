@@ -12,7 +12,6 @@ import SwiftyJSON
 
 import Alamofire
 
-
 class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout,
     UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     

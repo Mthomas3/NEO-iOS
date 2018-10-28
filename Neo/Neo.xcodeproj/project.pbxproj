@@ -321,9 +321,9 @@
 		1E2A02EB203267CB0037854A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1E3467902166C33C007A440D /* newChat */,
+				1E81AE532185E97A00C26439 /* ConversationController */,
+				1E81AE522185E96500C26439 /* CreateChat */,
 				9A51C64920A8AD75008CB9AA /* AddMemberToConvController.swift */,
-				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 				9A51C64B20A8C971008CB9AA /* CircleConcersationController.swift */,
 				1E2A02EE2032683A0037854A /* ControllerDashboard.swift */,
 				9A51C64D20A9BB82008CB9AA /* ConvConfigurationSettings.swift */,
@@ -404,16 +404,6 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
-		1E3467902166C33C007A440D /* newChat */ = {
-			isa = PBXGroup;
-			children = (
-				1EDB6FEC2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift */,
-				1EDB6FEE2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift */,
-				1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */,
-			);
-			path = newChat;
-			sourceTree = "<group>";
-		};
 		1E6296CB204DD0B5006C286A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +447,24 @@
 				1E1BACAF1F6874FD00C4C39B /* UserData.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		1E81AE522185E96500C26439 /* CreateChat */ = {
+			isa = PBXGroup;
+			children = (
+				1EDB6FEC2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift */,
+				1EDB6FEE2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift */,
+				1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */,
+			);
+			path = CreateChat;
+			sourceTree = "<group>";
+		};
+		1E81AE532185E97A00C26439 /* ConversationController */ = {
+			isa = PBXGroup;
+			children = (
+				9A740B32207F353400F7D015 /* ChatLogController.swift */,
+			);
+			path = ConversationController;
 			sourceTree = "<group>";
 		};
 		1EB0CD7E205626A900101CF3 /* ApiManager */ = {

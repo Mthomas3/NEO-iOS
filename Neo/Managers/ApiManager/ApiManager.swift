@@ -9,6 +9,7 @@
 import PromiseKit
 import Alamofire
 import CoreData
+import SwiftyJSON
 
 final class ApiManager {
     
@@ -42,4 +43,67 @@ final class ApiManager {
             }
         }
     }
+    
+    static public func performAlamofireRequestMedia(id_file: Int, file: JSON, image: UIImage, completion: @escaping () -> ()) {
+        let baseURLserver = ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD.concat(string: "/\(id_file)"))
+        
+        let headers: HTTPHeaders = [ "Authorization": User.sharedInstance.getParameter(parameter: "token") ]
+        let URL = try! URLRequest(url: baseURLserver, method: .post, headers: headers)
+        
+            Alamofire.upload(multipartFormData: { multipartFormData in
+        
+                multipartFormData.append(UIImagePNGRepresentation(image)!, withName: "file", fileName: "\(file["identifier"])", mimeType: "image/png")
+        
+                multipartFormData.append("\(id_file)".data(using: String.Encoding.utf8)!, withName: "media_id")
+        
+            }, with: URL, encodingCompletion: {
+                encodingResult in
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    upload.responseJSON() { response in
+                        debugPrint("SUCCESS RESPONSE: \(response)")
+        
+                        completion()
+        
+                    }
+                case .failure(let encodingError):
+                    print("ERROR RESPONSE: \(encodingError)")
+                }
+            })
+        
+    }
 }
+
+
+
+
+
+//private func tryRequest(id: Int, file: JSON, image: UIImage, completion: @escaping () -> ()) {
+//
+//    let baseURL = ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD.concat(string: "/\(id)"))
+//
+//    let headers: HTTPHeaders = [ "Authorization": User.sharedInstance.getParameter(parameter: "token") ]
+//    let imageTest = UIImage(named: "Logo-png.png")
+//    let URL = try! URLRequest(url: baseURL, method: .post, headers: headers)
+//
+//    Alamofire.upload(multipartFormData: { multipartFormData in
+//
+//        multipartFormData.append(UIImagePNGRepresentation(image)!, withName: "file", fileName: "\(file["identifier"])", mimeType: "image/png")
+//
+//        multipartFormData.append("\(id)".data(using: String.Encoding.utf8)!, withName: "media_id")
+//
+//    }, with: URL, encodingCompletion: {
+//        encodingResult in
+//        switch encodingResult {
+//        case .success(let upload, _, _):
+//            upload.responseJSON() { response in
+//                debugPrint("SUCCESS RESPONSE: \(response)")
+//
+//                completion()
+//
+//            }
+//        case .failure(let encodingError):
+//            print("ERROR RESPONSE: \(encodingError)")
+//        }
+//    })
+//}

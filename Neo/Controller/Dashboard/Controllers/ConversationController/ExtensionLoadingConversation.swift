@@ -12,36 +12,6 @@ import Alamofire
 
 extension ChatLogController {
     
-    private func tryRequest(id: Int, file: JSON, image: UIImage, completion: @escaping () -> ()) {
-        
-        let baseURL = ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD.concat(string: "/\(id)"))
-        
-        let headers: HTTPHeaders = [ "Authorization": User.sharedInstance.getParameter(parameter: "token") ]
-        let imageTest = UIImage(named: "Logo-png.png")
-        let URL = try! URLRequest(url: baseURL, method: .post, headers: headers)
-        
-        Alamofire.upload(multipartFormData: { multipartFormData in
-            
-            multipartFormData.append(UIImagePNGRepresentation(image)!, withName: "file", fileName: "\(file["identifier"])", mimeType: "image/png")
-            
-            multipartFormData.append("\(id)".data(using: String.Encoding.utf8)!, withName: "media_id")
-            
-        }, with: URL, encodingCompletion: {
-            encodingResult in
-            switch encodingResult {
-            case .success(let upload, _, _):
-                upload.responseJSON() { response in
-                    debugPrint("SUCCESS RESPONSE: \(response)")
-                    
-                    completion()
-                    
-                }
-            case .failure(let encodingError):
-                print("ERROR RESPONSE: \(encodingError)")
-            }
-        })
-    }
-    
     private func base64Convert(base64String: String?) -> UIImage{
         if (base64String?.isEmpty)! {
             return UIImage()
@@ -84,19 +54,36 @@ extension ChatLogController {
         })
     }
     
-    internal func uploadImageSelectedOnConversation(image: UIImage) {
-        
+    private func loadImageIntoDataBase(image: UIImage, completion: @escaping () -> ()) {
         ServicesChat.shareInstance.preloadindgMediaServer(conv_id: convId) { (value) in
             value["media_list"].forEach({ (name, data) in
-                self.tryRequest(id: data["id"].intValue, file: data, image: image, completion: {
-                    let i = Message()
-                    i.image = image
-                    self.messages.append(i)
-                    self.collectionView?.reloadData()
+                ApiManager.performAlamofireRequestMedia(id_file: data["id"].intValue, file: data, image: image, completion: {
+                        completion()
                 })
             })
         }
-        print("***... uploading the picture ...***")
+    }
+    
+    internal func uploadImageSelectedOnConversation(image: UIImage) {
+        
+        let newMedia = Message()
+        
+        newMedia.text = nil
+        newMedia.image = nil
+        newMedia.isMediaLoading = true
+        newMedia.mediaCellCount = (self.mediaCellCount)
+        newMedia.isSender = true
+        
+        DispatchQueue.main.async {
+            self.loadImageIntoDataBase(image: image, completion: {
+                self.displayMediaInCollectionView(image: image)
+                self.slideOnLastMessage()
+            })
+        }
+
+        self.messages.append(newMedia)
+        self.mediaCellCount += 1
+        self.slideOnLastMessage()
     }
     
     private func handleMediaConversation(data: JSON, isSocket: Bool) -> Message{

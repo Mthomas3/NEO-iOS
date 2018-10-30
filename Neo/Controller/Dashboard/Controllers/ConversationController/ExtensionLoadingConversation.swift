@@ -74,27 +74,25 @@ extension ChatLogController {
         newMedia.mediaCellCount = (self.mediaCellCount)
         newMedia.isSender = true
         
-//        DispatchQueue.main.async {
-//            self.loadImageIntoDataBase(image: image, completion: {
-//                self.displayMediaInCollectionView(image: image)
-//                //self.slideOnLastMessage()
-//            })
-//        }
+        DispatchQueue.main.async {
+            self.loadImageIntoDataBase(image: image, completion: {
+                self.displayMediaInCollectionView(image: image)
+                //self.slideOnLastMessage()
+            })
+        }
 
         self.messages.append(newMedia)
         self.mediaCellCount += 1
         self.slideOnLastMessage()
     }
     
-    private func handleMediaConversation(data: JSON, isSocket: Bool) -> Message{
+    private func handleMediaConversation(data: JSON, isSocket: Bool, content: JSON?) -> Message{
         let newMedia = Message()
         
         newMedia.text = nil
         newMedia.image = nil
         newMedia.isMediaLoading = true
         newMedia.mediaCellCount = (self.mediaCellCount)
-        //todo detect sender here
-        newMedia.isSender = true
         
         DispatchQueue.main.async {
             if isSocket {
@@ -105,6 +103,17 @@ extension ChatLogController {
                 self.loadingMediaIntoConversation(data: data, index: self.mediaCellCount)
             }
         }
+        
+        if isSocket {
+            if data["sender"]["email"].stringValue == User.sharedInstance.getEmail() {
+                newMedia.isSender = true
+            } else {
+                newMedia.isSender = false
+            }
+        } else {
+            newMedia.isSender = self.detectSenderMessage(link_id: data["link_id"].intValue, links: content!)
+        }
+        
         return newMedia
     }
     
@@ -142,7 +151,7 @@ extension ChatLogController {
             
             messages.forEach({ (item, data) in
                 if data["medias"].boolValue == true {
-                    self.messages.append(self.handleMediaConversation(data: data, isSocket: false))
+                    self.messages.append(self.handleMediaConversation(data: data, isSocket: false, content: content["links"]))
                 } else {
                     self.messages.append(self.handleMessageConversation(data: data, content: content["links"], isSocket: false))
                 }
@@ -168,7 +177,7 @@ extension ChatLogController {
                 
                 if data["message"]["medias"].boolValue == true {
                     if (data["status"].stringValue).isEqualToString(find: "done") {
-                        self.messages.append(self.handleMediaConversation(data: data, isSocket: true))
+                        self.messages.append(self.handleMediaConversation(data: data, isSocket: true, content: nil))
                     }
                 } else {
                     self.messages.append(self.handleMessageConversation(data: data, content: nil, isSocket: true))

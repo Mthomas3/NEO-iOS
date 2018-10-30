@@ -77,7 +77,7 @@ extension ChatLogController {
         DispatchQueue.main.async {
             self.loadImageIntoDataBase(image: image, completion: {
                 self.displayMediaInCollectionView(image: image)
-                //self.slideOnLastMessage()
+                self.slideOnLastMessage()
             })
         }
 

@@ -36,7 +36,20 @@ extension ChatLogController:  UICollectionViewDelegateFlowLayout{
     private func createCellForMedia(indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView!.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
         
+        let newImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
+        newImage.image = messages[indexPath.item].image
         
+        if messages[indexPath.item].isSender {
+            cell.textBubbleView.frame = CGRect(x: 160, y: 20, width: 200, height: 250)
+            cell.profileImageView.isHidden = true
+            cell.textBubbleView.addSubview(newImage)
+            return cell
+        }
+        
+        cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 200, height:  250)
+        cell.profileImageView.image = UIImage(named: "Logo-png")
+        cell.profileImageView.isHidden = false
+        cell.textBubbleView.addSubview(newImage)
         return cell
     }
     
@@ -49,19 +62,7 @@ extension ChatLogController:  UICollectionViewDelegateFlowLayout{
         }
         
         if messages[indexPath.item].image != nil {
-            let profileImageName = "Logo-png"
-            cell.profileImageView.image = UIImage(named: profileImageName)
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
-            cell.messageImageView.layer.cornerRadius = 20
-            imageView.image = messages[indexPath.item].image
-            cell.messageTextView.isHidden = true
-            cell.textBubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
-            cell.profileImageView.isHidden = false
-            
-            cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 200, height:  250)
-            
-            cell.textBubbleView.addSubview(imageView)
-            return cell
+            return self.createCellForMedia(indexPath: indexPath)
         }
         
         if (messages[indexPath.item].text != nil) {

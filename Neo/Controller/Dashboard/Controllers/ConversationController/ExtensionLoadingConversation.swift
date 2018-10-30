@@ -93,6 +93,8 @@ extension ChatLogController {
         newMedia.image = nil
         newMedia.isMediaLoading = true
         newMedia.mediaCellCount = (self.mediaCellCount)
+        //todo detect sender here
+        newMedia.isSender = true
         
         DispatchQueue.main.async {
             if isSocket {

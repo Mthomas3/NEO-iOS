@@ -5,7 +5,8 @@
 **NEO** is a controlled echo speaker connected to seniors in order to allow them to reconnect with their families.
 
 
-![NEO](https://i.goopics.net/W3oAw.png)
+
+<img src="https://i.goopics.net/W3oAw.png" height="24" width="48">
 
 
 ## Project organization

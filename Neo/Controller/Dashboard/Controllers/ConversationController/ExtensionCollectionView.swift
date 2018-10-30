@@ -15,16 +15,37 @@ extension ChatLogController:  UICollectionViewDelegateFlowLayout{
         return messages.count
     }
     
+    private func createTemporaryDownloadingCell(indexPath: IndexPath) -> UICollectionViewCell{
+        let cell = collectionView!.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
+        
+        cell.textBubbleView.backgroundColor = CommonFunc.hexStringToUIColor(hex: "#CBCBCB")
+        cell.messageTextView.isHidden = true
+        cell.messageTextView.text = ""
+        
+        if messages[indexPath.item].isSender {
+            cell.textBubbleView.frame = CGRect(x: 160, y: 20, width: 200, height: 250)
+            cell.profileImageView.isHidden = true
+            return cell
+        }
+        cell.profileImageView.image = UIImage(named: "Logo-png")
+        cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 200, height:  250)
+        cell.profileImageView.isHidden = false
+        return cell
+    }
+    
+    private func createCellForMedia(indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView!.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
+        
+        
+        return cell
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! ChatLogMessageCell
         
         if messages[indexPath.item].isMediaLoading != nil && messages[indexPath.item].isMediaLoading == true {
-            
-            
-            cell.textBubbleView.frame = CGRect(x: 50, y: 20, width: 200, height:  250)
-            cell.textBubbleView.backgroundColor = UIColor.lightGray
-            return cell
+            return self.createTemporaryDownloadingCell(indexPath: indexPath)
         }
         
         if messages[indexPath.item].image != nil {

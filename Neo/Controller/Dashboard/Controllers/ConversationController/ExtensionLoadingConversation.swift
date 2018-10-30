@@ -74,12 +74,12 @@ extension ChatLogController {
         newMedia.mediaCellCount = (self.mediaCellCount)
         newMedia.isSender = true
         
-        DispatchQueue.main.async {
-            self.loadImageIntoDataBase(image: image, completion: {
-                self.displayMediaInCollectionView(image: image)
-                self.slideOnLastMessage()
-            })
-        }
+//        DispatchQueue.main.async {
+//            self.loadImageIntoDataBase(image: image, completion: {
+//                self.displayMediaInCollectionView(image: image)
+//                //self.slideOnLastMessage()
+//            })
+//        }
 
         self.messages.append(newMedia)
         self.mediaCellCount += 1

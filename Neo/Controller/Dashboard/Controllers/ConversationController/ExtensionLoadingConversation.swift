@@ -33,9 +33,9 @@ extension ChatLogController {
     }
     
     private func loadingMediaIntoConversation(data: JSON, index: Int) {
-        
+
         ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_MEDIA_INFO, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "message_id": data["id"].intValue]).done({ (value) in
-            
+
             let json = JSON(value)
             
             json.forEach({ (name, data) in
@@ -74,6 +74,10 @@ extension ChatLogController {
         newMedia.mediaCellCount = (self.mediaCellCount)
         newMedia.isSender = true
         
+        let workItem = DispatchWorkItem {
+            
+        }
+        
         DispatchQueue.main.async {
             self.loadImageIntoDataBase(image: image, completion: {
                 self.displayMediaInCollectionView(image: image)
@@ -93,6 +97,7 @@ extension ChatLogController {
         newMedia.image = nil
         newMedia.isMediaLoading = true
         newMedia.mediaCellCount = (self.mediaCellCount)
+        //TODO HERE $
         
         DispatchQueue.main.async {
             if isSocket {

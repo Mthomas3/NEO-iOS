@@ -23,6 +23,10 @@ class ChatLogController: UICollectionViewController,
     private let messageDay:[Int: String] = [1:"Sun", 2:"Mon", 3:"Tue", 4:"Wed", 5:"Thu", 6:"Fri", 7:"Sat"]
     private var bottomConstraint: NSLayoutConstraint?
     internal var mediaCellCount = 0
+    public var AlamofireTasks = [Alamofire.Request]()
+    
+    public func getAlamofireTasks() -> [Alamofire.Request] {return self.AlamofireTasks}
+    public func setAlamofireTasks(task: Alamofire.Request) {self.AlamofireTasks.append(task)}
     
     let messageInputContainerView: UIView = {
         let view = UIView()
@@ -74,6 +78,11 @@ class ChatLogController: UICollectionViewController,
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+
+    
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {

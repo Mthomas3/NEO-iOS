@@ -12,7 +12,7 @@ import CoreData
 import SwiftyJSON
 
 final class ApiManager {
-    
+        
     // MARK: need to fix response statuscode
     
     /// `performAlamofireRequest` perform a request to the server
@@ -45,10 +45,12 @@ final class ApiManager {
     }
     
     static public func performAlamofireRequestMedia(id_file: Int, file: JSON, image: UIImage, completion: @escaping () -> ()) {
+        
         let baseURLserver = ApiRoute.ROUTE_SERVER.concat(string: ApiRoute.ROUTE_MEDIA_UPLOAD.concat(string: "/\(id_file)"))
         
         let headers: HTTPHeaders = [ "Authorization": User.sharedInstance.getParameter(parameter: "token") ]
         let URL = try! URLRequest(url: baseURLserver, method: .post, headers: headers)
+        
         
             Alamofire.upload(multipartFormData: { multipartFormData in
         

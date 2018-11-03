@@ -114,7 +114,13 @@ class ChatLogController: UICollectionViewController,
         
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.addToConv))
         rightAddBarButtonItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 19)!], for: .normal)
-        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
+       
+        
+        let rightAddBarButtonItemCall:UIBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.done, target: self, action: #selector(self.performVideoCall))
+        rightAddBarButtonItemCall.setTitleTextAttributes([NSAttributedStringKey.font: UIFont(name: "Font Awesome 5 Pro", size: 19)!], for: .normal)
+        
+        
+        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItemCall, rightAddBarButtonItem], animated: true)
     }
     
     private func setUpUI() {

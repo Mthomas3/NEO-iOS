@@ -26,6 +26,7 @@
 		1E3116641F8229850037BFEC /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3116631F8229850037BFEC /* Screen.swift */; };
 		1E34678F2166AEFC007A440D /* UiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E34678E2166AEFC007A440D /* UiButton.swift */; };
 		1E4E5B80216AB7DF00143348 /* CreateNameConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */; };
+		1E4FCA95218DC89600B21E8D /* WebRtcVideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4FCA94218DC89600B21E8D /* WebRtcVideoCallController.swift */; };
 		1E5071812053F6E5009C8131 /* ApiRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5071802053F6E5009C8131 /* ApiRoute.swift */; };
 		1E6296CD204DD0F7006C286A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6296CC204DD0F7006C286A /* ApiManager.swift */; };
 		1E687B861F653FAB000059FF /* ControllerLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E687B851F653FAB000059FF /* ControllerLogin.swift */; };
@@ -120,6 +121,7 @@
 		1E3116631F8229850037BFEC /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		1E34678E2166AEFC007A440D /* UiButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiButton.swift; sourceTree = "<group>"; };
 		1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNameConversationController.swift; sourceTree = "<group>"; };
+		1E4FCA94218DC89600B21E8D /* WebRtcVideoCallController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcVideoCallController.swift; sourceTree = "<group>"; };
 		1E5071802053F6E5009C8131 /* ApiRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRoute.swift; sourceTree = "<group>"; };
 		1E6296CC204DD0F7006C286A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		1E687B851F653FAB000059FF /* ControllerLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerLogin.swift; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 				1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */,
 				1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */,
+				1E4FCA94218DC89600B21E8D /* WebRtcVideoCallController.swift */,
 			);
 			path = ConversationController;
 			sourceTree = "<group>";
@@ -1050,6 +1053,7 @@
 				9AB69AA720F3CE8100E0FEAE /* CreateConvCirclesController.swift in Sources */,
 				1ECEAB71214AB6EE00CEE1B7 /* ItemCell.swift in Sources */,
 				1EDB6FED2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift in Sources */,
+				1E4FCA95218DC89600B21E8D /* WebRtcVideoCallController.swift in Sources */,
 				9A51C64E20A9BB82008CB9AA /* ConvConfigurationSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

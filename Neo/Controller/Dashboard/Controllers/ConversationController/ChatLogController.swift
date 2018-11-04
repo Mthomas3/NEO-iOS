@@ -9,7 +9,6 @@
 import UIKit
 import SocketIO
 import SwiftyJSON
-
 import Alamofire
 
 class ChatLogController: UICollectionViewController,
@@ -121,6 +120,15 @@ class ChatLogController: UICollectionViewController,
         
         
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItemCall, rightAddBarButtonItem], animated: true)
+    }
+    
+    @objc private func performVideoCall() {
+        
+        let newViewController = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "VideoCallController") as! VideoCallController
+        
+        self.navigationController?.pushViewController(newViewController, animated: true)
+        
+
     }
     
     private func setUpUI() {

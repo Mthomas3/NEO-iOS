@@ -26,7 +26,6 @@
 		1E3116641F8229850037BFEC /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3116631F8229850037BFEC /* Screen.swift */; };
 		1E34678F2166AEFC007A440D /* UiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E34678E2166AEFC007A440D /* UiButton.swift */; };
 		1E4E5B80216AB7DF00143348 /* CreateNameConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */; };
-		1E4FCA95218DC89600B21E8D /* WebRtcVideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4FCA94218DC89600B21E8D /* WebRtcVideoCallController.swift */; };
 		1E5071812053F6E5009C8131 /* ApiRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5071802053F6E5009C8131 /* ApiRoute.swift */; };
 		1E6296CD204DD0F7006C286A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6296CC204DD0F7006C286A /* ApiManager.swift */; };
 		1E687B861F653FAB000059FF /* ControllerLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E687B851F653FAB000059FF /* ControllerLogin.swift */; };
@@ -42,6 +41,7 @@
 		1E98D4BB2026DAC5006249CE /* ControllerTableViewAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98D4BA2026DAC5006249CE /* ControllerTableViewAccount.swift */; };
 		1EA58BE92148764500442272 /* ChildViewControllerInvitationsCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA58BE82148764500442272 /* ChildViewControllerInvitationsCircle.swift */; };
 		1EB0CD7D2056267D00101CF3 /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB0CD7C2056267D00101CF3 /* DataBaseManager.swift */; };
+		1EB6E607218F69F0008CB556 /* VideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB6E606218F69F0008CB556 /* VideoCallController.swift */; };
 		1EBB0722202E523100DCE1C3 /* ControllerPasswordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB0721202E523100DCE1C3 /* ControllerPasswordTableView.swift */; };
 		1EBB0725202E78F000DCE1C3 /* UIBarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB0724202E78F000DCE1C3 /* UIBarButtons.swift */; };
 		1EBCC45120FAE210007E4015 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBCC45020FAE210007E4015 /* SocketManager.swift */; };
@@ -121,7 +121,6 @@
 		1E3116631F8229850037BFEC /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		1E34678E2166AEFC007A440D /* UiButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiButton.swift; sourceTree = "<group>"; };
 		1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNameConversationController.swift; sourceTree = "<group>"; };
-		1E4FCA94218DC89600B21E8D /* WebRtcVideoCallController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRtcVideoCallController.swift; sourceTree = "<group>"; };
 		1E5071802053F6E5009C8131 /* ApiRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRoute.swift; sourceTree = "<group>"; };
 		1E6296CC204DD0F7006C286A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		1E687B851F653FAB000059FF /* ControllerLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerLogin.swift; sourceTree = "<group>"; };
@@ -137,6 +136,7 @@
 		1E98D4BA2026DAC5006249CE /* ControllerTableViewAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerTableViewAccount.swift; sourceTree = "<group>"; };
 		1EA58BE82148764500442272 /* ChildViewControllerInvitationsCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildViewControllerInvitationsCircle.swift; sourceTree = "<group>"; };
 		1EB0CD7C2056267D00101CF3 /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
+		1EB6E606218F69F0008CB556 /* VideoCallController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallController.swift; sourceTree = "<group>"; };
 		1EBB0721202E523100DCE1C3 /* ControllerPasswordTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPasswordTableView.swift; sourceTree = "<group>"; };
 		1EBB0724202E78F000DCE1C3 /* UIBarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtons.swift; sourceTree = "<group>"; };
 		1EBCC45020FAE210007E4015 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
@@ -474,7 +474,7 @@
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 				1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */,
 				1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */,
-				1E4FCA94218DC89600B21E8D /* WebRtcVideoCallController.swift */,
+				1EB6E606218F69F0008CB556 /* VideoCallController.swift */,
 			);
 			path = ConversationController;
 			sourceTree = "<group>";
@@ -1004,6 +1004,7 @@
 				1E7B298B215A517400D10212 /* ServicesCircles.swift in Sources */,
 				1EE73FBB1F707931002206EE /* CommonFunc.swift in Sources */,
 				1EB0CD7D2056267D00101CF3 /* DataBaseManager.swift in Sources */,
+				1EB6E607218F69F0008CB556 /* VideoCallController.swift in Sources */,
 				4897C7CF1F0C176C00D9EA0C /* ViewController.swift in Sources */,
 				1E81AE5B2185EEC700C26439 /* ExtensionLoadingConversation.swift in Sources */,
 				1ED3FA9120FD7F16009570C9 /* ControllerResetPassword.swift in Sources */,
@@ -1053,7 +1054,6 @@
 				9AB69AA720F3CE8100E0FEAE /* CreateConvCirclesController.swift in Sources */,
 				1ECEAB71214AB6EE00CEE1B7 /* ItemCell.swift in Sources */,
 				1EDB6FED2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift in Sources */,
-				1E4FCA95218DC89600B21E8D /* WebRtcVideoCallController.swift in Sources */,
 				9A51C64E20A9BB82008CB9AA /* ConvConfigurationSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

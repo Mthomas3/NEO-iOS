@@ -202,6 +202,38 @@
             </objects>
             <point key="canvasLocation" x="-484" y="494"/>
         </scene>
+        <!--Video Call Controller-->
+        <scene sceneID="zJ2-Eq-3Eu">
+            <objects>
+                <viewController storyboardIdentifier="VideoCallController" id="S6k-8y-UiC" customClass="VideoCallController" customModule="Neo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="goI-1i-PnW"/>
+                        <viewControllerLayoutGuide type="bottom" id="9Mu-ff-LVO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gje-q6-RhP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MAKING A CALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="332-ML-QWZ">
+                                <rect key="frame" x="113" y="333" width="203" height="147"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8zD-6M-Or3" customClass="RTCEAGLVideoView">
+                                <rect key="frame" x="119" y="607" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pmo-jC-j9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="700" y="493.5960591133005"/>
+        </scene>
         <!--Neo Conv Settings Controller-->
         <scene sceneID="ksp-LX-33H">
             <objects>

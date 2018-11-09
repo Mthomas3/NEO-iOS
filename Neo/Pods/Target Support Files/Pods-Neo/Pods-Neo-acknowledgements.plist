@@ -73,6 +73,36 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>
+QuickBlox iOS SDK is licensed under the QuickBlox SDK License.
+
+Copyright (c) 2017 QuickBlox
+
+</string>
+			<key>License</key>
+			<string>QuickBlox SDK License</string>
+			<key>Title</key>
+			<string>QuickBlox</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>
+QuickBlox iOS SDK is licensed under the QuickBlox SDK License.
+
+Copyright (c) 2018 QuickBlox
+
+</string>
+			<key>License</key>
+			<string>QuickBlox SDK License</string>
+			<key>Title</key>
+			<string>Quickblox-WebRTC</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
 Copyright (c) 2014 Ramotion

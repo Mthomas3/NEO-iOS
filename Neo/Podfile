@@ -14,7 +14,6 @@ target 'Neo' do
   pod 'XLPagerTabStrip', '~> 8.0'
   pod 'TransitionButton'
   pod 'RAMAnimatedTabBarController'
-  pod 'GoogleWebRTC'
 
 
 

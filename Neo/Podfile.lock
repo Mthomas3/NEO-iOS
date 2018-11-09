@@ -1,6 +1,5 @@
 PODS:
   - Alamofire (4.7.3)
-  - GoogleWebRTC (1.1.25102)
   - PromiseKit (6.3.4):
     - PromiseKit/CorePromise (= 6.3.4)
     - PromiseKit/Foundation (= 6.3.4)
@@ -24,7 +23,6 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
-  - GoogleWebRTC
   - PromiseKit (~> 6.0)
   - PromiseKit/Alamofire
   - RAMAnimatedTabBarController
@@ -36,7 +34,6 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  GoogleWebRTC: 5cd390bc24c272fb7ca2b8765e4a7578a770b279
   PromiseKit: e1425568123ec844a944c93f2bcb29d511d39cf5
   RAMAnimatedTabBarController: 7e259e89b669c7bc833a6441c7d8fbfd6580f473
   Socket.IO-Client-Swift: b94943e2fb916fe2f95244b9ed21828634002280
@@ -46,6 +43,6 @@ SPEC CHECKSUMS:
   TransitionButton: d271030914c84a00b54b4d983446944d2875e7ba
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: 28ed86e2574ecc2c070a0009fa80f7d2f8b27b3a
+PODFILE CHECKSUM: a2b47a9c2a7780be72916983a4ede3df7d6a1b0a
 
 COCOAPODS: 1.4.0

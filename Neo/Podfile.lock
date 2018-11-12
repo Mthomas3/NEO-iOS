@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.7.3)
+  - GoogleWebRTC (1.1.25102)
   - PromiseKit (6.3.4):
     - PromiseKit/CorePromise (= 6.3.4)
     - PromiseKit/Foundation (= 6.3.4)
@@ -12,9 +13,6 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.3.4):
     - PromiseKit/CorePromise
-  - QuickBlox (2.17.1)
-  - Quickblox-WebRTC (2.7):
-    - QuickBlox (>= 2.7)
   - RAMAnimatedTabBarController (3.5.0)
   - Socket.IO-Client-Swift (13.2.1):
     - Starscream (~> 3.0.2)
@@ -26,10 +24,9 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
+  - GoogleWebRTC
   - PromiseKit (~> 6.0)
   - PromiseKit/Alamofire
-  - QuickBlox
-  - Quickblox-WebRTC (~> 2.7)
   - RAMAnimatedTabBarController
   - Socket.IO-Client-Swift (~> 13.2.0)
   - SwiftyJSON
@@ -39,9 +36,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  GoogleWebRTC: 5cd390bc24c272fb7ca2b8765e4a7578a770b279
   PromiseKit: e1425568123ec844a944c93f2bcb29d511d39cf5
-  QuickBlox: b8c327b61db8382880bd41185703acf228105a1c
-  Quickblox-WebRTC: 4671a0ab07a0f5157d36a543849065af2c0f356f
   RAMAnimatedTabBarController: 7e259e89b669c7bc833a6441c7d8fbfd6580f473
   Socket.IO-Client-Swift: b94943e2fb916fe2f95244b9ed21828634002280
   Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
@@ -50,6 +46,6 @@ SPEC CHECKSUMS:
   TransitionButton: d271030914c84a00b54b4d983446944d2875e7ba
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: 5d5b2ca80aac055338503e718eaca030f463287e
+PODFILE CHECKSUM: 353c81d934343b0b9ac2ce881ffc2cba8d92139c
 
 COCOAPODS: 1.4.0

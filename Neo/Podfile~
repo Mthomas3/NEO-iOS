@@ -14,8 +14,8 @@ target 'Neo' do
   pod 'XLPagerTabStrip', '~> 8.0'
   pod 'TransitionButton'
   pod 'RAMAnimatedTabBarController'
-
-
+  pod 'QuickBlox', '~> 2.15'
+  pod 'Quickblox-WebRTC', '~> 2.6.3'
 
 
   # Pods for Neo

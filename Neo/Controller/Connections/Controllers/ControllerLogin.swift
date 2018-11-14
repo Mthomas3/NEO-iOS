@@ -16,7 +16,7 @@ import TransitionButton
 
 class ControllerLogin: UIViewController {
     
-    let __DEVELOPPEMENT__ = true
+    let __DEVELOPPEMENT__ = false
     
     @IBOutlet private weak var _username: HoshiTextField!
     @IBOutlet private weak var _password: HoshiTextField!

@@ -226,10 +226,19 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ub6-Ul-aoz">
+                                <rect key="frame" x="228" y="708" width="109" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Call"/>
+                                <connections>
+                                    <action selector="startCallingNow:" destination="S6k-8y-UiC" eventType="touchUpInside" id="1gR-6p-JNN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <connections>
+                        <outlet property="_buttonCalling" destination="Ub6-Ul-aoz" id="sPR-v7-2Qw"/>
                         <outlet property="personView" destination="n3a-X3-zmH" id="Zsx-dC-FNY"/>
                         <outlet property="userVIew" destination="1b5-PW-GnA" id="EL5-PV-Qvc"/>
                     </connections>

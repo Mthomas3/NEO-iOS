@@ -15,19 +15,16 @@ import WebRTC
 
 class VideoCallController: UIViewController, RTCClientDelegate{
     var viewController: UIViewController?
-    @IBOutlet private weak var _userView: UIView!
-    @IBOutlet private weak var _hangUpButton: UIButton!
     
     @IBOutlet weak var personView: RTCEAGLVideoView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var _currentUserView: UIStackView!
-    private var views: [UIView] = []
-
-    var captureController: RTCCapturer! 
-
+    @IBOutlet weak var userVIew: RTCEAGLVideoView!
+    
+    var captureController: RTCCapturer!
     
     var localVideoTrack: RTCVideoTrack?
     var remoteVideoTrack: RTCVideoTrack?
+    private var client: RTCClient!
+    
     
     private func getVideoConfigurationFromServer(route: String) -> Promise<[Any]> {
         return Promise { seal in
@@ -36,6 +33,10 @@ class VideoCallController: UIViewController, RTCClientDelegate{
                     seal.resolve(data, nil)
             }
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.client.disconnect()
     }
     
     override func viewDidLoad() {
@@ -70,17 +71,9 @@ class VideoCallController: UIViewController, RTCClientDelegate{
         
         let ice = RTCIceServer.init(urlStrings: urls, username: username, credential: password)
         
-        let client = RTCClient(iceServers: [ice], videoCall: true)
+        client = RTCClient(iceServers: nil, videoCall: true)
         client.delegate = self
         client.startConnection()
-        self.configVideo()
-        print("CALLING \(client)")
-    }
-    
-    private func configVideo() {
-        
-    
-        
     }
     
     func rtcClient(client : RTCClient, didReceiveError error: Error) {
@@ -95,11 +88,15 @@ class VideoCallController: UIViewController, RTCClientDelegate{
             self.captureController = RTCCapturer.init(withCapturer: capturer, settingsModel: settingsModel)
             captureController.startCapture()
         }
+        //self.captureController.switchCamera()
         print("*** METHOD didCreateLocalCapturer \(capturer)***")
         
     }
     
     func rtcClient(client: RTCClient, didGenerateIceCandidate iceCandidate: RTCIceCandidate) {
+        
+        print("CADIDAT = \(iceCandidate)")
+        self.client.addIceCandidate(iceCandidate: iceCandidate)
         print("*** METHOD didGenerateIceCandidate ***")
     }
     
@@ -107,60 +104,17 @@ class VideoCallController: UIViewController, RTCClientDelegate{
         self.remoteVideoTrack = localVideoTrack
         self.remoteVideoTrack?.add(personView)
         print("*** METHOD didReceiveRemoteVideoTrack ***")
-        
     }
     
     func rtcClient(client: RTCClient, didReceiveLocalVideoTrack localVideoTrack: RTCVideoTrack) {
 
-        self.remoteVideoTrack = localVideoTrack
-        self.remoteVideoTrack?.add(personView)
-    
+        self.localVideoTrack = localVideoTrack
+        self.localVideoTrack?.add(userVIew)
         print("*** METHOD didReceiveLocalVideoTrack ***")
     }
     
     func rtcClient(client: RTCClient, startCallWithSdp sdp: String) {
+        self.client.handleAnswerReceived(withRemoteSDP: sdp)
         print("*** METHOD startCallWithSdp ***")
-    }
-    
-    private func configureAudio() {
-        
-//        QBRTCConfig.mediaStreamConfiguration().audioCodec = .codecOpus
-//        QBRTCAudioSession.instance().initialize { (configuration: QBRTCAudioSessionConfiguration) -> () in
-//
-//            var options = configuration.categoryOptions
-//            if #available(iOS 10.0, *) {
-//                options = options.union(AVAudioSessionCategoryOptions.allowBluetoothA2DP)
-//                options = options.union(AVAudioSessionCategoryOptions.allowAirPlay)
-//            } else {
-//                options = options.union(AVAudioSessionCategoryOptions.allowBluetooth)
-//            }
-//
-//            configuration.categoryOptions = options
-//            configuration.mode = AVAudioSessionModeVideoChat
-//        }
-//        QBRTCAudioSession.instance().currentAudioDevice = .speaker
-    }
-    
-    private func setVideoSettings() {
-        
-        
-//        QBRTCConfig.mediaStreamConfiguration().videoCodec = .H264
-//
-//        let videoFormat = QBRTCVideoFormat()
-//        videoFormat.frameRate = 21
-//        videoFormat.pixelFormat = .format420f
-//        videoFormat.width = 640
-//        videoFormat.height = 480
-//
-//        self.videoCapture = QBRTCCameraCapture(videoFormat: videoFormat, position: .front)
-//        self.videoCapture.previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-//
-//        self.videoCapture.startSession {
-//
-//            let localView = LocalVideoView(withPreviewLayer:self.videoCapture.previewLayer)
-//            self.views.append(localView)
-//            self.stackView.addArrangedSubview(localView)
-//        }
-        
     }
 }

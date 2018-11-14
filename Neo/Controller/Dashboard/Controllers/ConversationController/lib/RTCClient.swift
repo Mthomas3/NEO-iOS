@@ -75,9 +75,11 @@ public class RTCClient: NSObject {
         super.init()
     }
     
-    public convenience init(iceServers: [RTCIceServer], videoCall: Bool = true) {
+    public convenience init(iceServers: [RTCIceServer]?, videoCall: Bool = true) {
         self.init()
-        self.iceServers = iceServers
+        if ((iceServers) != nil) {
+            self.iceServers = iceServers!
+        }
         self.isVideoCall = videoCall
         self.configure()
     }
@@ -103,9 +105,12 @@ public class RTCClient: NSObject {
         self.state = .connecting
         let localStream = self.localStream()
         peerConnection.add(localStream)
+        print("We are here.. \(peerConnection)")
         if let localVideoTrack = localStream.videoTracks.first {
             self.delegate?.rtcClient(client: self, didReceiveLocalVideoTrack: localVideoTrack)
         }
+        
+        print("THE STATE IS \(self.state)")
     }
     
     public func disconnect() {
@@ -120,16 +125,18 @@ public class RTCClient: NSObject {
     }
     
     public func makeOffer() {
+        print("Make offer First...")
         guard let peerConnection = self.peerConnection else {
             return
         }
-        
-        peerConnection.offer(for: self.callConstraint, completionHandler: { [weak self]  (sdp, error) in
-            guard let this = self else { return }
+        print("Make offer second...")
+        peerConnection.offer(for: self.callConstraint, completionHandler: { (sdp, error) in
+            //print("Make offer third... \(sdp)")
+//            guard let this = self else { return }
             if let error = error {
-                this.delegate?.rtcClient(client: this, didReceiveError: error)
+                self.delegate?.rtcClient(client: self, didReceiveError: error)
             } else {
-                this.handleSdpGenerated(sdpDescription: sdp)
+                self.handleSdpGenerated(sdpDescription: sdp)
             }
         })
     }
@@ -138,6 +145,8 @@ public class RTCClient: NSObject {
         guard let remoteSdp = remoteSdp else {
             return
         }
+        
+        print("THIS IS AN ANSWER HERE")
         
         // Add remote description
         let sessionDescription = RTCSessionDescription.init(type: .answer, sdp: remoteSdp)
@@ -157,7 +166,7 @@ public class RTCClient: NSObject {
             let peerConnection = self.peerConnection else {
                 return
         }
-        
+        print("Did i get an offer???")
         // Add remote description
         let sessionDescription = RTCSessionDescription(type: .offer, sdp: remoteSdp)
         self.peerConnection?.setRemoteDescription(sessionDescription, completionHandler: { [weak self] (error) in
@@ -182,6 +191,7 @@ public class RTCClient: NSObject {
     
     public func addIceCandidate(iceCandidate: RTCIceCandidate) {
         // Set ice candidate after setting remote description
+        print("set ice candidate..... LIB")
         if self.peerConnection?.remoteDescription != nil {
             self.peerConnection?.add(iceCandidate)
         } else {
@@ -269,6 +279,7 @@ extension RTCClient: RTCPeerConnectionDelegate {
     }
     
     public func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
+        print("STREAM VIDEO TRACK = \(stream) COUNT = \(stream.videoTracks.count)")
         if stream.videoTracks.count > 0 {
             self.delegate?.rtcClient(client: self, didReceiveRemoteVideoTrack: stream.videoTracks[0])
         }

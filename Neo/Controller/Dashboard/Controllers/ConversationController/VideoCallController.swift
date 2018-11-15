@@ -44,11 +44,9 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     fileprivate var connectionFactory: RTCPeerConnectionFactory = RTCPeerConnectionFactory()
     fileprivate var peerConnection: RTCPeerConnection?
     fileprivate let defaultConnectionConstraint = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: ["DtlsSrtpKeyAgreement": "true"])
-    fileprivate let audioCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true"],
-                                                              optionalConstraints: nil)
+    fileprivate let audioCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true"], optionalConstraints: nil)
     
-    fileprivate let videoCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true", "OfferToReceiveVideo": "true"],
-                                                              optionalConstraints: nil)
+    fileprivate let videoCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true", "OfferToReceiveVideo": "true"], optionalConstraints: nil)
     
     
     private func getVideoConfigurationFromServer(route: String) -> Promise<[Any]> {
@@ -166,7 +164,7 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     }
     
     private func makeOffer() {
-        self.peerConnection?.offer(for: self.videoCallConstraint, completionHandler: { (sdp, error) in
+        self.peerConnection?.offer(for: self.audioCallConstraint, completionHandler: { (sdp, error) in
             var email = ""
             if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
                 email = "ok@o.com"
@@ -182,6 +180,8 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     private func createAnswerForOfferReceived(remoteSdp: String) {
         print("CREATE ANSWER 1")
         let sessionDescription = RTCSessionDescription(type: .offer, sdp: remoteSdp)
+        
+        
         print("CREATE ANSWER 2")
         print("SESSION = \(sessionDescription)")
         print(self.peerConnection)
@@ -200,6 +200,7 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     }
 
     private func handleSdpGenerated(spdDescription: RTCSessionDescription) {
+        print("the SDP LOCAL IS \(spdDescription)")
         print("THE PEER IS \(self.peerConnection)")
         self.peerConnection?.setLocalDescription(spdDescription, completionHandler: { (error) in
             print("an error occured during handlesdpGenerated -> (\(error))")

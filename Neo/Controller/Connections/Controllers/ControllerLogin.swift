@@ -16,7 +16,7 @@ import TransitionButton
 
 class ControllerLogin: UIViewController {
     
-    let __DEVELOPPEMENT__ = false
+    let __DEVELOPPEMENT__ = true
     
     @IBOutlet private weak var _username: HoshiTextField!
     @IBOutlet private weak var _password: HoshiTextField!
@@ -92,10 +92,20 @@ class ControllerLogin: UIViewController {
     }
     
     private func __SETUPDEVELOPPEMENTINFORMATION__() {
-        User.sharedInstance.setUserInformations(email: "ok@o.com", password: "test")
+        if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
+            User.sharedInstance.setUserInformations(email: "j@j.com", password: "test")
+        } else {
+            User.sharedInstance.setUserInformations(email: "ok@o.com", password: "test")
+        }
     }
     
     private func checkParametersLogin() -> Bool{
+        if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
+            print("YES")
+        } else {
+            print("NON")
+        }
+        print("CHECK DEVICE -> \(UIDevice.current.name)")
         if (!__DEVELOPPEMENT__) {
             guard let username = _username.text, !username.isEmpty,
                 let password = _password.text, !password.isEmpty else {

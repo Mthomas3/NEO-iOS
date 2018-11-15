@@ -64,19 +64,15 @@ extension ChatLogController {
         }
     }
     
-    internal func uploadImageSelectedOnConversation(image: UIImage) {
+    internal func uploadImageSelectedOnConversation(image: UIImage, isPicker: String) {
         
         let newMedia = Message()
         
-        newMedia.text = nil
+        newMedia.text = isPicker
         newMedia.image = nil
         newMedia.isMediaLoading = true
         newMedia.mediaCellCount = (self.mediaCellCount)
         newMedia.isSender = true
-        
-        let workItem = DispatchWorkItem {
-            
-        }
         
         DispatchQueue.main.async {
             self.loadImageIntoDataBase(image: image, completion: {
@@ -182,12 +178,16 @@ extension ChatLogController {
                 
                 if data["message"]["medias"].boolValue == true {
                     if (data["status"].stringValue).isEqualToString(find: "done") {
-                        self.messages.append(self.handleMediaConversation(data: data, isSocket: true, content: nil))
+                        if !(data["sender"]["email"].stringValue == User.sharedInstance.getEmail()) {
+                            self.messages.append(self.handleMediaConversation(data: data, isSocket: true, content: nil))
+                        }
                     }
-                } else {
+                }
+                 else {
                     self.messages.append(self.handleMessageConversation(data: data, content: nil, isSocket: true))
                 }
             })
+
             self.mediaCellCount += 1
             self.slideOnLastMessage()
         }

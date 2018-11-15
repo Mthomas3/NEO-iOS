@@ -12,6 +12,14 @@ import SwiftyJSON
 import PromiseKit
 import WebRTC
 
+struct  WebRtcData: SocketData {
+    let email: String
+    let message: String
+    
+    func socketRepresentation() -> SocketData {
+        return ["email": email, "message": message]
+    }
+}
 
 class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     
@@ -32,9 +40,12 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
         self.makeCall()
     }
     
+    fileprivate var remoteIceCandidates: [RTCIceCandidate] = []
     fileprivate var connectionFactory: RTCPeerConnectionFactory = RTCPeerConnectionFactory()
     fileprivate var peerConnection: RTCPeerConnection?
     fileprivate let defaultConnectionConstraint = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: ["DtlsSrtpKeyAgreement": "true"])
+    fileprivate let audioCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true"],
+                                                              optionalConstraints: nil)
     
     fileprivate let videoCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true", "OfferToReceiveVideo": "true"],
                                                               optionalConstraints: nil)
@@ -55,9 +66,25 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
         SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_forward") {
             data, ack in
             
-            print("THE DATA \(data) && ACK \(ack)")
+            data.forEach({ (item) in
+                print("ON SOCKET WE GET THE SDP")
+                let sdp = JSON(item)["content"]["message"].stringValue
+                self.createAnswerForOfferReceived(remoteSdp: sdp)
+                
+            })
             
         }
+    }
+    
+    private func handleRemoteDescriptionSet() {
+        for iceCandidate in self.remoteIceCandidates {
+            self.peerConnection?.add(iceCandidate)
+        }
+        self.remoteIceCandidates = []
+    }
+    
+    public func addIceCandidate(iceCandidate: RTCIceCandidate) {
+        
     }
     
     private func makeCall() {
@@ -78,7 +105,6 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
 //                break
 //            }
 //        }
-        
     }
     
     func defaultICEServer(username: String, password: String) -> [RTCIceServer] {
@@ -140,20 +166,41 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
         }
     }
     
-    struct  WebRtcData: SocketData {
-        let email: String
-        let message: String
-        
-        func socketRepresentation() -> SocketData {
-            return ["email": email, "message": message]
-        }
-    }
-    
     private func makeOffer() {
         self.peerConnection?.offer(for: self.videoCallConstraint, completionHandler: { (sdp, error) in
-           // print("the sdp is ...\(sdp)")
-            SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: User.sharedInstance.getParameter(parameter: "email"), message: "CALLING"))
-            
+            var email = ""
+            if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
+                email = "ok@o.com"
+            } else {
+                email = "j@j.com"
+            }
+            print("USER -> \(User.sharedInstance.getParameter(parameter: "email")) CALLING ->\(email)")
+            self.handleSdpGenerated(spdDescription: sdp!)
+            SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: email, message: (sdp?.sdp)!))
+        })
+    }
+    
+    private func createAnswerForOfferReceived(remoteSdp: String) {
+        print("CREATE ANSWER 1")
+        let sessionDescription = RTCSessionDescription(type: .offer, sdp: remoteSdp)
+        print("CREATE ANSWER 2")
+        self.peerConnection?.setRemoteDescription(sessionDescription, completionHandler: { (error) in
+            print("CREATE ANSWER 3")
+            print("an error ocurred on create answer -> \(error)")
+            self.handleRemoteDescriptionSet()
+            self.peerConnection?.answer(for: self.audioCallConstraint, completionHandler: { (sdp, error) in
+                print("an error ocurred on create answer sdp -> \(sdp)")
+                print("HANDLE SDP FROM ANSWER")
+                self.handleSdpGenerated(spdDescription: sdp!)
+                print("answer generated...")
+            })
+        })
+    }
+
+    private func handleSdpGenerated(spdDescription: RTCSessionDescription) {
+        print("THE PEER IS \(self.peerConnection)")
+        self.peerConnection?.setLocalDescription(spdDescription, completionHandler: { (error) in
+            print("an error occured during handlesdpGenerated -> (\(error))")
         })
     }
     
@@ -177,6 +224,9 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
+        if stream.videoTracks.count > 0 {
+            print("inside video tracks..")
+        }
         print("second")
     }
     
@@ -193,7 +243,8 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        print("six")
+        self.addIceCandidate(iceCandidate: candidate)
+        //print("GENERATING CANDIDATE")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {

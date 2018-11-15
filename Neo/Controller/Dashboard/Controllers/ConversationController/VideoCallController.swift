@@ -208,6 +208,8 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
         print("THE PEER IS \(self.peerConnection)")
         self.peerConnection?.setLocalDescription(spdDescription, completionHandler: { (error) in
             print("an error occured during handlesdpGenerated -> (\(error))")
+            print("-> \(error)")
+            print(error.debugDescription)
         })
     }
     

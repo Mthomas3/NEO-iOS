@@ -88,14 +88,13 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     }
     
     private func makeCall() {
-        //SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_credentials")
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_credentials")
         let urls = [
             "stun:webrtc.neo.ovh:3478",
             "turn:webrtc.neo.ovh:3478" ]
 
        // self.startCalling(password: "aze", username: "azea", urls: ["azeaea"])
         self.getVideoConfigurationFromServer(route: "webrtc_config").done { (item) in
-
             let values: [[String: Any]] = item as! [[String: Any]]
             for item in values {
                 let username = item["username"] as! String

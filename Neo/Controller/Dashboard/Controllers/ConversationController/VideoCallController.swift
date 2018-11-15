@@ -93,18 +93,18 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
             "stun:webrtc.neo.ovh:3478",
             "turn:webrtc.neo.ovh:3478" ]
 
-        self.startCalling(password: "aze", username: "azea", urls: ["azeaea"])
-//        self.getVideoConfigurationFromServer(route: "webrtc_config").done { (item) in
-//
-//            let values: [[String: Any]] = item as! [[String: Any]]
-//            for item in values {
-//                let username = item["username"] as! String
-//                let password = item["password"] as! String
-//                print("password \(password)")
-//                self.startCalling(password: password, username: username, urls: urls)
-//                break
-//            }
-//        }
+       // self.startCalling(password: "aze", username: "azea", urls: ["azeaea"])
+        self.getVideoConfigurationFromServer(route: "webrtc_config").done { (item) in
+
+            let values: [[String: Any]] = item as! [[String: Any]]
+            for item in values {
+                let username = item["username"] as! String
+                let password = item["password"] as! String
+                print("password \(password)")
+                self.startCalling(password: password, username: username, urls: urls)
+                break
+            }
+        }
     }
     
     func defaultICEServer(username: String, password: String) -> [RTCIceServer] {
@@ -184,6 +184,9 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
         print("CREATE ANSWER 1")
         let sessionDescription = RTCSessionDescription(type: .offer, sdp: remoteSdp)
         print("CREATE ANSWER 2")
+        print("SESSION = \(sessionDescription)")
+        print(self.peerConnection)
+        print("after")
         self.peerConnection?.setRemoteDescription(sessionDescription, completionHandler: { (error) in
             print("CREATE ANSWER 3")
             print("an error ocurred on create answer -> \(error)")
@@ -210,7 +213,7 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
         
         let configuration = RTCConfiguration()
         
-        //configuration.iceServers = self.defaultICEServer(username: username, password: password)
+        configuration.iceServers = self.defaultICEServer(username: username, password: password)
         self.peerConnection = self.connectionFactory.peerConnection(with: configuration, constraints: self.defaultConnectionConstraint, delegate: self)
         self.startConnection()
         print("TEST HERE")

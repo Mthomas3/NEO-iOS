@@ -164,15 +164,19 @@ class VideoCallController: UIViewController, RTCPeerConnectionDelegate{
     }
     
     private func makeOffer() {
-        self.peerConnection?.offer(for: self.audioCallConstraint, completionHandler: { (sdp, error) in
+        self.peerConnection?.offer(for: self.videoCallConstraint, completionHandler: { (sdp, error) in
             var email = ""
             if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
                 email = "ok@o.com"
             } else {
                 email = "j@j.com"
             }
+            self.peerConnection?.setLocalDescription(sdp!, completionHandler: { (item) in
+                print("INSIDE THERE AOIJEOIZAJEOIAOEIUAOIZU")
+            })
             print("USER -> \(User.sharedInstance.getParameter(parameter: "email")) CALLING ->\(email)")
-            self.handleSdpGenerated(spdDescription: sdp!)
+            //self.handleSdpGenerated(spdDescription: sdp!)
+            
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: email, message: (sdp?.sdp)!))
         })
     }

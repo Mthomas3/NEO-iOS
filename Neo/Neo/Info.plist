@@ -29,6 +29,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME)camera use</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>for video call</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Set the Profile Picture</string>
 	<key>UIAppFonts</key>

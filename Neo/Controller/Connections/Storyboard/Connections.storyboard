@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.23.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.16.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -395,7 +395,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UPg-io-8GK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="k2Z-bo-uwd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1665" y="1281"/>
+            <point key="canvasLocation" x="-1666.4000000000001" y="1280.5097451274364"/>
         </scene>
         <!--Controller Password-->
         <scene sceneID="kDa-ga-fbt">
@@ -502,7 +502,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Logo-png" width="1800" height="1800"/>
+        <image name="Logo-png" width="3600" height="3600"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Rik-ar-kiO"/>

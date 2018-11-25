@@ -8,7 +8,6 @@
 import Foundation
 import WebRTC
 
-
 public enum RTCClientState {
     case disconnected
     case connecting
@@ -45,6 +44,7 @@ public class RTCClient: NSObject {
     fileprivate var iceServers: [RTCIceServer] = []
     fileprivate var peerConnection: RTCPeerConnection?
     fileprivate var connectionFactory: RTCPeerConnectionFactory = RTCPeerConnectionFactory()
+    fileprivate var audioTrack: RTCAudioTrack? // Save instance to be able to mute the call
     fileprivate var remoteIceCandidates: [RTCIceCandidate] = []
     fileprivate var isVideoCall = true
     
@@ -52,7 +52,8 @@ public class RTCClient: NSObject {
     
     fileprivate let audioCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true"],
                                                               optionalConstraints: nil)
-    fileprivate let videoCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true", "OfferToReceiveVideo": "true"], optionalConstraints: nil)
+    fileprivate let videoCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true", "OfferToReceiveVideo": "true"],
+                                                              optionalConstraints: nil)
     var callConstraint : RTCMediaConstraints {
         return self.isVideoCall ? self.videoCallConstraint : self.audioCallConstraint
     }
@@ -76,9 +77,7 @@ public class RTCClient: NSObject {
     
     public convenience init(iceServers: [RTCIceServer]?, videoCall: Bool = true) {
         self.init()
-        if ((iceServers) != nil) {
-            self.iceServers = iceServers!
-        }
+        //self.iceServers = iceServers
         self.isVideoCall = videoCall
         self.configure()
     }
@@ -88,6 +87,7 @@ public class RTCClient: NSObject {
             return
         }
         if let stream = peerConnection.localStreams.first {
+            audioTrack = nil
             peerConnection.remove(stream)
         }
     }
@@ -98,18 +98,18 @@ public class RTCClient: NSObject {
     }
     
     public func startConnection() {
-        guard let peerConnection = self.peerConnection else {
-            return
-        }
+//        guard let peerConnection = self.peerConnection else {
+//            return
+//        }
+        print("here first 0")
         self.state = .connecting
         let localStream = self.localStream()
-        peerConnection.add(localStream)
-        print("We are here.. \(peerConnection)")
+        peerConnection!.add(localStream)
+        print("here first 1")
         if let localVideoTrack = localStream.videoTracks.first {
+            print("here first 2")
             self.delegate?.rtcClient(client: self, didReceiveLocalVideoTrack: localVideoTrack)
         }
-        
-        print("THE STATE IS \(self.state)")
     }
     
     public func disconnect() {
@@ -118,24 +118,23 @@ public class RTCClient: NSObject {
         }
         peerConnection.close()
         if let stream = peerConnection.localStreams.first {
+            audioTrack = nil
             peerConnection.remove(stream)
         }
         self.delegate?.rtcClient(client: self, didChangeState: .disconnected)
     }
     
     public func makeOffer() {
-        print("Make offer First...")
         guard let peerConnection = self.peerConnection else {
             return
         }
-        print("Make offer second...")
-        peerConnection.offer(for: self.callConstraint, completionHandler: { (sdp, error) in
-            //print("Make offer third... \(sdp)")
-//            guard let this = self else { return }
+        
+        peerConnection.offer(for: self.callConstraint, completionHandler: { [weak self]  (sdp, error) in
+            guard let this = self else { return }
             if let error = error {
-                self.delegate?.rtcClient(client: self, didReceiveError: error)
+                this.delegate?.rtcClient(client: this, didReceiveError: error)
             } else {
-                self.handleSdpGenerated(sdpDescription: sdp)
+                this.handleSdpGenerated(sdpDescription: sdp)
             }
         })
     }
@@ -144,9 +143,7 @@ public class RTCClient: NSObject {
         guard let remoteSdp = remoteSdp else {
             return
         }
-        
-        print("THIS IS AN ANSWER HERE")
-        
+
         // Add remote description
         let sessionDescription = RTCSessionDescription.init(type: .answer, sdp: remoteSdp)
         self.peerConnection?.setRemoteDescription(sessionDescription, completionHandler: { [weak self] (error) in
@@ -165,8 +162,6 @@ public class RTCClient: NSObject {
             let peerConnection = self.peerConnection else {
                 return
         }
-        print("Did i get an offer???")
-        // Add remote description
         let sessionDescription = RTCSessionDescription(type: .offer, sdp: remoteSdp)
         self.peerConnection?.setRemoteDescription(sessionDescription, completionHandler: { [weak self] (error) in
             guard let this = self else { return }
@@ -174,7 +169,6 @@ public class RTCClient: NSObject {
                 this.delegate?.rtcClient(client: this, didReceiveError: error)
             } else {
                 this.handleRemoteDescriptionSet()
-                // create answer
                 peerConnection.answer(for: this.callConstraint, completionHandler:
                     { (sdp, error) in
                         if let error = error {
@@ -182,6 +176,7 @@ public class RTCClient: NSObject {
                         } else {
                             this.handleSdpGenerated(sdpDescription: sdp)
                             this.state = .connected
+                            
                         }
                 })
             }
@@ -190,12 +185,15 @@ public class RTCClient: NSObject {
     
     public func addIceCandidate(iceCandidate: RTCIceCandidate) {
         // Set ice candidate after setting remote description
-        print("set ice candidate..... LIB")
         if self.peerConnection?.remoteDescription != nil {
             self.peerConnection?.add(iceCandidate)
         } else {
             self.remoteIceCandidates.append(iceCandidate)
         }
+    }
+    
+    public func muteCall(_ mute: Bool) {
+        self.audioTrack?.isEnabled = !mute
     }
 }
 
@@ -234,6 +232,7 @@ private extension RTCClient {
         
         if !AVCaptureState.isAudioDisabled {
             let audioTrack = factory.audioTrack(withTrackId: "RTCaS0")
+            self.audioTrack = audioTrack
             localStream.addAudioTrack(audioTrack)
         } else {
             // show alert for audio permission disabled
@@ -250,13 +249,14 @@ private extension RTCClient {
     
     func initialisePeerConnection () {
         let configuration = RTCConfiguration()
-        configuration.iceServers = self.iceServers
+        //configuration.iceServers = self.iceServers
         self.peerConnection = self.connectionFactory.peerConnection(with: configuration,
                                                                     constraints: self.defaultConnectionConstraint,
                                                                     delegate: self)
     }
     
     func handleSdpGenerated(sdpDescription: RTCSessionDescription?) {
+    
         guard let sdpDescription = sdpDescription  else {
             return
         }
@@ -264,6 +264,7 @@ private extension RTCClient {
         self.peerConnection?.setLocalDescription(sdpDescription, completionHandler: {[weak self] (error) in
             // issue in setting local description
             guard let this = self, let error = error else { return }
+            
             this.delegate?.rtcClient(client: this, didReceiveError: error)
         })
         //  Signal to server to pass this sdp with for the session call
@@ -278,7 +279,9 @@ extension RTCClient: RTCPeerConnectionDelegate {
     }
     
     public func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
-        print("STREAM VIDEO TRACK = \(stream) COUNT = \(stream.videoTracks.count)")
+        //print("PEER CONNECTION STREAM")
+        print("THE STREAM -> \(stream.videoTracks.count)")
+        
         if stream.videoTracks.count > 0 {
             self.delegate?.rtcClient(client: self, didReceiveRemoteVideoTrack: stream.videoTracks[0])
         }
@@ -294,6 +297,7 @@ extension RTCClient: RTCPeerConnectionDelegate {
     
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
         self.delegate?.rtcClient(client: self, didChangeConnectionState: newState)
+        print("NEW STATE --> \(newState)")
     }
     
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
@@ -309,6 +313,6 @@ extension RTCClient: RTCPeerConnectionDelegate {
     }
     
     public func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
-        
+        print("did open chanell?")
     }
 }

@@ -151,12 +151,20 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     }
     
     func rtcClient(client : RTCClient, didReceiveLocalVideoTrack localVideoTrack: RTCVideoTrack) {
+        print("we received video local")
         localVideoTrack.add(self.userVIew)
         self.localVideoTrack = localVideoTrack
     }
     func rtcClient(client : RTCClient, didReceiveRemoteVideoTrack remoteVideoTrack: RTCVideoTrack) {
-        remoteVideoTrack.add(self.personView)
-        self.remoteVideoTrack = remoteVideoTrack
+        print("we received video remote")
+        
+        if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
+            remoteVideoTrack.add(self.personView)
+            self.remoteVideoTrack = remoteVideoTrack
+        }else {
+            remoteVideoTrack.add(self.userVIew)
+            self.localVideoTrack = remoteVideoTrack
+        }
     }
     
     private func __TEMPORARY__GetInformations() -> String{

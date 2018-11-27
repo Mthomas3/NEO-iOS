@@ -268,7 +268,6 @@
 			isa = PBXGroup;
 			children = (
 				1E27F6E42199587D00A309AB /* AVCaptureState.swift */,
-				1E27F6E721995A9200A309AB /* RTCClient.swift */,
 				1E376806219A2F4000050AED /* RTCCapturer.swift */,
 				1E376808219A2F6A00050AED /* RTCCapturerSettings.swift */,
 				1E37680A219A2F8C00050AED /* RTCSettingStore.swift */,
@@ -494,6 +493,7 @@
 			isa = PBXGroup;
 			children = (
 				1E27F6E621995A8100A309AB /* lib */,
+				1E27F6E721995A9200A309AB /* RTCClient.swift */,
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 				1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */,
 				1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */,
@@ -779,7 +779,7 @@
 				TargetAttributes = {
 					4897C7C81F0C176C00D9EA0C = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = ZLU8AW7Q33;
+						DevelopmentTeam = Z4PP64MVBM;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
@@ -1254,11 +1254,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZLU8AW7Q33;
+				DEVELOPMENT_TEAM = Z4PP64MVBM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Neo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pulse.Neo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.com.com.pulse.Neo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1276,11 +1276,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZLU8AW7Q33;
+				DEVELOPMENT_TEAM = Z4PP64MVBM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Neo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pulse.Neo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.com.com.pulse.Neo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;

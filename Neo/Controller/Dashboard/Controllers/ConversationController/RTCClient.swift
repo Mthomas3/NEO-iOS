@@ -75,9 +75,14 @@ public class RTCClient: NSObject {
         super.init()
     }
     
-    public convenience init(iceServers: [RTCIceServer]?, videoCall: Bool = true) {
+    public convenience init(iceServers: [RTCIceServer], videoCall: Bool = true) {
         self.init()
-        //self.iceServers = iceServers
+        
+        self.iceServers = iceServers
+//        let config = RTCConfiguration()
+//        let stunServer = RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])
+//        config.iceServers = [stunServer]
+        RTCSetMinDebugLogLevel(.error)
         self.isVideoCall = videoCall
         self.configure()
     }
@@ -157,11 +162,11 @@ public class RTCClient: NSObject {
         })
     }
     
-    public func createAnswerForOfferReceived(withRemoteSDP remoteSdp: String?) {
-        guard let remoteSdp = remoteSdp,
-            let peerConnection = self.peerConnection else {
-                return
-        }
+    public func createAnswerForOfferReceived(withRemoteSDP remoteSdp: String) {
+//        guard let remoteSdp = remoteSdp,
+//            let peerConnection = self.peerConnection else {
+//                return
+//        }
         let sessionDescription = RTCSessionDescription(type: .offer, sdp: remoteSdp)
         self.peerConnection?.setRemoteDescription(sessionDescription, completionHandler: { [weak self] (error) in
             guard let this = self else { return }
@@ -169,13 +174,14 @@ public class RTCClient: NSObject {
                 this.delegate?.rtcClient(client: this, didReceiveError: error)
             } else {
                 this.handleRemoteDescriptionSet()
-                peerConnection.answer(for: this.callConstraint, completionHandler:
+                self!.peerConnection!.answer(for: this.callConstraint, completionHandler:
                     { (sdp, error) in
                         if let error = error {
                             this.delegate?.rtcClient(client: this, didReceiveError: error)
                         } else {
                             this.handleSdpGenerated(sdpDescription: sdp)
                             this.state = .connected
+                            print("the state in the answer is \(this.state)")
                             
                         }
                 })
@@ -185,9 +191,12 @@ public class RTCClient: NSObject {
     
     public func addIceCandidate(iceCandidate: RTCIceCandidate) {
         // Set ice candidate after setting remote description
+        print("WE ARE IN IT")
         if self.peerConnection?.remoteDescription != nil {
+            print("***** FIRST *****")
             self.peerConnection?.add(iceCandidate)
         } else {
+            print("****** SECOND ****")
             self.remoteIceCandidates.append(iceCandidate)
         }
     }
@@ -249,7 +258,7 @@ private extension RTCClient {
     
     func initialisePeerConnection () {
         let configuration = RTCConfiguration()
-        //configuration.iceServers = self.iceServers
+        configuration.iceServers = self.iceServers
         self.peerConnection = self.connectionFactory.peerConnection(with: configuration,
                                                                     constraints: self.defaultConnectionConstraint,
                                                                     delegate: self)
@@ -297,7 +306,7 @@ extension RTCClient: RTCPeerConnectionDelegate {
     
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
         self.delegate?.rtcClient(client: self, didChangeConnectionState: newState)
-        print("NEW STATE --> \(newState)")
+        print("NEW STATE --> \(newState.rawValue)")
     }
     
     public func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {

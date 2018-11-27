@@ -12,6 +12,15 @@ import SwiftyJSON
 import PromiseKit
 import WebRTC
 
+extension StringProtocol where Index == String.Index {
+    var lines: [SubSequence] {
+        return split(maxSplits: .max, omittingEmptySubsequences: true, whereSeparator: { $0 == "\n" })
+    }
+    var removingAllExtraNewLines: String {
+        return lines.joined(separator: "\n")
+    }
+}
+
 struct  WebRtcData: SocketData {
     let email: String
     var message = Dictionary<String, Any>()
@@ -39,6 +48,8 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     var isCallReady =  false
     var isCaller = false
     
+    fileprivate var remoteIceCandidates: [RTCIceCandidate] = []
+    
     @IBOutlet private weak var _buttonCalling: UIButton!
     
     @IBAction func startCallingNow(_ sender: Any) {
@@ -65,6 +76,10 @@ class VideoCallController: UIViewController, RTCClientDelegate{
         return audioRequest && cameraRequest
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
     override func viewDidLoad() {
         
         SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_forward") {
@@ -72,27 +87,23 @@ class VideoCallController: UIViewController, RTCClientDelegate{
             
             var info = JSON(data[0])["content"]["message"]
             
-            if info["offer"] != nil {
-                
-                self.initClient {
-                    self.client?.createAnswerForOfferReceived(withRemoteSDP: info["offer"].stringValue)
+            if !(info["offer"].null != nil){
+                if self.client == nil  {
+                    self.initClient {
+                        self.client?.createAnswerForOfferReceived(withRemoteSDP: info["offer"].stringValue)
+                    }
                 }
-            } else if info["answer"] != nil {
+            } else if !(info["answer"].null != nil)  && self.client != nil{
                 self.client?.handleAnswerReceived(withRemoteSDP: info["answer"].stringValue)
-                print("we handle the sdp remote")
-            }
-            else if info["ice"] != nil {
+            } else if !(info["ice"].null != nil) {
                 
                 let sdp = info["ice"]["candidate"].stringValue
                 let sdpMlineindex = Int32(info["info"]["label"].intValue)
                 let sdpmid = info["info"]["id"].stringValue
-                
+
                 let ice = RTCIceCandidate(sdp: sdp, sdpMLineIndex: sdpMlineindex, sdpMid: sdpmid)
-                
+
                 self.client?.addIceCandidate(iceCandidate: ice)
-                
-                print("USER = \(User.sharedInstance.getEmail()) ADDING ICE \(info["ice"])")
-                
             }
         }
     }
@@ -110,9 +121,10 @@ class VideoCallController: UIViewController, RTCClientDelegate{
             
             var informations = JSON(data[0])
             
+            
             let urls = ["stun:webrtc.neo.ovh:3478",
                         "turn:webrtc.neo.ovh:3478"]
-            
+           
             let iceServer: RTCIceServer = RTCIceServer(urlStrings: urls, username: informations["username"].stringValue, credential:informations["password"].stringValue)
             
             let client = RTCClient(iceServers: [iceServer], videoCall: true)
@@ -136,7 +148,7 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     }
 
     func rtcClient(client: RTCClient, didGenerateIceCandidate iceCandidate: RTCIceCandidate) {
-
+        
         var dict = Dictionary<String, Any>()
         
         let jsonObject: [String: Any] = [
@@ -151,20 +163,13 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     }
     
     func rtcClient(client : RTCClient, didReceiveLocalVideoTrack localVideoTrack: RTCVideoTrack) {
-        print("we received video local")
         localVideoTrack.add(self.userVIew)
         self.localVideoTrack = localVideoTrack
     }
+    
     func rtcClient(client : RTCClient, didReceiveRemoteVideoTrack remoteVideoTrack: RTCVideoTrack) {
-        print("we received video remote")
-        
-        if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
-            remoteVideoTrack.add(self.personView)
-            self.remoteVideoTrack = remoteVideoTrack
-        }else {
-            remoteVideoTrack.add(self.userVIew)
-            self.localVideoTrack = remoteVideoTrack
-        }
+        remoteVideoTrack.add(self.personView)
+        self.remoteVideoTrack = remoteVideoTrack
     }
     
     private func __TEMPORARY__GetInformations() -> String{
@@ -179,14 +184,13 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     }
     
     func rtcClient(client: RTCClient, startCallWithSdp sdp: String) {
-        
         if isCaller {
             var dict = Dictionary<String, String>()
-            dict["offer"] = sdp
+            dict["offer"] = sdp.removingAllExtraNewLines
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: self.__TEMPORARY__GetInformations(), message: dict))
         } else {
             var dict = Dictionary<String, String>()
-            dict["answer"] = sdp
+            dict["answer"] = sdp.removingAllExtraNewLines
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: self.__TEMPORARY__GetInformations(), message: dict))
         }
     }

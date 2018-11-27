@@ -55,7 +55,7 @@ public class RTCClient: NSObject {
     fileprivate let videoCallConstraint = RTCMediaConstraints(mandatoryConstraints: ["OfferToReceiveAudio" : "true", "OfferToReceiveVideo": "true"],
                                                               optionalConstraints: nil)
     var callConstraint : RTCMediaConstraints {
-        return self.isVideoCall ? self.videoCallConstraint : self.audioCallConstraint
+        return self.videoCallConstraint
     }
     
     fileprivate let defaultConnectionConstraint = RTCMediaConstraints(mandatoryConstraints: nil, optionalConstraints: ["DtlsSrtpKeyAgreement": "true"])
@@ -191,12 +191,9 @@ public class RTCClient: NSObject {
     
     public func addIceCandidate(iceCandidate: RTCIceCandidate) {
         // Set ice candidate after setting remote description
-        print("WE ARE IN IT")
         if self.peerConnection?.remoteDescription != nil {
-            print("***** FIRST *****")
             self.peerConnection?.add(iceCandidate)
         } else {
-            print("****** SECOND ****")
             self.remoteIceCandidates.append(iceCandidate)
         }
     }
@@ -232,10 +229,11 @@ private extension RTCClient {
                 let videoTrack = factory.videoTrack(with: videoSource, trackId: "RTCvS0")
                 videoTrack.isEnabled = true
                 localStream.addVideoTrack(videoTrack)
+                print("WE ARE INSIDE LOCAL STREAM")
             } else {
                 // show alert for video permission disabled
-                let error = NSError.init(domain: ErrorDomain.videoPermissionDenied, code: 0, userInfo: nil)
-                self.delegate?.rtcClient(client: self, didReceiveError: error)
+                //let error = NSError.init(domain: ErrorDomain.videoPermissionDenied, code: 0, userInfo: nil)
+                //self.delegate?.rtcClient(client: self, didReceiveError: error)
             }
         }
         
@@ -259,9 +257,28 @@ private extension RTCClient {
     func initialisePeerConnection () {
         let configuration = RTCConfiguration()
         configuration.iceServers = self.iceServers
+       // configuration.sdpSemantics = .unifiedPlan$
+        
+        configuration.tcpCandidatePolicy = .disabled
+        configuration.bundlePolicy = .maxBundle
+        configuration.rtcpMuxPolicy = .require
+        configuration.continualGatheringPolicy = .gatherContinually
+        configuration.keyType = .ECDSA
+        
+        let videoEncoderFactory = RTCDefaultVideoEncoderFactory()
+        let videoDecoderFactory = RTCDefaultVideoDecoderFactory()
+        
+        self.connectionFactory = RTCPeerConnectionFactory(encoderFactory: videoEncoderFactory, decoderFactory: videoDecoderFactory)
+        
+        
+        let constraints = RTCMediaConstraints(mandatoryConstraints: nil,
+                                              optionalConstraints: ["DtlsSrtpKeyAgreement":kRTCMediaConstraintsValueTrue])
+        
         self.peerConnection = self.connectionFactory.peerConnection(with: configuration,
-                                                                    constraints: self.defaultConnectionConstraint,
+                                                                    constraints: constraints,
                                                                     delegate: self)
+        
+        
     }
     
     func handleSdpGenerated(sdpDescription: RTCSessionDescription?) {

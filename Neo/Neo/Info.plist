@@ -28,7 +28,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME)camera use</string>
+	<string>for video call</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>for video call</string>
 	<key>NSPhotoLibraryUsageDescription</key>

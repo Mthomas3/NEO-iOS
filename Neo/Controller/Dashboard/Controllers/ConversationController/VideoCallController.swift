@@ -48,6 +48,7 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     var isCallReady =  false
     var isCaller = false
     
+    
     fileprivate var remoteIceCandidates: [RTCIceCandidate] = []
     
     @IBOutlet private weak var _buttonCalling: UIButton!
@@ -121,13 +122,16 @@ class VideoCallController: UIViewController, RTCClientDelegate{
             
             var informations = JSON(data[0])
             
+//            let urls = ["stun:webrtc.neo.ovh:3478",
+//                        "turn:webrtc.neo.ovh:3478"]
             
-            let urls = ["stun:webrtc.neo.ovh:3478",
-                        "turn:webrtc.neo.ovh:3478"]
-           
-            let iceServer: RTCIceServer = RTCIceServer(urlStrings: urls, username: informations["username"].stringValue, credential:informations["password"].stringValue)
+            let stun: RTCIceServer = RTCIceServer(urlStrings: ["stun:webrtc.neo.ovh:3478"])
             
-            let client = RTCClient(iceServers: [iceServer], videoCall: true)
+            let turn: RTCIceServer = RTCIceServer(urlStrings: ["turn:webrtc.neo.ovh:3478"], username: informations["username"].stringValue, credential: informations["password"].stringValue)
+            
+//            let iceServer: RTCIceServer = RTCIceServer(urlStrings: urls, username: informations["username"].stringValue, credential:informations["password"].stringValue)
+            
+            let client = RTCClient(iceServers: [stun, turn], videoCall: true)
             client.delegate = self
             self.videoClient = client
             self.client = client
@@ -145,6 +149,9 @@ class VideoCallController: UIViewController, RTCClientDelegate{
             self.captureController = RTCCapturer.init(withCapturer: capturer, settingsModel: settingsModel)
             captureController.startCapture()
         }
+        let settingsModel = RTCCapturerSettingsModel()
+        self.captureController = RTCCapturer.init(withCapturer: capturer, settingsModel: settingsModel)
+        captureController.startCapture()
     }
 
     func rtcClient(client: RTCClient, didGenerateIceCandidate iceCandidate: RTCIceCandidate) {
@@ -168,6 +175,8 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     }
     
     func rtcClient(client : RTCClient, didReceiveRemoteVideoTrack remoteVideoTrack: RTCVideoTrack) {
+        print("REMOTE VIDEO TRIGGER")
+        print("\(remoteVideoTrack)")
         remoteVideoTrack.add(self.personView)
         self.remoteVideoTrack = remoteVideoTrack
     }
@@ -186,11 +195,13 @@ class VideoCallController: UIViewController, RTCClientDelegate{
     func rtcClient(client: RTCClient, startCallWithSdp sdp: String) {
         if isCaller {
             var dict = Dictionary<String, String>()
-            dict["offer"] = sdp.removingAllExtraNewLines
+            //dict["offer"] = sdp.removingAllExtraNewLines
+            dict["offer"] = sdp
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: self.__TEMPORARY__GetInformations(), message: dict))
         } else {
             var dict = Dictionary<String, String>()
-            dict["answer"] = sdp.removingAllExtraNewLines
+            //dict["answer"] = sdp.removingAllExtraNewLines
+            dict["answer"] = sdp
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: self.__TEMPORARY__GetInformations(), message: dict))
         }
     }

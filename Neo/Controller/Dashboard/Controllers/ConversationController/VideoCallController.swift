@@ -94,6 +94,7 @@ class VideoCallController: UIViewController{
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        self.requestionAccessOnPhone()
         self.webRTCClient.delegate = self
         self.webRTCClient.getConfiguration {
             print("configuration done")
@@ -103,8 +104,7 @@ class VideoCallController: UIViewController{
         SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_forward") {
             data, ack in
             
-            
-            
+            print("INSIDE SOCKET \(data)")
             
             let getData = JSON(data[0])["content"]["message"].stringValue
             
@@ -240,8 +240,8 @@ extension VideoCallController : WebRTCClientDelegate {
         
         dict["candidate"] = jsonObject
         
-        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: self.__TEMPORARY__GetInformations(), message: dict))
-        
+//        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: self.__TEMPORARY__GetInformations(), message: dict))
+//
         self.send(candidate: candidate)
         
     }

@@ -145,7 +145,7 @@ class WebRTCClient: NSObject {
             let format = (RTCCameraVideoCapturer.supportedFormats(for: frontCamera).sorted { (f1, f2) -> Bool in
                 let width1 = CMVideoFormatDescriptionGetDimensions(f1.formatDescription).width
                 let width2 = CMVideoFormatDescriptionGetDimensions(f2.formatDescription).width
-                return width1 < width2
+                return width1 > width2
             }).last,
             
             // choose highest fps
@@ -153,9 +153,13 @@ class WebRTCClient: NSObject {
                 return
         }
         
+//        capturer.startCapture(with: frontCamera,
+//                              format: format,
+//                              fps: Int(fps.maxFrameRate))
+
         capturer.startCapture(with: frontCamera,
                               format: format,
-                              fps: Int(fps.maxFrameRate))
+                              fps: 10)
         
         self.localVideoTrack?.add(renderer)
     }

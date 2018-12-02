@@ -65,6 +65,11 @@ class VideoViewTestController: UIViewController {
     }
     
     @IBAction func unwindToVideo(segue:UIStoryboardSegue) {
+        
+        
+        self.localVideoView.removeFromSuperview()
+        self.view.removeFromSuperview()
+        
         self.dismiss(animated: true)
     }
 

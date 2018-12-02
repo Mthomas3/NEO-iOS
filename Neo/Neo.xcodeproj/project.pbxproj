@@ -17,8 +17,7 @@
 		1E252A0B1F77279B00B245F7 /* ControllerEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E252A0A1F77279B00B245F7 /* ControllerEmail.swift */; };
 		1E252A0D1F772C1900B245F7 /* ControllerPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E252A0C1F772C1900B245F7 /* ControllerPassword.swift */; };
 		1E252A101F77324000B245F7 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E252A0F1F77324000B245F7 /* String.swift */; };
-		1E27F6E52199587D00A309AB /* AVCaptureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E27F6E42199587D00A309AB /* AVCaptureState.swift */; };
-		1E27F6E821995A9200A309AB /* RTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E27F6E721995A9200A309AB /* RTCClient.swift */; };
+		1E28232921B373E00016530E /* VideoViewTestController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E28232821B373E00016530E /* VideoViewTestController.xib */; };
 		1E2A02E520325BFF0037854A /* Contacts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E2A02E420325BFF0037854A /* Contacts.storyboard */; };
 		1E2A02ED203267ED0037854A /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E2A02EC203267ED0037854A /* Dashboard.storyboard */; };
 		1E2A02EF2032683A0037854A /* ControllerDashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2A02EE2032683A0037854A /* ControllerDashboard.swift */; };
@@ -27,9 +26,7 @@
 		1E2D2A541FB7B737004EA692 /* HandleErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2D2A531FB7B737004EA692 /* HandleErrors.swift */; };
 		1E3116641F8229850037BFEC /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3116631F8229850037BFEC /* Screen.swift */; };
 		1E34678F2166AEFC007A440D /* UiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E34678E2166AEFC007A440D /* UiButton.swift */; };
-		1E376807219A2F4000050AED /* RTCCapturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E376806219A2F4000050AED /* RTCCapturer.swift */; };
-		1E376809219A2F6A00050AED /* RTCCapturerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E376808219A2F6A00050AED /* RTCCapturerSettings.swift */; };
-		1E37680B219A2F8C00050AED /* RTCSettingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E37680A219A2F8C00050AED /* RTCSettingStore.swift */; };
+		1E4954FB21AF68D1004FC47D /* videoViewTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4954FA21AF68D1004FC47D /* videoViewTestController.swift */; };
 		1E4E5B80216AB7DF00143348 /* CreateNameConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */; };
 		1E5071812053F6E5009C8131 /* ApiRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5071802053F6E5009C8131 /* ApiRoute.swift */; };
 		1E6296CD204DD0F7006C286A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6296CC204DD0F7006C286A /* ApiManager.swift */; };
@@ -118,8 +115,8 @@
 		1E252A0A1F77279B00B245F7 /* ControllerEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerEmail.swift; sourceTree = "<group>"; };
 		1E252A0C1F772C1900B245F7 /* ControllerPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPassword.swift; sourceTree = "<group>"; };
 		1E252A0F1F77324000B245F7 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		1E27F6E42199587D00A309AB /* AVCaptureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureState.swift; sourceTree = "<group>"; };
-		1E27F6E721995A9200A309AB /* RTCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCClient.swift; sourceTree = "<group>"; };
+		1E28232721B370B60016530E /* VideoViewTestController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = VideoViewTestController.xib; path = Controller/Dashboard/Controllers/ConversationController/VideoViewTestController.xib; sourceTree = "<group>"; };
+		1E28232821B373E00016530E /* VideoViewTestController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoViewTestController.xib; sourceTree = "<group>"; };
 		1E2A02E420325BFF0037854A /* Contacts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Contacts.storyboard; sourceTree = "<group>"; };
 		1E2A02EC203267ED0037854A /* Dashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		1E2A02EE2032683A0037854A /* ControllerDashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerDashboard.swift; sourceTree = "<group>"; };
@@ -128,9 +125,7 @@
 		1E2D2A531FB7B737004EA692 /* HandleErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleErrors.swift; sourceTree = "<group>"; };
 		1E3116631F8229850037BFEC /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		1E34678E2166AEFC007A440D /* UiButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiButton.swift; sourceTree = "<group>"; };
-		1E376806219A2F4000050AED /* RTCCapturer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCCapturer.swift; sourceTree = "<group>"; };
-		1E376808219A2F6A00050AED /* RTCCapturerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCCapturerSettings.swift; sourceTree = "<group>"; };
-		1E37680A219A2F8C00050AED /* RTCSettingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCSettingStore.swift; sourceTree = "<group>"; };
+		1E4954FA21AF68D1004FC47D /* videoViewTestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = videoViewTestController.swift; sourceTree = "<group>"; };
 		1E4E5B7F216AB7DF00143348 /* CreateNameConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNameConversationController.swift; sourceTree = "<group>"; };
 		1E5071802053F6E5009C8131 /* ApiRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRoute.swift; sourceTree = "<group>"; };
 		1E6296CC204DD0F7006C286A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -269,10 +264,6 @@
 		1E27F6E621995A8100A309AB /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				1E27F6E42199587D00A309AB /* AVCaptureState.swift */,
-				1E376806219A2F4000050AED /* RTCCapturer.swift */,
-				1E376808219A2F6A00050AED /* RTCCapturerSettings.swift */,
-				1E37680A219A2F8C00050AED /* RTCSettingStore.swift */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -495,12 +486,13 @@
 			isa = PBXGroup;
 			children = (
 				1E27F6E621995A8100A309AB /* lib */,
-				1E27F6E721995A9200A309AB /* RTCClient.swift */,
 				9A740B32207F353400F7D015 /* ChatLogController.swift */,
 				1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */,
 				1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */,
 				1EB6E606218F69F0008CB556 /* VideoCallController.swift */,
 				1EC76B4621ADEAF6006E772A /* test.swift */,
+				1E4954FA21AF68D1004FC47D /* videoViewTestController.swift */,
+				1E28232821B373E00016530E /* VideoViewTestController.xib */,
 			);
 			path = ConversationController;
 			sourceTree = "<group>";
@@ -618,6 +610,7 @@
 		4897C7C01F0C176C00D9EA0C = {
 			isa = PBXGroup;
 			children = (
+				1E28232721B370B60016530E /* VideoViewTestController.xib */,
 				1E6296CB204DD0B5006C286A /* Managers */,
 				1E252A0E1F77320500B245F7 /* Extensions */,
 				1E687B8B1F686246000059FF /* Model */,
@@ -829,6 +822,7 @@
 				9A27EE0E2026B1AC006A0038 /* fa-regular-400.ttf in Resources */,
 				4897C7D41F0C176C00D9EA0C /* Assets.xcassets in Resources */,
 				1ECEAB72214AB6EE00CEE1B7 /* ItemCell.xib in Resources */,
+				1E28232921B373E00016530E /* VideoViewTestController.xib in Resources */,
 				4897C7D21F0C176C00D9EA0C /* Main.storyboard in Resources */,
 				1E2A02ED203267ED0037854A /* Dashboard.storyboard in Resources */,
 				1EC88ECE203259B400B2D9A1 /* Settings.storyboard in Resources */,
@@ -1032,7 +1026,6 @@
 				1EB0CD7D2056267D00101CF3 /* DataBaseManager.swift in Sources */,
 				1EB6E607218F69F0008CB556 /* VideoCallController.swift in Sources */,
 				4897C7CF1F0C176C00D9EA0C /* ViewController.swift in Sources */,
-				1E27F6E821995A9200A309AB /* RTCClient.swift in Sources */,
 				1E81AE5B2185EEC700C26439 /* ExtensionLoadingConversation.swift in Sources */,
 				1ED3FA9120FD7F16009570C9 /* ControllerResetPassword.swift in Sources */,
 				1E22B915214DBDBA00E19A00 /* ControllerAddNewCercle.swift in Sources */,
@@ -1047,7 +1040,6 @@
 				9A740B2F207EFB2400F7D015 /* FriendsControllerCollectionViewController.swift in Sources */,
 				1E2A02EF2032683A0037854A /* ControllerDashboard.swift in Sources */,
 				1EF74F342037898E00FE544A /* ColorsButtonsOnEditing.swift in Sources */,
-				1E27F6E52199587D00A309AB /* AVCaptureState.swift in Sources */,
 				9A7ABE9A20E879C800A503A3 /* NeoConvSettingsController.swift in Sources */,
 				9A51C64C20A8C971008CB9AA /* CircleConcersationController.swift in Sources */,
 				1EBB0722202E523100DCE1C3 /* ControllerPasswordTableView.swift in Sources */,
@@ -1059,17 +1051,16 @@
 				1EECB2D921515FAC00F8E51B /* DisplayMessage.swift in Sources */,
 				1E252A101F77324000B245F7 /* String.swift in Sources */,
 				1EA58BE92148764500442272 /* ChildViewControllerInvitationsCircle.swift in Sources */,
-				1E37680B219A2F8C00050AED /* RTCSettingStore.swift in Sources */,
 				9A740B31207F30E800F7D015 /* Message.swift in Sources */,
 				1E2D2A541FB7B737004EA692 /* HandleErrors.swift in Sources */,
 				9AB69AAB20F42C2900E0FEAE /* MembersCreateConvController.swift in Sources */,
-				1E376809219A2F6A00050AED /* RTCCapturerSettings.swift in Sources */,
 				1E252A0B1F77279B00B245F7 /* ControllerEmail.swift in Sources */,
 				1EDB6FEF2167583500FEF1C0 /* DisplayMemberInsideCircleController.swift in Sources */,
 				1EE73FB91F70770D002206EE /* BackButton.swift in Sources */,
 				9A740B33207F353400F7D015 /* ChatLogController.swift in Sources */,
 				1EBCC45120FAE210007E4015 /* SocketManager.swift in Sources */,
 				1E93D4522147C82800D4B1C8 /* ControllerContactTabMenu.swift in Sources */,
+				1E4954FB21AF68D1004FC47D /* videoViewTestController.swift in Sources */,
 				1E2AD26E214EF5F30017F32E /* ManagePeopleInCircles.swift in Sources */,
 				9A64F42F20A7E48A007C1300 /* CreateConvController.swift in Sources */,
 				1E687B881F65F8D6000059FF /* ControllerRegistration.swift in Sources */,
@@ -1086,7 +1077,6 @@
 				1ECEAB71214AB6EE00CEE1B7 /* ItemCell.swift in Sources */,
 				1EDB6FED2166C71E00FEF1C0 /* DisplayAvailableCircleController.swift in Sources */,
 				9A51C64E20A9BB82008CB9AA /* ConvConfigurationSettings.swift in Sources */,
-				1E376807219A2F4000050AED /* RTCCapturer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,9 +28,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>for video call</string>
+	<string>$(PRODUCT_NAME) Requires camera access in order to capture and transmit video</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>for video call</string>
+	<string>$(PRODUCT_NAME) Requires microphone access in order to capture and transmit audio</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Set the Profile Picture</string>
 	<key>UIAppFonts</key>

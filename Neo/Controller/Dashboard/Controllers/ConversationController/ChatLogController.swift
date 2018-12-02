@@ -123,12 +123,18 @@ class ChatLogController: UICollectionViewController,
     }
     
     @objc private func performVideoCall() {
-        
-        let newViewController = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "VideoCallController") as! VideoCallController
-        
-        self.navigationController?.pushViewController(newViewController, animated: true)
-        
-
+        ApiManager.performAlamofireRequest(url: "conversation/info", param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
+            data in
+            
+            let json = JSON(data)["content"]["links"][0]["user_id"]
+            
+            let newViewController = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "VideoCallController") as! VideoCallController
+            self.navigationController?.pushViewController(newViewController, animated: true)
+            
+            newViewController.OpponentEmail = json["email"].stringValue
+            newViewController.OpponentId = json["id"].intValue
+            
+        }
     }
     
     private func setUpUI() {

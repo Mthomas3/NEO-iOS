@@ -31,7 +31,19 @@ struct  WebRtcData: SocketData {
     }
 }
 
+struct sendMessageVideo: SocketData {
+    let id: Int
+    let message: String
+    
+    func socketRepresentation() -> SocketData {
+        return ["user_id": id, "message": message]
+    }
+}
+
 class VideoCallController: UIViewController{
+    
+    public let callingEmail: String? = nil
+    public let callerEmail: String? = nil
     
     /// OLD
     var viewController: UIViewController?
@@ -51,15 +63,30 @@ class VideoCallController: UIViewController{
     var localCandidateCount = 0
     var remoteCandidateCount = 0
     
+    //User to call
+    public var OpponentEmail: String? = nil
+    public var OpponentId: Int? = nil
 
     
     @IBAction func startCallingNow(_ sender: Any) {
         
-        self.webRTCClient.offer { (sdp) in
-            self.hasLocalSdp = true
-            self.send(sdp: sdp)
-            print("[\(User.sharedInstance.getEmail())] send an offer to -> [\(self.__TEMPORARY__GetInformations())]")
-        }
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", sendMessageVideo(id: self.OpponentId!, message: "CALLING"))
+        
+        
+        
+
+        
+        
+        
+//        self.webRTCClient.offer { (sdp) in
+//            self.hasLocalSdp = true
+//            self.send(sdp: sdp)
+//            print("[\(User.sharedInstance.getEmail())] send an offer to -> [\(self.__TEMPORARY__GetInformations())]")
+//
+//
+//
+//
+//        }
     }
     
     
@@ -92,9 +119,10 @@ class VideoCallController: UIViewController{
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+        
         self.requestionAccessOnPhone()
+        
         self.webRTCClient.delegate = self
         self.webRTCClient.getConfiguration {
             print("configuration done")

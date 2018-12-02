@@ -63,4 +63,9 @@ class VideoViewTestController: UIViewController {
                                                                     views: ["view":view]))
         containerView.layoutIfNeeded()
     }
+    
+    @IBAction func unwindToVideo(segue:UIStoryboardSegue) {
+        self.dismiss(animated: true)
+    }
+
 }

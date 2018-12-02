@@ -95,6 +95,9 @@ class VideoCallController: UIViewController{
         
         super.viewDidLoad()
         self.webRTCClient.delegate = self
+        self.webRTCClient.getConfiguration {
+            print("configuration done")
+        }
 
         
         SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_forward") {

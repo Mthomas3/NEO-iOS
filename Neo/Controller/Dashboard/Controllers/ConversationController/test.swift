@@ -8,6 +8,7 @@
 
 import Foundation
 import WebRTC
+import SwiftyJSON
 
 protocol WebRTCClientDelegate: class {
     func webRTCClient(_ client: WebRTCClient, didDiscoverLocalCandidate candidate: RTCIceCandidate)
@@ -15,8 +16,8 @@ protocol WebRTCClientDelegate: class {
 
 class WebRTCClient: NSObject {
     
-    private let factory: RTCPeerConnectionFactory
-    let peerConnection: RTCPeerConnection
+    private var factory: RTCPeerConnectionFactory
+    var peerConnection: RTCPeerConnection
     weak var delegate: WebRTCClientDelegate?
     var localCandidates = [RTCIceCandidate]()
     private let mediaConstrains = [kRTCMediaConstraintsOfferToReceiveAudio: kRTCMediaConstraintsValueTrue,
@@ -36,7 +37,7 @@ class WebRTCClient: NSObject {
         let config = RTCConfiguration()
         
         // We use Google's public stun/turn server. For production apps you should deploy your own stun/turn servers.
-        config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+        //config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
         
         // Unified plan is more superior than planB
         config.sdpSemantics = .unifiedPlan
@@ -61,6 +62,52 @@ class WebRTCClient: NSObject {
             self.peerConnection.setLocalDescription(sdp, completionHandler: { (error) in
                 completion(sdp)
             })
+        }
+    }
+    
+    private func setConfiguration(completion: @escaping ([RTCIceServer]) -> ()) {
+        
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_credentials")
+        
+        SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_config") {(data,ack) in
+            
+            let user_informations = JSON(data[0])
+            let stun: RTCIceServer = RTCIceServer(urlStrings: ["stun:webrtc.neo.ovh:3478"])
+            let turn: RTCIceServer = RTCIceServer(urlStrings: ["turn:webrtc.neo.ovh:3478"], username: user_informations["username"].stringValue, credential: user_informations["password"].stringValue)
+            
+            completion([stun, turn])
+        }
+    }
+    
+    public func getConfiguration(completion: @escaping () ->()) {
+        self.setConfiguration { (iceServers) in
+            
+            let videoEncoderFactory = RTCDefaultVideoEncoderFactory()
+            let videoDecoderFactory = RTCDefaultVideoDecoderFactory()
+            
+            self.factory = RTCPeerConnectionFactory(encoderFactory: videoEncoderFactory, decoderFactory: videoDecoderFactory)
+            
+            let constraints = RTCMediaConstraints(mandatoryConstraints: nil,
+                                                  optionalConstraints: ["DtlsSrtpKeyAgreement":kRTCMediaConstraintsValueTrue])
+            
+            let config = RTCConfiguration()
+            
+            
+            //config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
+            
+            config.iceServers = iceServers
+            
+            config.sdpSemantics = .unifiedPlan
+            config.continualGatheringPolicy = .gatherContinually
+            
+            self.peerConnection = self.factory.peerConnection(with: config, constraints: constraints, delegate: nil)
+            
+            
+            self.createMediaSenders()
+            self.peerConnection.delegate = self
+            
+            completion()
+
         }
     }
     

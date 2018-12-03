@@ -78,15 +78,15 @@ class VideoCallController: UIViewController{
         
         
         
-//        self.webRTCClient.offer { (sdp) in
-//            self.hasLocalSdp = true
-//            self.send(sdp: sdp)
-//            print("[\(User.sharedInstance.getEmail())] send an offer to -> [\(self.__TEMPORARY__GetInformations())]")
-//
-//
-//
-//
-//        }
+        self.webRTCClient.offer { (sdp) in
+            self.hasLocalSdp = true
+            self.send(sdp: sdp)
+            print("[\(User.sharedInstance.getEmail())] send an offer to -> [\(self.__TEMPORARY__GetInformations())]")
+
+
+
+
+        }
     }
     
     
@@ -118,6 +118,88 @@ class VideoCallController: UIViewController{
         
     }
     
+    private func sendPing() {
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", sendMessageVideo(id: self.OpponentId!, message: "PING"))
+
+    }
+    
+    private func sendPong() {
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", sendMessageVideo(id: self.OpponentId!, message: "PONG"))
+    }
+    
+    private func OpponentReadyStartingCall() {
+        self.webRTCClient.offer { (sdp) in
+            self.hasLocalSdp = true
+            self.send(sdp: sdp)
+        }
+    }
+    
+    private func stopCalling() {
+        print("need to stop calling here")
+    }
+    
+    private func handleCalling() {
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", sendMessageVideo(id: self.OpponentId!, message: "READY"))
+    }
+    
+    private func manageSdp(sdp: JSON) {
+        
+        print("SDP GOT -> \(sdp)")
+        
+        if sdp["data"]["type"].stringValue.isEqualToString(find: "offer") {
+            let currentSDPReceived = sdp["data"]["sdp"].stringValue
+            let sdp = RTCSessionDescription(type: .offer, sdp: currentSDPReceived)
+            
+            self.webRTCClient.set(remoteSdp: sdp) { (error) in
+            
+                self.webRTCClient.answer(completion: { (sdp) in
+                    self.hasLocalSdp = true
+                    self.sendWeb(sdp: sdp.sdp, type: "answer")
+                })
+            }
+            
+        }
+    }
+    
+    private func handleCandidate(candidate: JSON) {
+//        if let candidate = RTCIceCandidate.fromJsonString(message.payload) {
+//                                //self.delegate?.signalClient(self, didReceiveCandidate: candidate)
+//                                self.webRTCClient.set(remoteCandidate: candidate)
+//                                self.remoteCandidateCount += 1
+//
+//                            }
+        
+        
+        let sdp = candidate["candidate"].stringValue
+        let sdpLine = candidate["sdpMLineIndex"].intValue
+        let sdpMid = candidate["sdpMid"].stringValue
+        
+        let candidate = RTCIceCandidate(sdp: sdp, sdpMLineIndex: Int32(sdpLine), sdpMid: sdpMid)
+        
+        print("IS OUR MINE THE BEST CANDIDATE NIL ? -> \(candidate)")
+        
+        self.webRTCClient.set(remoteCandidate: candidate)
+        self.remoteCandidateCount += 1
+        
+        
+        
+        
+    }
+    
+    private func setUpCall(data: JSON) {
+        
+        switch data[0]["content"]["message"]["type"] {
+        case "sdp":
+            self.manageSdp(sdp: data[0]["content"]["message"])
+            
+        case "candidate":
+            print("WE GET CANDIDATE")
+            
+        default:
+            print("UNDEFINED SETUPCALL -> \(data[0]["content"]["message"]["type"])")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -132,33 +214,72 @@ class VideoCallController: UIViewController{
         SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_forward") {
             data, ack in
             
-            print("INSIDE SOCKET \(data)")
+            print("THE REAL DATA -> \(JSON(data[0]))")
             
-            let getData = JSON(data[0])["content"]["message"].stringValue
+            let _socketData = JSON(data[0])["content"]["message"].stringValue
             
-            guard let data = getData.data(using: .utf8),
-                let message = try? JSONDecoder().decode(VideoMessage.self, from: data) else {
-                    return
+            //if _socketData.is
+            print("socket -> \(_socketData)")
+            
+            switch _socketData {
+            case "UNAVAILABLE":
+                print("the persone is UNAVAILABLE")
+            case "READY":
+                self.OpponentReadyStartingCall()
+                print("the personne is READY")
+            case "PING":
+                self.sendPong()
+            case "PONG":
+                self.sendPing()
+            case "QUITTING":
+                self.stopCalling()
+            case "CALLING":
+                self.handleCalling()
+            case "candidate":
+                self.handleCandidate(candidate: JSON(data))
+                
+            default:
+                print("default")
             }
             
-            switch message.type {
-            case .candidate:
-                if let candidate = RTCIceCandidate.fromJsonString(message.payload) {
-                    //self.delegate?.signalClient(self, didReceiveCandidate: candidate)
-                    self.webRTCClient.set(remoteCandidate: candidate)
-                    self.remoteCandidateCount += 1
-                    
-                }
-            case .sdp:
-                if let sdp = RTCSessionDescription.fromJsonString(message.payload) {
-                    self.webRTCClient.set(remoteSdp: sdp, completion: { (error) in
-                        self.webRTCClient.answer(completion: { (sdp) in
-                            self.hasLocalSdp = true
-                            self.send(sdp: sdp)
-                        })
-                    })
-                }
+        
+            switch JSON(data)[0]["content"]["message"]["type"] {
+            case "sdp":
+                self.setUpCall(data: JSON(data))
+            case "candidate":
+                self.handleCandidate(candidate: JSON(data)[0]["content"]["message"]["data"])
+            default:
+                print("NOPE")
             }
+        
+
+            
+            
+            
+            
+//            guard let data = _socketData.data(using: .utf8),
+//                let message = try? JSONDecoder().decode(VideoMessage.self, from: data) else {
+//                    return
+//            }
+            
+//            switch message.type {
+//            case .candidate:
+//                if let candidate = RTCIceCandidate.fromJsonString(message.payload) {
+//                    //self.delegate?.signalClient(self, didReceiveCandidate: candidate)
+//                    self.webRTCClient.set(remoteCandidate: candidate)
+//                    self.remoteCandidateCount += 1
+//
+//                }
+//            case .sdp:
+//                if let sdp = RTCSessionDescription.fromJsonString(message.payload) {
+//                    self.webRTCClient.set(remoteSdp: sdp, completion: { (error) in
+//                        self.webRTCClient.answer(completion: { (sdp) in
+//                            self.hasLocalSdp = true
+//                            self.send(sdp: sdp)
+//                        })
+//                    })
+//                }
+//            }
         }
     }
     
@@ -233,7 +354,9 @@ extension RTCSessionDescription {
     }
     
     class func fromJsonString(_ string: String) -> RTCSessionDescription? {
+        
         if let data = string.data(using: .utf8),
+
             let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
             let jsonDictionary = jsonObject  as? [String: Any?],
             let sdp = jsonDictionary[CodingKeys.sdp.rawValue] as? String ,
@@ -257,20 +380,19 @@ extension VideoCallController : WebRTCClientDelegate {
         print("WE GENERATE LOCAL CANDIDATE")
         self.localCandidateCount += 1
         
-        
-        var dict = Dictionary<String, Any>()
-        
         let jsonObject: [String: Any] = [
-            "label": candidate.sdpMLineIndex,
-            "id": candidate.sdpMid!,
-            "candidate": candidate.sdp
+            "type": "candidate",
+            "data": ["candidate": candidate.sdp, "sdpMid": candidate.sdpMid!, "sdpMLineIndex": candidate.sdpMLineIndex]
         ]
         
-        dict["candidate"] = jsonObject
         
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", sendCandidate(user_id: self.OpponentId!, message: jsonObject))
+        
+        
+        //sendCandidate
 //        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRtcData(email: self.__TEMPORARY__GetInformations(), message: dict))
 //
-        self.send(candidate: candidate)
+        //self.send(candidate: candidate)
         
     }
 }
@@ -283,12 +405,41 @@ struct VideoMessage: Codable {
     let payload: String
 }
 
+struct SendMessageWeb: SocketData {
+    let id: Int
+    let type: String
+    let data: [String: String]
+    
+    func socketRepresentation() -> SocketData {
+        return ["user_id": id, "type": type, "data": data]
+    }
+}
+
 struct  WebRTC: SocketData {
     let email: String
     let message: String
     
     func socketRepresentation() -> SocketData {
         return ["email": email, "message": message]
+    }
+}
+
+struct sendCandidate: SocketData {
+    let user_id: Int
+    var message = Dictionary<String, Any>()
+
+    func socketRepresentation() -> SocketData {
+        return ["user_id": user_id, "message": message]
+    }
+}
+
+struct testSend: SocketData {
+    let user_id: Int
+    var message = Dictionary<String, Any>()
+    
+    func socketRepresentation() -> SocketData {
+        
+        return ["user_id": user_id, "message": message]
     }
 }
 
@@ -304,11 +455,31 @@ extension VideoCallController {
         }
     }
     
+    func sendWeb(sdp: String, type: String) {
+        
+        
+        var dict = Dictionary<String, Any>()
+        
+        let jsonObject: [String: Any] = [
+            "type": "sdp",
+            "data": ["sdp": sdp, "type": type]
+        ]
+        
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", testSend(user_id: self.OpponentId!, message: jsonObject))
+        
+//        print("WE SEND LIKE ->")
+//        print(SendMessageWeb(id: self.OpponentId!, type: "answer", data: ["type": type, "sdp": sdp]))
+//
+//        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", SendMessageWeb(id: self.OpponentId!, type: "sdp", data: ["type": type, "sdp": sdp]))
+//
+    }
+    
     func send(sdp: RTCSessionDescription) {
         let message = VideoMessage(type: .sdp, payload: sdp.jsonString() ?? "")
         if let dataMessage = try? JSONEncoder().encode(message),
             let stringMessage = String(data: dataMessage, encoding: .utf8) {
-            SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", WebRTC(email: self.__TEMPORARY__GetInformations(), message: stringMessage))
+            SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", sendMessageVideo(id: self.OpponentId!, message: stringMessage))
+            
         }
     }
 }

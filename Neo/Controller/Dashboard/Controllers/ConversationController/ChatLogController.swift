@@ -126,16 +126,33 @@ class ChatLogController: UICollectionViewController,
         ApiManager.performAlamofireRequest(url: "conversation/info", param: ["token": User.sharedInstance.getParameter(parameter: "token"), "conversation_id": convId]).done {
             data in
             
-            let json = JSON(data)["content"]["links"][0]["user_id"]
+            let allUsers = JSON(data)["content"]["links"]
             
-            let newViewController = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "VideoCallController") as! VideoCallController
-            self.navigationController?.pushViewController(newViewController, animated: true)
+            func getUserToCall(allUser: JSON) -> JSON? {
+                for (_, value) in allUsers {
+                    print("item -> \(value["user_id"])")
+                    if !(value["user_id"]["email"].stringValue).isEqualToString(find: User.sharedInstance.getEmail()) {
+                        return value["user_id"]
+                    }
+                }
+                return nil
+            }
             
-            newViewController.OpponentEmail = json["email"].stringValue
-            newViewController.OpponentId = json["id"].intValue
-            //newViewController.isCaller = true
-            newViewController.isCaller = false
+            let json = getUserToCall(allUser: allUsers)
             
+            if json != nil {
+                let newViewController = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "VideoCallController") as! VideoCallController
+                self.navigationController?.pushViewController(newViewController, animated: true)
+                
+                print("WE ARE CALLING -> \(json!["email"].stringValue)")
+                
+                newViewController.OpponentEmail = json!["email"].stringValue
+                newViewController.OpponentId = json!["id"].intValue
+                //newViewController.isCaller = true
+                
+            } else {
+                DisplayMessage.displayMessageAsAlert(title: "Erreur", message: "Vous êtes tous seul dans la conversation", controller: self)
+            }
         }
     }
     

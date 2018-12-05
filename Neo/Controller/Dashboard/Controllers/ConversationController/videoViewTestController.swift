@@ -41,16 +41,27 @@ class VideoViewTestController: UIViewController {
         let remoteRenderer = RTCEAGLVideoView(frame: self.view.frame)
         #endif
         
+        print("CHECK REMOTE HERE -> \(remoteRenderer)")
         
+        //<RTCMTLVideoView: 0x108a52da0; frame = (0 0; 375 667); layer = <CALayer: 0x282a730c0>>
+        
+        //<RTCMTLVideoView: 0x129b0aee0; frame = (0 0; 375 667); layer = <CALayer: 0x2820e0ac0>>
         self.webRTCClient.startCaptureLocalVideo(renderer: localRenderer)
         self.webRTCClient.renderRemoteVideo(to: remoteRenderer)
         
         self.embedView(localRenderer, into: self.localVideoView)
         self.embedView(remoteRenderer, into: self.view)
+        
+        //test
+        
+        
         self.view.sendSubview(toBack: remoteRenderer)
+        
+        print("are we inside video???")
     }
     
     func embedView(_ view: UIView, into containerView: UIView) {
+        print("are we inside video??? 1")
         containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|",
@@ -68,8 +79,8 @@ class VideoViewTestController: UIViewController {
     @IBAction func unwindToVideo(segue:UIStoryboardSegue) {
         
         
-        self.localVideoView.removeFromSuperview()
-        self.view.removeFromSuperview()
+//        self.localVideoView.removeFromSuperview()
+//        self.view.removeFromSuperview()
         
         self.dismiss(animated: true)
     }

@@ -215,11 +215,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NA3-de-0dJ">
-                                <rect key="frame" x="137" y="391" width="46" height="30"/>
+                                <rect key="frame" x="133" y="381" width="109" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="CALL"/>
                                 <connections>
                                     <action selector="clickTest:" destination="S6k-8y-UiC" eventType="touchUpInside" id="E0c-w3-81x"/>
+                                    <action selector="needToCall:" destination="S6k-8y-UiC" eventType="touchUpInside" id="n9r-gg-STT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVU-df-qR0">
+                                <rect key="frame" x="146" y="303" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="VIDEO"/>
+                                <connections>
+                                    <action selector="showVideo:" destination="S6k-8y-UiC" eventType="touchUpInside" id="xDL-eK-uTg"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -228,7 +237,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pmo-jC-j9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="700" y="493.5960591133005"/>
+            <point key="canvasLocation" x="457" y="494"/>
         </scene>
         <!--Neo Conv Settings Controller-->
         <scene sceneID="ksp-LX-33H">

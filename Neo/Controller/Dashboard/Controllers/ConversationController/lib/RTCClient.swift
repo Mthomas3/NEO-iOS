@@ -36,13 +36,9 @@ class WebRTCClient: NSObject {
                                               optionalConstraints: ["DtlsSrtpKeyAgreement":kRTCMediaConstraintsValueTrue])
         let config = RTCConfiguration()
         
-        // We use Google's public stun/turn server. For production apps you should deploy your own stun/turn servers.
         //config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
         
-        // Unified plan is more superior than planB
         config.sdpSemantics = .unifiedPlan
-        
-        // gatherContinually will let WebRTC to listen to any network changes and send any new candidates to the other client
         config.continualGatheringPolicy = .gatherContinually
         self.peerConnection = self.factory.peerConnection(with: config, constraints: constraints, delegate: nil)
         
@@ -62,6 +58,14 @@ class WebRTCClient: NSObject {
             self.peerConnection.setLocalDescription(sdp, completionHandler: { (error) in
                 completion(sdp)
             })
+        }
+    }
+    
+    public func disconnectPeerUser() {
+        self.peerConnection.close()
+        
+        if let stream = peerConnection.localStreams.first {
+            peerConnection.remove(stream)
         }
     }
     
@@ -91,9 +95,6 @@ class WebRTCClient: NSObject {
                                                   optionalConstraints: ["DtlsSrtpKeyAgreement":kRTCMediaConstraintsValueTrue])
             
             let config = RTCConfiguration()
-            
-            
-            //config.iceServers = [RTCIceServer(urlStrings: ["stun:stun.l.google.com:19302"])]
             
             config.iceServers = iceServers
             
@@ -140,9 +141,7 @@ class WebRTCClient: NSObject {
         
         guard
             let frontCamera = (RTCCameraVideoCapturer.captureDevices().first { $0.position == .front }),
-            
-            // choose highest res
-            let format = (RTCCameraVideoCapturer.supportedFormats(for: frontCamera).sorted { (f1, f2) -> Bool in
+                let format = (RTCCameraVideoCapturer.supportedFormats(for: frontCamera).sorted { (f1, f2) -> Bool in
                 let width1 = CMVideoFormatDescriptionGetDimensions(f1.formatDescription).width
                 let width2 = CMVideoFormatDescriptionGetDimensions(f2.formatDescription).width
                 return width1 > width2

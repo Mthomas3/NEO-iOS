@@ -47,7 +47,7 @@
 		1EBB0722202E523100DCE1C3 /* ControllerPasswordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB0721202E523100DCE1C3 /* ControllerPasswordTableView.swift */; };
 		1EBB0725202E78F000DCE1C3 /* UIBarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB0724202E78F000DCE1C3 /* UIBarButtons.swift */; };
 		1EBCC45120FAE210007E4015 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBCC45020FAE210007E4015 /* SocketManager.swift */; };
-		1EC76B4721ADEAF6006E772A /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC76B4621ADEAF6006E772A /* test.swift */; };
+		1EC76B4721ADEAF6006E772A /* RTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC76B4621ADEAF6006E772A /* RTCClient.swift */; };
 		1EC88EC92032567D00B2D9A1 /* Connections.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC88EC82032567D00B2D9A1 /* Connections.storyboard */; };
 		1EC88ECE203259B400B2D9A1 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC88ECD203259B400B2D9A1 /* Settings.storyboard */; };
 		1ECEAB71214AB6EE00CEE1B7 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECEAB6F214AB6EE00CEE1B7 /* ItemCell.swift */; };
@@ -146,7 +146,7 @@
 		1EBB0721202E523100DCE1C3 /* ControllerPasswordTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPasswordTableView.swift; sourceTree = "<group>"; };
 		1EBB0724202E78F000DCE1C3 /* UIBarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtons.swift; sourceTree = "<group>"; };
 		1EBCC45020FAE210007E4015 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
-		1EC76B4621ADEAF6006E772A /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		1EC76B4621ADEAF6006E772A /* RTCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTCClient.swift; sourceTree = "<group>"; };
 		1EC88EC82032567D00B2D9A1 /* Connections.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Connections.storyboard; sourceTree = "<group>"; };
 		1EC88ECD203259B400B2D9A1 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		1ECEAB6F214AB6EE00CEE1B7 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
@@ -264,6 +264,7 @@
 		1E27F6E621995A8100A309AB /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				1EC76B4621ADEAF6006E772A /* RTCClient.swift */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -490,7 +491,6 @@
 				1E81AE582185ECA800C26439 /* ExtensionCollectionView.swift */,
 				1E81AE5A2185EEC700C26439 /* ExtensionLoadingConversation.swift */,
 				1EB6E606218F69F0008CB556 /* VideoCallController.swift */,
-				1EC76B4621ADEAF6006E772A /* test.swift */,
 				1E4954FA21AF68D1004FC47D /* videoViewTestController.swift */,
 				1E28232821B373E00016530E /* VideoViewTestController.xib */,
 			);
@@ -1030,7 +1030,7 @@
 				1ED3FA9120FD7F16009570C9 /* ControllerResetPassword.swift in Sources */,
 				1E22B915214DBDBA00E19A00 /* ControllerAddNewCercle.swift in Sources */,
 				9AA7DABE1F924740001EA270 /* PermanentModel.xcdatamodeld in Sources */,
-				1EC76B4721ADEAF6006E772A /* test.swift in Sources */,
+				1EC76B4721ADEAF6006E772A /* RTCClient.swift in Sources */,
 				1E5071812053F6E5009C8131 /* ApiRoute.swift in Sources */,
 				9A51C64A20A8AD75008CB9AA /* AddMemberToConvController.swift in Sources */,
 				4897C7CD1F0C176C00D9EA0C /* AppDelegate.swift in Sources */,

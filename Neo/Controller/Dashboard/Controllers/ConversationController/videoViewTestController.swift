@@ -8,6 +8,7 @@
 
 import UIKit
 import WebRTC
+import SwiftyJSON
 
 class VideoViewTestController: UIViewController {
 
@@ -25,6 +26,7 @@ class VideoViewTestController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         #if arch(arm64)
         // Using metal (arm64 only)
@@ -42,7 +44,6 @@ class VideoViewTestController: UIViewController {
         
         self.webRTCClient.startCaptureLocalVideo(renderer: localRenderer)
         self.webRTCClient.renderRemoteVideo(to: remoteRenderer)
-        print("WE ARE AFTER IT??")
         
         self.embedView(localRenderer, into: self.localVideoView)
         self.embedView(remoteRenderer, into: self.view)

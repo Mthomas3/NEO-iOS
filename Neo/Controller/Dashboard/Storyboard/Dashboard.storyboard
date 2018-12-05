@@ -214,40 +214,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1b5-PW-GnA" customClass="RTCEAGLVideoView">
-                                <rect key="frame" x="250" y="44" width="125" height="261"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NA3-de-0dJ">
+                                <rect key="frame" x="137" y="391" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n3a-X3-zmH" customClass="RTCEAGLVideoView">
-                                <rect key="frame" x="20" y="44" width="101" height="250"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dsD-XL-Lbd">
-                                <rect key="frame" x="108" y="548" width="66" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="SPEAKER"/>
+                                <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="didTouchSpeaker:" destination="S6k-8y-UiC" eventType="touchUpInside" id="OkK-J2-2bp"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ub6-Ul-aoz">
-                                <rect key="frame" x="20" y="455" width="109" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Call"/>
-                                <connections>
-                                    <action selector="startCallingNow:" destination="S6k-8y-UiC" eventType="touchUpInside" id="1gR-6p-JNN"/>
+                                    <action selector="clickTest:" destination="S6k-8y-UiC" eventType="touchUpInside" id="E0c-w3-81x"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <connections>
-                        <outlet property="_buttonCalling" destination="Ub6-Ul-aoz" id="sPR-v7-2Qw"/>
-                        <outlet property="personView" destination="n3a-X3-zmH" id="Zsx-dC-FNY"/>
-                        <outlet property="userVIew" destination="1b5-PW-GnA" id="EL5-PV-Qvc"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pmo-jC-j9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

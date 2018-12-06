@@ -160,7 +160,7 @@ class VideoCallController: UIViewController{
         self.webRTCClient.set(remoteCandidate: candidate)
         print("WE PASS IN THE REMOTE CHECK HERE DUDE")
         self.remoteCandidateCount += 1
-        if self.remoteCandidateCount >= 3 {
+        if self.remoteCandidateCount >= 1 {
             self.presentVideoView()
         }
         print(self.remoteCandidateCount)
@@ -266,7 +266,7 @@ extension VideoCallController : WebRTCClientDelegate {
     }
 }
 
-extension VideoCallController {
+extension VideoCallController {           
     
     func sendWeb(sdp: String, type: String) {
      

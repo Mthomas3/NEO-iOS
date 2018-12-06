@@ -158,7 +158,7 @@ class WebRTCClient: NSObject {
 
         capturer.startCapture(with: frontCamera,
                               format: format,
-                              fps: 10)
+                              fps: 30)
         
         self.localVideoTrack?.add(renderer)
     }

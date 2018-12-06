@@ -47,12 +47,7 @@ class VideoViewTestController: UIViewController {
         self.embedView(localRenderer, into: self.localVideoView)
         self.embedView(remoteRenderer, into: self.view)
         
-        //test
-        
-        
         self.view.sendSubview(toBack: remoteRenderer)
-        
-        print("are we inside video???")
     }
     
     func embedView(_ view: UIView, into containerView: UIView) {
@@ -73,11 +68,10 @@ class VideoViewTestController: UIViewController {
     
     @IBAction func unwindToVideo(segue:UIStoryboardSegue) {
         
-        
         self.localVideoView.removeFromSuperview()
         self.view.removeFromSuperview()
-        
         self.dismiss(animated: true)
+        
     }
 
 }

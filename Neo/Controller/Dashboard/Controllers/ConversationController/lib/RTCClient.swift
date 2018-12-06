@@ -67,6 +67,7 @@ class WebRTCClient: NSObject {
         if let stream = peerConnection.localStreams.first {
             peerConnection.remove(stream)
         }
+        
     }
     
     private func setConfiguration(completion: @escaping ([RTCIceServer]) -> ()) {
@@ -155,10 +156,10 @@ class WebRTCClient: NSObject {
 //        capturer.startCapture(with: frontCamera,
 //                              format: format,
 //                              fps: Int(fps.maxFrameRate))
-
+//
         capturer.startCapture(with: frontCamera,
                               format: format,
-                              fps: 30)
+                              fps: 60)
         
         self.localVideoTrack?.add(renderer)
     }

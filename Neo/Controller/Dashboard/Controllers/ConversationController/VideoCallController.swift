@@ -22,6 +22,9 @@ class VideoCallController: UIViewController{
     var isViewDisplayed = false
     var isCaller = false
     var isUserConnected = false
+    var timer = Timer()
+    var isReadySet = false
+
     
     
     public var OpponentEmail: String? = nil
@@ -107,6 +110,7 @@ class VideoCallController: UIViewController{
     }
     
     private func handleReady() {
+        self.isReadySet = true
         self.webRTCClient.getConfiguration {
             self.webRTCClient.offer(completion: { (sdp) in
                 self.hasLocalSdp = true
@@ -179,8 +183,13 @@ class VideoCallController: UIViewController{
     
     private func OpponentUnavailable() {
         self.webRTCClient.disconnectPeerUser()
+    
         self.isUserConnected = false
+        
         self.navigationController?.popViewController(animated: true)
+        print("value is of webrtc -> \(self.webRTCClient)")
+        
+        print("UNAVAILABLE TRIGGER IS CONNECTER -> \(self.isUserConnected)")
     }
     
     private func handleSocketOnData(data: JSON) {
@@ -215,11 +224,23 @@ class VideoCallController: UIViewController{
                 default:
                     print("undefined second witch ** (\(JSON(data)[0]["content"])) **")
             }
-
+    }
+    
+    func scheduledTimerWithTimeInterval(){
+        timer = Timer.scheduledTimer(timeInterval: 25, target: self, selector: #selector(VideoCallController.updateCounting), userInfo: nil, repeats: false)
+    }
+    
+    @objc func updateCounting(){
+        
+        if !isReadySet {
+            self.isUserConnected = false
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        scheduledTimerWithTimeInterval()
         self.webRTCClient.delegate = self
 
         if (self.requestionAccessOnPhone()) {

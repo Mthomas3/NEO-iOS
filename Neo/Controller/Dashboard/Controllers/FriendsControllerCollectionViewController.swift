@@ -122,8 +122,22 @@ class FriendsControllerCollectionViewController: UICollectionViewController, UIC
 
     private func handleCall(data: JSON) {
         
-        self.performUIAlert(title: "Appel en cour", message: nil, actionTitles: ["Non", "Oui"], actions:
-            [{ _ in self.rejectCall(OpponentId: data["sender_id"].intValue)}, {_ in self.acceptTheCall(data: data)}])
+        
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_INFORMATION, param: ["token": User.sharedInstance.getParameter(parameter: "token"), "user_id": data["sender_id"].intValue]).done {
+            informationResponse in
+            
+            let callerEmail = JSON(informationResponse)["content"]["email"].stringValue
+            
+            let message = "L'utilisateur (\(callerEmail)) vous appelle :"
+            
+            self.performUIAlert(title: "\(message)", message: nil, actionTitles: ["Je refuse", "J'accepte"], actions:
+                [{ _ in self.rejectCall(OpponentId: data["sender_id"].intValue)}, {_ in self.acceptTheCall(data: data)}])
+            
+            
+            }.catch { (error) in
+                print("ERROR RETRIVE EMAIL \(error)")
+        }
+    
     }
     
     override func viewDidLoad() {

@@ -238,10 +238,23 @@ class VideoCallController: UIViewController{
         }
     }
     
+    private func handleUserNotConnected() {
+        self.isUserConnected = false
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scheduledTimerWithTimeInterval()
         self.webRTCClient.delegate = self
+        
+        print("SOCKET -> \(!SocketManager.sharedInstance.IsConnected()) && isCaller \(isCaller)")
+        
+        if !SocketManager.sharedInstance.IsConnected() && isCaller {
+            
+            self.performUIAlert(title: "Le destinataire n'est pas connecté", message: nil, actionTitles: ["Confirmer"], actions:
+                [{_ in self.handleUserNotConnected()}])
+        }
 
         if (self.requestionAccessOnPhone()) {
             DisplayMessage.displayMessageAsAlert(title: "Accès Micro + Video", message: "Veuillez autoriser les accés", controller: self)
@@ -252,6 +265,8 @@ class VideoCallController: UIViewController{
         if isCaller {
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: "CALLING"))
             self.isUserConnected = true
+            
+            print("JUST AFTER?")
         } else {
             self.handleCalling()
         }

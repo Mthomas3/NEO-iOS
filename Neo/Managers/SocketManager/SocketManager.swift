@@ -62,6 +62,8 @@ final class SocketManager {
         socket?.on("error") { data, ack in
             print("error")
             print(data)
+            self.isConnected = false
+            
         }
         
         socket?.on("success") { data, ack in

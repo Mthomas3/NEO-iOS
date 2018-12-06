@@ -8,6 +8,7 @@
 
 import UIKit
 import SocketIO
+import SwiftyJSON
 
 struct JoinCircle : SocketData {
     let circle_id: Int
@@ -23,6 +24,15 @@ class FriendsControllerCollectionViewController: UICollectionViewController, UIC
     
     var messages = [Circle]()
     var circleids = [Int]()
+    
+    struct socketDataMessage: SocketData {
+        let id: Int
+        let message: String
+        
+        func socketRepresentation() -> SocketData {
+            return ["user_id": id, "message": message]
+        }
+    }
     
     func returnDateFromString( text: String) -> Date {
         let types: NSTextCheckingResult.CheckingType = [.date ]
@@ -90,7 +100,34 @@ class FriendsControllerCollectionViewController: UICollectionViewController, UIC
     
     @IBAction func unwindToChatConversation(segue:UIStoryboardSegue) { }
 
+    private func rejectCall(OpponentId: Int) {
+        print("we reject the call")
+        
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: OpponentId, message: "UNAVAILABLE"))
+        
+    }
+    
+    private func acceptTheCall(data: JSON) {
+        let user_id = data["sender_id"].intValue
+        
+        let newViewController = UIStoryboard(name: "Dashboard", bundle: nil).instantiateViewController(withIdentifier: "VideoCallController") as! VideoCallController
+        self.navigationController?.pushViewController(newViewController, animated: true)
+        
+        newViewController.OpponentEmail = "undefined"
+        newViewController.OpponentId = user_id
+        newViewController.isCaller = false
+        
+        print("USER \(user_id) is CALLING and we are \(User.sharedInstance.getId())")
+    }
+
+    private func handleCall(data: JSON) {
+        
+        self.performUIAlert(title: "Appel en cour", message: nil, actionTitles: ["Non", "Oui"], actions:
+            [{ _ in self.rejectCall(OpponentId: data["sender_id"].intValue)}, {_ in self.acceptTheCall(data: data)}])
+    }
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         /*let msg = Circle()
@@ -112,6 +149,17 @@ class FriendsControllerCollectionViewController: UICollectionViewController, UIC
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "Créer", style: UIBarButtonItemStyle.plain, target: self, action: #selector(addConv))
         
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
+        
+        SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_forward") {
+            data, ack in
+            
+            print("THE DATA -> \(data)")
+            
+            if (JSON(data[0])["content"]["message"].stringValue).isEqualToString(find: "CALLING") {
+                self.handleCall(data: JSON(data[0]))
+            }
+        }
+        
     }
     
     @objc func addConv() {

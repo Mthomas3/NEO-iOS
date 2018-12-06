@@ -160,8 +160,8 @@ class VideoCallController: UIViewController{
         self.webRTCClient.set(remoteCandidate: candidate)
         print("WE PASS IN THE REMOTE CHECK HERE DUDE")
         self.remoteCandidateCount += 1
-        if self.remoteCandidateCount > 3 {
-            //self.presentVideoView()
+        if self.remoteCandidateCount >= 3 {
+            self.presentVideoView()
         }
         print(self.remoteCandidateCount)
     }
@@ -231,6 +231,8 @@ class VideoCallController: UIViewController{
         if isCaller {
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: "CALLING"))
             self.isUserConnected = true
+        } else {
+            self.handleCalling()
         }
 
         SocketManager.sharedInstance.getManager().defaultSocket.on("webrtc_forward") {

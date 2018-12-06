@@ -65,6 +65,10 @@ class ChatLogController: UICollectionViewController,
         return button
     }()
     
+    private func gettingCall() {
+        print("we are being call")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpUI()
@@ -148,7 +152,7 @@ class ChatLogController: UICollectionViewController,
                 
                 newViewController.OpponentEmail = json!["email"].stringValue
                 newViewController.OpponentId = json!["id"].intValue
-                //newViewController.isCaller = true
+                newViewController.isCaller = true
                 
             } else {
                 DisplayMessage.displayMessageAsAlert(title: "Erreur", message: "Vous êtes tous seul dans la conversation", controller: self)

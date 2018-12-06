@@ -27,7 +27,6 @@ class VideoViewTestController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         #if arch(arm64)
         // Using metal (arm64 only)
         let localRenderer = RTCMTLVideoView(frame: self.localVideoView.frame)

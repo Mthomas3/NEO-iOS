@@ -95,7 +95,7 @@ class ControllerLogin: UIViewController {
         if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
             User.sharedInstance.setUserInformations(email: "j@j.com", password: "test")
         } else {
-            User.sharedInstance.setUserInformations(email: "ok@o.com", password: "test")
+            User.sharedInstance.setUserInformations(email: "j@j.com", password: "test")
         }
     }
     

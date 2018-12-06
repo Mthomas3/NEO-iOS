@@ -28,10 +28,12 @@
                         <constraint firstAttribute="height" constant="219" id="QYn-LY-tkP"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0kh-Oy-If0">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0kh-Oy-If0">
                     <rect key="frame" x="252" y="47" width="107" height="52"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.70228880640000002" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="52" id="ieS-1I-a71"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="23"/>
                     <state key="normal" title="QUITTER">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -44,7 +46,10 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aDC-Y3-jOh" secondAttribute="trailing" constant="28" id="28h-oP-XBS"/>
+                <constraint firstItem="0kh-Oy-If0" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="SGQ-qm-qed"/>
+                <constraint firstItem="0kh-Oy-If0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="252" id="bQ6-lT-CeS"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aDC-Y3-jOh" secondAttribute="bottom" constant="41" id="ekx-Ii-zj7"/>
+                <constraint firstItem="0kh-Oy-If0" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="27" id="v3q-0J-7wg"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="-591.20000000000005" y="-317.09145427286359"/>

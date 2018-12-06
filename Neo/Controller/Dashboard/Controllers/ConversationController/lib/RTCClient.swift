@@ -62,12 +62,11 @@ class WebRTCClient: NSObject {
     }
     
     public func disconnectPeerUser() {
-        self.peerConnection.close()
         
         if let stream = peerConnection.localStreams.first {
             peerConnection.remove(stream)
         }
-        
+        self.peerConnection.close()
     }
     
     private func setConfiguration(completion: @escaping ([RTCIceServer]) -> ()) {

@@ -48,6 +48,9 @@
                                 <state key="normal" title="INSCRIPTION">
                                     <color key="titleColor" red="0.36282655596733093" green="0.68111878633499146" blue="0.79426378011703491" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <segue destination="agE-mf-iAT" kind="show" id="AU3-en-VHI"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Tq-4v-ojc">
                                 <rect key="frame" x="0.0" y="482" width="375" height="89"/>

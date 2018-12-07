@@ -92,7 +92,7 @@ class ControllerPassword: UIViewController {
         if checkInformations() {
            User.sharedInstance.setUserInformations(password: _password.text!);
         } else {
-            HandleErrors.displayError(message: "ERROR", controller: self)
+            HandleErrors.displayError(message: "Une erreur est survenue", controller: self)
         }
         
         _ = ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CREATE, param: User.sharedInstance.getRegistrationParameters()).done{
@@ -106,10 +106,10 @@ class ControllerPassword: UIViewController {
                 self.performSegue(withIdentifier: "segueRegistration", sender: self)
                 
                 }.catch {_ in
-                    HandleErrors.displayError(message: "An error occured during registration", controller: self)
+                    HandleErrors.displayError(message: "Le mot de passe ou email est invalide", controller: self)
             }
             }.catch {_ in
-                HandleErrors.displayError(message: "An error occured during registration", controller: self)
+                HandleErrors.displayError(message: "Le mot de passe ou email est invalide", controller: self)
         }
         
     }
@@ -149,7 +149,7 @@ class ControllerPassword: UIViewController {
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 if (!_currentState) {
-                    HandleErrors.displayError(message: "Either the password or email is invalid 1", controller: self)
+                    HandleErrors.displayError(message: "Le mot de passe ou email est invalide", controller: self)
                 }
             }
         })

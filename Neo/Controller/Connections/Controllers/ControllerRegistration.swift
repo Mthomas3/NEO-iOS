@@ -37,7 +37,7 @@ class ControllerRegistration: UIViewController {
         if identifier.isEqualToString(find: "showEmail"){
             guard let useremail = _username.text, !useremail.isEmpty,
                 let familyname = _familyname.text, !familyname.isEmpty else {
-                    HandleErrors.displayError(message: "Either the family name or user name is invalid", controller: self)
+                    HandleErrors.displayError(message: "Prénom ou Nom de famille invalide", controller: self)
                     return false
             }
         }

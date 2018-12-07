@@ -24,7 +24,7 @@ class HandleErrors{
     
     public static func displayError(message: String, controller: UIViewController){
         
-        controller.present(HandleErrors().createAlert(title: "An error occured", message: message), animated: true, completion: nil)
+        controller.present(HandleErrors().createAlert(title: "Une erreur est survenue", message: message), animated: true, completion: nil)
         
     }
     

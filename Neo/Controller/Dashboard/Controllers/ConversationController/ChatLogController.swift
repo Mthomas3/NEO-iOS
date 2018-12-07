@@ -153,6 +153,7 @@ class ChatLogController: UICollectionViewController,
                 newViewController.OpponentEmail = json!["email"].stringValue
                 newViewController.OpponentId = json!["id"].intValue
                 newViewController.isCaller = true
+                newViewController.convId = self.convId
                 
             } else {
                 DisplayMessage.displayMessageAsAlert(title: "Erreur", message: "Vous êtes tous seul dans la conversation", controller: self)

@@ -34,26 +34,35 @@ class ControllerSetNewPassword: UIViewController {
     @IBAction func sPasswordEditingChanged(_ sender: Any) {
         handleColorButton()
     }
+
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        
+        print("ARE WE INSIDE 1")
         
         guard let password = _fPassword.text, !password.isEmpty,
             let passwordConfirm = _sPassword.text, !passwordConfirm.isEmpty else {
                 HandleErrors.displayError(message: "You must confirm your password", controller: self)
+                print("ARE WE INSIDE 2")
                 return false
         }
-        
+
         if (!password.isEqualToString(find: passwordConfirm)) {
             HandleErrors.displayError(message: "Your password is not equal to the confirmation", controller: self)
+            print("ARE WE INSIDE 3")
             return false
         }
         
-        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CHANGE_PASSWORD, param:  ["email": User.sharedInstance.getEmail(), "previous_password": oldPassword, "new_password": _fPassword]).done {
+        var data = ["token": User.sharedInstance.getParameter(parameter: "token"), "email": User.sharedInstance.getEmail(),
+                    "previous_password": oldPassword, "new_password": _fPassword.text] as [String : Any]
+
+        ApiManager.performAlamofireRequest(url: ApiRoute.ROUTE_CHANGE_PASSWORD, param: data).done {
             respond in
+            print("ARE WE INSIDE 4")
             }.catch {_ in
-                
+
         }
-        return false
+        return true
     }
     
     override func viewDidLoad() {

@@ -52,7 +52,7 @@ class ControllerEmail: UIViewController {
         if identifier.isEqualToString(find: "showBirthday"){
             guard let useremail = _useremail.text, !useremail.isEmpty, useremail.isValidEmail() else {
                 
-                HandleErrors.displayError(message: "The email you entered is invalid", controller: self)
+                HandleErrors.displayError(message: "Cet email n'est pas valide", controller: self)
                 
                 return false
             }
@@ -62,7 +62,7 @@ class ControllerEmail: UIViewController {
                 result in
             
             if !(JSON(result))["success"].boolValue {
-                    HandleErrors.displayError(message: "The email you entered is already used by someone else", controller: self)
+                    HandleErrors.displayError(message: "Cet email est déjà utilisé", controller: self)
                 } else {
                     self.performSegue(withIdentifier: "showBirthday", sender: self)
                 }

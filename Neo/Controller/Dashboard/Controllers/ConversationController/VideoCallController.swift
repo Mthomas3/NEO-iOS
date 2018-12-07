@@ -25,6 +25,7 @@ class VideoCallController: UIViewController{
     var callTimer = Timer()
     var eventTimer = Timer()
     var isReadySet = false
+    var convId: Int? = 0
     
     var ping = false
     var pong = false
@@ -93,7 +94,6 @@ class VideoCallController: UIViewController{
     private func sendPing() {
         if isUserConnected {
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: "PING"))
-            print("SEND PING")
         }
   }
     
@@ -101,7 +101,6 @@ class VideoCallController: UIViewController{
         
         if isUserConnected {
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: "PONG"))
-            print("SEND PONG")
 
         }
     }
@@ -116,7 +115,9 @@ class VideoCallController: UIViewController{
     }
     
     private func handleReady() {
+        print("USER CONNECTED = \(self.isUserConnected)")
         self.isReadySet = true
+        eventTimer = Timer.scheduledTimer(timeInterval: 12, target: self, selector: #selector(VideoCallController.checkPong), userInfo: nil, repeats: true)
         self.webRTCClient.getConfiguration {
             self.webRTCClient.offer(completion: { (sdp) in
                 self.hasLocalSdp = true
@@ -124,18 +125,22 @@ class VideoCallController: UIViewController{
                 self.sendWeb(sdp: sdp.sdp, type: "offer")
             })
         }
+        if !self.isUserConnected {
+    
+        }
     }
     
     private func handleCalling() {
         
-        print("CHECK HANDLE CALLING WEBRTC -> \(self.webRTCClient)")
-        
-        print("isConnecter -> \(self.isUserConnected) isCaller -> \(self.isCaller) isDisplayed -> \(self.isViewDisplayed)")
-        
         self.webRTCClient.getConfiguration {
             SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: "READY"))
             self.isUserConnected = true
+            self.eventTimer = Timer.scheduledTimer(timeInterval: 12, target: self, selector: #selector(VideoCallController.checkPong), userInfo: nil, repeats: true)
         }
+    }
+    
+    private func signalMessage(message: String) {
+        SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: message))
     }
     
     private func manageSdp(sdp: JSON) {
@@ -148,7 +153,6 @@ class VideoCallController: UIViewController{
             self.webRTCClient.set(remoteSdp: sdp) { (error) in
 
                 self.webRTCClient.answer(completion: { (sdp) in
-                    print("Making the answer ***")
                     self.hasLocalSdp = true
                     self.sendWeb(sdp: sdp.sdp, type: "answer")
                 })
@@ -170,9 +174,8 @@ class VideoCallController: UIViewController{
         let sdpLine = candidate["sdpMLineIndex"].intValue
         let sdpMid = candidate["sdpMid"].stringValue
         let candidate = RTCIceCandidate(sdp: sdp, sdpMLineIndex: Int32(sdpLine), sdpMid: sdpMid)
-
         self.webRTCClient.set(remoteCandidate: candidate)
-        print("WE PASS IN THE REMOTE CHECK HERE DUDE")
+        
         self.remoteCandidateCount += 1
         if self.remoteCandidateCount >= 1 {
             self.presentVideoView()
@@ -238,19 +241,33 @@ class VideoCallController: UIViewController{
     }
     
     @objc func checkPong() {
-        print("** INSIDE CHECK PONG **")
-        print("value ping -> \(self.ping) && value pong -> \(self.pong)")
         
         if self.ping == false && self.pong == false {
             
-            self.isViewDisplayed = false
-            self.isUserConnected = false
-            self.webRTCClient.disconnectPeerUser()
-            self.dismiss(animated: true)
-            self.navigationController?.popViewController(animated: true)
-            
+            if isViewDisplayed {
+                self.dismiss(animated: true)
+                self.navigationController?.popViewController(animated: true)
+
+                self.isViewDisplayed = false
+                self.isUserConnected = false
+                self.webRTCClient.disconnectPeerUser()
+                self.eventTimer.invalidate()
+                self.callTimer.invalidate()
+                self.signalMessage(message: "QUITTING")
+                //self.dismiss(animated: true)
+                
+            } else {
+                
+                self.isViewDisplayed = false
+                self.isUserConnected = false
+                self.webRTCClient.disconnectPeerUser()
+                self.navigationController?.popViewController(animated: true)
+                self.eventTimer.invalidate()
+                self.callTimer.invalidate()
+                self.signalMessage(message: "QUITTING")
+                //self.dismiss(animated: true)
+            }
         }
-        
         self.ping = false
         self.pong = false
     }
@@ -258,19 +275,21 @@ class VideoCallController: UIViewController{
     func scheduledTimerWithTimeInterval(){
         callTimer = Timer.scheduledTimer(timeInterval: 25, target: self, selector: #selector(VideoCallController.updateCounting), userInfo: nil, repeats: false)
         
-        eventTimer = Timer.scheduledTimer(timeInterval: 12, target: self, selector: #selector(VideoCallController.checkPong), userInfo: nil, repeats: true)
     }
     
     @objc func updateCounting(){
-        
         if !isReadySet && isCaller {
+            
+            self.signalMessage(message: "QUITTING")
+            
+            SocketManager.sharedInstance.getManager().defaultSocket.emit("message", MessageData(text_message: "Vous avez manqué un appel", conversation_id: self.convId!))
             self.isUserConnected = false
-            self.navigationController?.popViewController(animated: true)
+            //self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true)
         }
     }
     
     private func handleUserNotConnected() {
-        print("IS USER NOT CONNECTED?")
         self.isUserConnected = false
         self.navigationController?.popViewController(animated: true)
     }
@@ -278,7 +297,6 @@ class VideoCallController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         
         if isViewDisplayed {
-            print("INSIDE VIEW WILL APPEAR")
             self.isViewDisplayed = false
             self.isUserConnected = false
             self.webRTCClient.disconnectPeerUser()
@@ -301,8 +319,8 @@ class VideoCallController: UIViewController{
         }
 
         if isCaller {
-            SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: "CALLING"))
             self.isUserConnected = true
+            SocketManager.sharedInstance.getManager().defaultSocket.emit("webrtc_forward", socketDataMessage(id: self.OpponentId!, message: "CALLING"))
             
         } else {
             self.handleCalling()

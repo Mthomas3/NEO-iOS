@@ -40,6 +40,11 @@ class SettingViewController: UITableViewController {
         }
     }
     
+    @IBAction func unwindToSetting(segue:UIStoryboardSegue) {
+        print("WE ARE SETTING")
+    }
+
+    
     private func handleLogOut() {
         self.performUIAlert(title: "Êtes-vous de vouloir vous déconnecter?", message: nil, actionTitles: ["Non", "Oui"], actions:
             [{ _ in }, {_ in self.performLogOutFromApp()}])

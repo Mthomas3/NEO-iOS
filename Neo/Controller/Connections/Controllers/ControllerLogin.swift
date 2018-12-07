@@ -16,7 +16,7 @@ import TransitionButton
 
 class ControllerLogin: UIViewController {
     
-    let __DEVELOPPEMENT__ = true
+    let __DEVELOPPEMENT__ = false
     
     @IBOutlet private weak var _username: HoshiTextField!
     @IBOutlet private weak var _password: HoshiTextField!
@@ -100,25 +100,19 @@ class ControllerLogin: UIViewController {
     }
     
     private func checkParametersLogin() -> Bool{
-        if (UIDevice.current.name).isEqualToString(find: "Thomas's iPhone") {
-            print("YES")
-        } else {
-            print("NON")
-        }
-        print("CHECK DEVICE -> \(UIDevice.current.name)")
-        if (!__DEVELOPPEMENT__) {
+        
             guard let username = _username.text, !username.isEmpty,
                 let password = _password.text, !password.isEmpty else {
                     return false
             }
-            User.sharedInstance.setUserInformations(email: username.removingWhitespaces(), password: password.removingWhitespaces())
-            return true
-        }
-        __SETUPDEVELOPPEMENTINFORMATION__()
+        
+        User.sharedInstance.setUserInformations(email: username.removingWhitespaces(),
+                                                password: password.removingWhitespaces())
+
         return true
     }
     
-    private func performLogin(){
+    private func performLogin(button: TransitionButton){
         
         print("\(User.sharedInstance.getLoginParameters()) IS DEV == \(__DEVELOPPEMENT__)")
         
@@ -137,12 +131,15 @@ class ControllerLogin: UIViewController {
                     self.loginButton.stopAnimation()
                 }.catch {test in
                     print(test)
-                    HandleErrors.displayError(message: "Either the password or email is invalid 1", controller: self)
+                    button.stopAnimation(animationStyle: .shake, completion: { })
+
+                     HandleErrors.displayError(message: "Le mot de passe ou email est invalide", controller: self)
             }
             }.catch {
                 _ in
-                
-                HandleErrors.displayError(message: "Either the password or email is invalid 2", controller: self)
+                button.stopAnimation(animationStyle: .shake, completion: { })
+
+                HandleErrors.displayError(message: "Le mot de passe ou email est invalide", controller: self)
                 
         }
     }
@@ -161,8 +158,10 @@ class ControllerLogin: UIViewController {
                 
                 _currentState = self.checkParametersLogin()
                 
+                print("THE STATE IS \(_currentState)")
+                
                 if (_currentState) {
-                    self.performLogin()
+                    self.performLogin(button: button)
                     _currentState = true
                 }else {
                     button.stopAnimation(animationStyle: .shake, completion: { })
@@ -171,7 +170,7 @@ class ControllerLogin: UIViewController {
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 if (!_currentState) {
-                    HandleErrors.displayError(message: "Either the password or email is invalid 1", controller: self)
+                    HandleErrors.displayError(message: "Le mot de passe ou email est invalide", controller: self)
                 }
             }
         })

@@ -115,7 +115,6 @@
 		1E252A0A1F77279B00B245F7 /* ControllerEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerEmail.swift; sourceTree = "<group>"; };
 		1E252A0C1F772C1900B245F7 /* ControllerPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerPassword.swift; sourceTree = "<group>"; };
 		1E252A0F1F77324000B245F7 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		1E28232721B370B60016530E /* VideoViewTestController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = VideoViewTestController.xib; path = Controller/Dashboard/Controllers/ConversationController/VideoViewTestController.xib; sourceTree = "<group>"; };
 		1E28232821B373E00016530E /* VideoViewTestController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoViewTestController.xib; sourceTree = "<group>"; };
 		1E2A02E420325BFF0037854A /* Contacts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Contacts.storyboard; sourceTree = "<group>"; };
 		1E2A02EC203267ED0037854A /* Dashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
@@ -610,7 +609,6 @@
 		4897C7C01F0C176C00D9EA0C = {
 			isa = PBXGroup;
 			children = (
-				1E28232721B370B60016530E /* VideoViewTestController.xib */,
 				1E6296CB204DD0B5006C286A /* Managers */,
 				1E252A0E1F77320500B245F7 /* Extensions */,
 				1E687B8B1F686246000059FF /* Model */,

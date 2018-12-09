@@ -78,10 +78,7 @@ class VideoCallController: UIViewController{
         return audioRequest && cameraRequest
     }
     
-    @IBAction func clickTest(_ sender: Any) {
-//        let vc = VideoViewTestController(webRTCClient: self.webRTCClient)
-//        self.present(vc, animated: true, completion: nil)
-    }
+    @IBAction func clickTest(_ sender: Any) { }
     
     public func presentVideoView() {
         if !isViewDisplayed {
@@ -115,7 +112,6 @@ class VideoCallController: UIViewController{
     }
     
     private func handleReady() {
-        print("USER CONNECTED = \(self.isUserConnected)")
         self.isReadySet = true
         eventTimer = Timer.scheduledTimer(timeInterval: 12, target: self, selector: #selector(VideoCallController.checkPong), userInfo: nil, repeats: true)
         self.webRTCClient.getConfiguration {
@@ -206,16 +202,12 @@ class VideoCallController: UIViewController{
             case "CALLING":
                 self.handleCalling()
             case "PING":
-                print("INSIDE PING")
                 self.ping = true
                 self.pong = true
-
                 self.sendPong()
             case "PONG":
-                print("INSIDE PONG")
                 self.pong = true
                 self.ping = true
-
                 self.sendPing()
             case "QUITTING":
                 self.stopCalling()
@@ -254,7 +246,6 @@ class VideoCallController: UIViewController{
                 self.eventTimer.invalidate()
                 self.callTimer.invalidate()
                 self.signalMessage(message: "QUITTING")
-                //self.dismiss(animated: true)
                 
             } else {
                 
@@ -265,7 +256,6 @@ class VideoCallController: UIViewController{
                 self.eventTimer.invalidate()
                 self.callTimer.invalidate()
                 self.signalMessage(message: "QUITTING")
-                //self.dismiss(animated: true)
             }
         }
         self.ping = false
@@ -284,7 +274,6 @@ class VideoCallController: UIViewController{
             
             SocketManager.sharedInstance.getManager().defaultSocket.emit("message", MessageData(text_message: "Vous avez manqué un appel", conversation_id: self.convId!))
             self.isUserConnected = false
-            //self.navigationController?.popViewController(animated: true)
             self.dismiss(animated: true)
         }
     }
